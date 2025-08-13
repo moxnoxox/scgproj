@@ -6,10 +6,12 @@ public class PlayerMove : MonoBehaviour
 {
     public float maxSpeed;
     Rigidbody2D rigid;
-    
+    SpriteRenderer spriteRenderer;
+
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -28,7 +30,13 @@ public class PlayerMove : MonoBehaviour
         //Max Speed
         if (rigid.velocity.x > maxSpeed)
             rigid.velocity = new Vector2(maxSpeed, rigid.velocity.y);
-        else if (rigid.velocity.x < maxSpeed*(-1))
-            rigid.velocity = new Vector2(maxSpeed*(-1), rigid.velocity.y);
+        else if (rigid.velocity.x < maxSpeed * (-1))
+            rigid.velocity = new Vector2(maxSpeed * (-1), rigid.velocity.y);
+
+        //스프라이트 방향 전환
+        if (h > 0)
+            spriteRenderer.flipX = true;
+        else if (h < 0)
+            spriteRenderer.flipX = false;
     }
 }
