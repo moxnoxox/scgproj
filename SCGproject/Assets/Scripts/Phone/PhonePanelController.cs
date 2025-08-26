@@ -13,6 +13,8 @@ public class PhonePanelController : MonoBehaviour
     private bool isOpen = false;
     private Coroutine moveCoroutine;
 
+    public bool IsOpen => isOpen;
+
     // 폰 열기
     public void TogglePhone()
     {
