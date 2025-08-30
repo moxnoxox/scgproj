@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
@@ -7,7 +8,7 @@ public class PlayerMove : MonoBehaviour
     public float maxSpeed;
     Rigidbody2D rigid;
     SpriteRenderer spriteRenderer;
-
+    public Animator animator;
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -38,5 +39,11 @@ public class PlayerMove : MonoBehaviour
             spriteRenderer.flipX = true;
         else if (h < 0)
             spriteRenderer.flipX = false;
+            
+        //걷기애니메이션
+        if (h != 0.0)
+            animator.SetBool("isWalking", true);
+        else
+            animator.SetBool("isWalking", false);
     }
 }

@@ -6,9 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class Main_ButtonControll : MonoBehaviour
 {
-    public SceneController sceneController;
     public void onClick_Start()
     {
-        sceneController.loadScene("SampleScene");
+        SceneController.Loadscene("SampleScene");
     }
 }
