@@ -9,7 +9,8 @@ public class ChatManager : MonoBehaviour
 
     public Transform content;               
     public GameObject myMessagePrefab;       
-    public GameObject otherMessagePrefab;    
+    public GameObject otherMessagePrefab;   
+    public GameObject datePrefab; 
 
     private string lastSender = "";
     private string lastTime = "";
@@ -24,17 +25,6 @@ public class ChatManager : MonoBehaviour
     {
         if (gameClock == null)
             gameClock = GameClock.Instance;
-    }
-
-    private void Start()
-    {
-    
-        // 작성 예시 
-        // 1) 실시간 메시지 (자동 시간) 
-            // chatManager.AddMyMessage("방금 보낸 메시지"); 
-
-        // 2) 히스토리 메시지 (수동 시간) 
-            // chatManager.AddMyMessage("어제 받은 메시지", "오전 9:00", autoTime:false);
     }
 
     public void SetCurrentRoom(ChatRoom room)
@@ -55,19 +45,28 @@ public class ChatManager : MonoBehaviour
         // 현재 메시지 리스트 출력
         foreach (var msg in currentRoom.messages)
         {
-            if (msg.sender == "Me")
+            if (msg.type == "dateDivider")
             {
-                Debug.Log($"내 메시지 출력: {msg.content}");
-                AddMyMessage(msg.content, msg.timestamp, autoTime:false, save:false);
+                AddDateDivider(save: false);
+                continue;
             }
-            else
-            {
-                User senderUser = currentRoom.participants.Find(u => u.id == msg.sender);
-                string senderName = senderUser != null ? senderUser.nickname : msg.sender;
-                Sprite senderProfile = senderUser != null ? senderUser.profileImage : null;
 
-                Debug.Log($"상대 메시지 출력: {senderName} / {msg.content}");
-                AddOtherMessage(senderName, senderProfile, msg.content, msg.timestamp, autoTime:false, save:false);
+            if (msg.type == "message")
+            {
+                if (msg.sender == "Me")
+                {
+                    Debug.Log($"내 메시지 출력: {msg.content}");
+                    AddMyMessage(msg.content, msg.timestamp, autoTime:false, save:false);
+                }
+                else
+                {
+                    User senderUser = currentRoom.participants.Find(u => u.id == msg.sender);
+                    string senderName = senderUser != null ? senderUser.nickname : msg.sender;
+                    Sprite senderProfile = senderUser != null ? senderUser.profileImage : null;
+
+                    Debug.Log($"상대 메시지 출력: {senderName} / {msg.content}");
+                    AddOtherMessage(senderName, senderProfile, msg.content, msg.timestamp, autoTime:false, save:false);
+                }
             }
         }
     }
@@ -146,6 +145,25 @@ public class ChatManager : MonoBehaviour
             currentRoom.messages.Add(newMsg);
         }
     }
+
+     public void AddDateDivider(bool save = true)
+{
+    var obj = Instantiate(datePrefab, content);
+    var ui = obj.GetComponent<DateDividerUI>();
+    ui.Setup();  
+    
+    // 그룹 끊기
+    lastSender = "";
+    lastTime = "";
+    lastMyMessageUI = null;
+    lastOtherMessageUI = null;
+
+    if (save && currentRoom != null)
+    {
+        Message divider = new Message("dateDivider");
+        currentRoom.messages.Add(divider);
+    }
+}
 
     public void ClearAllMessages()
     {
