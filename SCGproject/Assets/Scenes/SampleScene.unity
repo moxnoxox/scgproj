@@ -4840,6 +4840,7 @@ GameObject:
   - component: {fileID: 2130449284}
   - component: {fileID: 2130449283}
   - component: {fileID: 2130449285}
+  - component: {fileID: 2130449286}
   m_Layer: 5
   m_Name: PhonePanel
   m_TagString: Untagged
@@ -4926,6 +4927,20 @@ MonoBehaviour:
   controller: {fileID: 1325155190}
   dismissDistance: 180
   onlyWhenOpen: 1
+--- !u!114 &2130449286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2130449281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding: {x: 0, y: 0, z: 0, w: 0}
+  m_Softness: {x: 0, y: 0}
 --- !u!1001 &1447321608686157924
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5232,6 +5247,10 @@ PrefabInstance:
       propertyPath: gameClock
       value: 
       objectReference: {fileID: 1827485842}
+    - target: {fileID: 6972371486097653604, guid: 5154b4de1ce8b6f4089e2781cbbf1fac, type: 3}
+      propertyPath: inputRaiseY
+      value: 300
+      objectReference: {fileID: 0}
     - target: {fileID: 7723451654970528974, guid: 5154b4de1ce8b6f4089e2781cbbf1fac, type: 3}
       propertyPath: m_Name
       value: ChatRoomPanel(Sample)
