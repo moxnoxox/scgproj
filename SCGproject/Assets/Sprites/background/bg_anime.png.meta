@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e7a12be68fa7e46419c0897a67dd151b
+guid: 174b27ff84a25407abacb7107d74da79
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 200
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -97,169 +97,274 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sleeping_8
+      name: bg_anime_0
       rect:
         serializedVersion: 2
-        x: 63
+        x: 0
         y: 0
-        width: 404
-        height: 512
+        width: 1919
+        height: 1079
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b4d379cd2eac84a58911c9db64203046
-      internalID: -737050533
+      spriteID: 98c8306984a534df59cf3023a789136f
+      internalID: -1305262362
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sleeping_9
+      name: bg_anime_1
       rect:
         serializedVersion: 2
-        x: 575
+        x: 1919
         y: 0
-        width: 404
-        height: 512
+        width: 1919
+        height: 1079
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 14ebf06905a3d4e3c800898f9e46f07f
-      internalID: 1231971864
+      spriteID: 9cfda7e21d0e54084b4e83030a1c5d92
+      internalID: -1329005440
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sleeping_10
+      name: bg_anime_2
       rect:
         serializedVersion: 2
-        x: 1087
+        x: 3838
         y: 0
-        width: 404
-        height: 512
+        width: 1919
+        height: 1079
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f19b7142f9aec459694751c5d461a365
-      internalID: 518043727
+      spriteID: df90b62f30c6241a6baf1367425090ba
+      internalID: -1504828176
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sleeping_11
+      name: bg_anime_3
       rect:
         serializedVersion: 2
-        x: 1599
+        x: 5757
         y: 0
-        width: 404
-        height: 512
+        width: 1919
+        height: 1079
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 94aab37ef059543cea955e678fd58a83
-      internalID: 1861134676
+      spriteID: 4bdf065d3f083487685b296f5ce2c7af
+      internalID: -1249593012
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sleeping_12
+      name: bg_anime_4
       rect:
         serializedVersion: 2
-        x: 2111
+        x: 7676
         y: 0
-        width: 404
-        height: 512
+        width: 1919
+        height: 1079
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ace16e09606394fdc8ed7e53bd65106c
-      internalID: 1312151107
+      spriteID: 0727d6bd4f8e64d4ebb575e1590f8aac
+      internalID: -1933720361
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sleeping_13
+      name: bg_anime_5
       rect:
         serializedVersion: 2
-        x: 2623
+        x: 9595
         y: 0
-        width: 404
-        height: 512
+        width: 1919
+        height: 1079
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 851a3dfb6b5be40aa8e8f724e4c6f925
-      internalID: 1297215362
+      spriteID: b73f5b0823b3645f484b221208b058b0
+      internalID: -318016951
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sleeping_14
+      name: bg_anime_6
       rect:
         serializedVersion: 2
-        x: 3135
+        x: 11514
         y: 0
-        width: 404
-        height: 512
+        width: 1919
+        height: 1079
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9edd1f53560dd49e7b8e4e55e8b342b4
-      internalID: -202065131
+      spriteID: f2dee73ee16a74ed7848b14d896be2fc
+      internalID: 1303393758
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sleeping_15
+      name: bg_anime_7
       rect:
         serializedVersion: 2
-        x: 3647
-        y: 1
-        width: 404
-        height: 511
+        x: 13433
+        y: 0
+        width: 1919
+        height: 1079
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e9848da8450524fb9a70ee82142c2160
-      internalID: -1963971482
+      spriteID: d58cbf9c5a1d34d0b9448c1572d1c6ce
+      internalID: 28528556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_anime_8
+      rect:
+        serializedVersion: 2
+        x: 15352
+        y: 0
+        width: 1919
+        height: 1079
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 22223390526f445f7a80ea001261d66a
+      internalID: 515582085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_anime_9
+      rect:
+        serializedVersion: 2
+        x: 17271
+        y: 0
+        width: 1919
+        height: 1079
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb5cc5f3d59b249909c31375ebddff64
+      internalID: 220162076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_anime_10
+      rect:
+        serializedVersion: 2
+        x: 19190
+        y: 0
+        width: 1919
+        height: 1079
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b0a72f03eaad48148e8bae4152cc602
+      internalID: -117417234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_anime_11
+      rect:
+        serializedVersion: 2
+        x: 21109
+        y: 0
+        width: 1919
+        height: 1079
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11150a037d359494c97e6bce6cac89cd
+      internalID: -474786624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_anime_12
+      rect:
+        serializedVersion: 2
+        x: 23028
+        y: 0
+        width: 1919
+        height: 1079
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 642e5a7e6b8f247ad94413130c626581
+      internalID: 1023149505
       vertices: []
       indices: 
       edges: []
@@ -275,22 +380,19 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      sleeping_0: 1228843171
-      sleeping_1: 915026102
-      sleeping_10: 518043727
-      sleeping_11: 1861134676
-      sleeping_12: 1312151107
-      sleeping_13: 1297215362
-      sleeping_14: -202065131
-      sleeping_15: -1963971482
-      sleeping_2: 1273563648
-      sleeping_3: -1381972999
-      sleeping_4: -82376869
-      sleeping_5: -274897177
-      sleeping_6: 1112155000
-      sleeping_7: -1932264115
-      sleeping_8: -737050533
-      sleeping_9: 1231971864
+      bg_anime_0: -1305262362
+      bg_anime_1: -1329005440
+      bg_anime_10: -117417234
+      bg_anime_11: -474786624
+      bg_anime_12: 1023149505
+      bg_anime_2: -1504828176
+      bg_anime_3: -1249593012
+      bg_anime_4: -1933720361
+      bg_anime_5: -318016951
+      bg_anime_6: 1303393758
+      bg_anime_7: 28528556
+      bg_anime_8: 515582085
+      bg_anime_9: 220162076
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
