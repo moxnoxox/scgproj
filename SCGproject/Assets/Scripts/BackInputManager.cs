@@ -32,6 +32,8 @@ public class BackInputManager : MonoBehaviour
     {
         if (!backHandlers.Contains(handler))
             backHandlers.Push(handler);
+        
+        Debug.Log($"[BackInput] Register: {handler.Method}, StackCount={backHandlers.Count}");
     }
 
     // 핸들러 제거
@@ -42,6 +44,8 @@ public class BackInputManager : MonoBehaviour
 
         if (backHandlers.Peek() == handler)
             backHandlers.Pop();
+        
+        Debug.Log($"[BackInput] Unregister: {handler.Method}, StackCount={backHandlers.Count}");
     }
 
     // 현재 핸들러가 있는지 확인
@@ -51,6 +55,7 @@ public class BackInputManager : MonoBehaviour
     {
         backHandlers.Clear();
     }
+
 
 }
 
