@@ -6,10 +6,22 @@
     { "id": "mom", "nickname": "엄마", "profileImagePath": "mom_profile" }
   ],
   "initialMessages": [
-    { "sender": "Me", "content": "알겠어", "timestamp": "오후 9:34", "isRead": false },
-    { "sender": "mom", "content": "오늘 뭐해?", "timestamp": "오후 5:13", "isRead": false },
-    { "sender": "mom", "content": "밥은 먹고 다니니?", "timestamp": "오후 5:14", "isRead": false },
-    { "sender": "Me", "content": "집", "timestamp": "오후 5:37", "isRead": false },
-    { "sender": "Me", "content": "먹었어", "timestamp": "오후 5:37", "isRead": false }
+    { "type": "message", "sender": "Me", "content": "알겠어", "timestamp": "오후 9:34", "isRead": false },
+    
+    { "type": "dateDivider" },
+
+    { "type": "message", "sender": "mom", "content": "오늘 뭐해?", "timestamp": "오후 5:13", "isRead": false },
+    { "type": "message", "sender": "mom", "content": "밥은 먹고 다니니?", "timestamp": "오후 5:14", "isRead": false },
+    { "type": "message", "sender": "Me", "content": "집", "timestamp": "오후 5:37", "isRead": false },
+    { "type": "message", "sender": "Me", "content": "먹었어", "timestamp": "오후 5:37", "isRead": false },
+
+    { "type": "dateDivider" },
+
+    { "type": "message", "sender": "mom", "content": "너 요즘 목소리 왜 이렇게 힘이 없니", "timestamp": "오후 2:52", "isRead": false },
+
+    { "type": "dateDivider" },
+
+    { "type": "message", "sender": "mom", "content": "오늘도 야근이야?", "timestamp": "오후 9:59", "isRead": false },
+    { "type": "message", "sender": "mom", "content": "힘들지...", "timestamp": "오후 9:59", "isRead": false }
   ]
 }

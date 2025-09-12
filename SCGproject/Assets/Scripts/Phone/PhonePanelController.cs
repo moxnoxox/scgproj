@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PhonePanelController : MonoBehaviour
 {
+    public static PhonePanelController Instance { get; private set; }
+
     public RectTransform phonePanel;
     public Vector2 hiddenPos;
     public Vector2 visiblePos;
@@ -15,6 +17,19 @@ public class PhonePanelController : MonoBehaviour
 
     public bool IsOpen => isOpen;
 
+    private void Awake()
+    {
+        // 싱글톤 초기화
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+    
     // 폰 열기
     public void TogglePhone()
     {

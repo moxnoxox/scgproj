@@ -16,12 +16,24 @@ public class BackInputManager : MonoBehaviour
             // 가장 위에 있는 핸들러 실행
         }
     }
+    
+    // 하단바 버튼 뒤로가기 클릭
+    public static void TriggerBack()
+    {
+        if (backHandlers.Count > 0)
+        {
+            backHandlers.Peek()?.Invoke();
+        }
+    }
+
 
     // 핸들러 등록
     public static void Register(Action handler)
     {
         if (!backHandlers.Contains(handler))
             backHandlers.Push(handler);
+        
+        Debug.Log($"[BackInput] Register: {handler.Method}, StackCount={backHandlers.Count}");
     }
 
     // 핸들러 제거
@@ -32,9 +44,18 @@ public class BackInputManager : MonoBehaviour
 
         if (backHandlers.Peek() == handler)
             backHandlers.Pop();
+        
+        Debug.Log($"[BackInput] Unregister: {handler.Method}, StackCount={backHandlers.Count}");
     }
 
     // 현재 핸들러가 있는지 확인
     public static bool HasHandler => backHandlers.Count > 0;
+
+    public static void ClearAll()
+    {
+        backHandlers.Clear();
+    }
+
+
 }
 

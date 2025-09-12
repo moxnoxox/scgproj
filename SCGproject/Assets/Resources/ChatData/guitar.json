@@ -6,8 +6,8 @@
     { "id": "guitar", "nickname": "기타", "profileImagePath": "guitar_profile" }
   ],
   "initialMessages": [
-    { "sender": "guitar", "content": "야 뭐해", "timestamp": "오후 12:34", "isRead": false },
-    { "sender": "guitar", "content": "기타주라 기타주라 기타주라 기타주", "timestamp": "오후 12:34", "isRead": false },
-    { "sender": "Me", "content": "메세지 두 줄 테스트 메세지 두 줄 테스트", "timestamp": "오후 5:37", "isRead": false }
+    { "type": "message", "sender": "guitar", "content": "야 뭐해", "timestamp": "오후 12:34", "isRead": false },
+    { "type": "message", "sender": "guitar", "content": "기타주라 기타주라 기타주라 기타주", "timestamp": "오후 12:34", "isRead": false },
+    { "type": "message", "sender": "Me", "content": "메세지 두 줄 테스트 메세지 두 줄 테스트", "timestamp": "오후 5:37", "isRead": false }
   ]
 }
