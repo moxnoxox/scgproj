@@ -21,6 +21,9 @@ public class player_power : MonoBehaviour
         if(currentPower <= 0) {
             playerMove.noPower = true;
         }
+        else {
+            playerMove.noPower = false;
+        }
     }
 }
 

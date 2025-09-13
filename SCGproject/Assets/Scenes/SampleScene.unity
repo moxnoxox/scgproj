@@ -428,10 +428,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1022794963}
+  - {fileID: 1649542368}
   - {fileID: 1325155189}
   - {fileID: 974803903}
   - {fileID: 2130449282}
-  - {fileID: 1649542368}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -5339,6 +5339,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1649542368}
   - component: {fileID: 1649542369}
+  - component: {fileID: 1649542370}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -5418,6 +5419,23 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1649542370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1649542367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a541449991519498e9f64044d1513c9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxPower: 100
+  powerDecreaseRate: 1
+  currentPower: 0
+  powerSlider: {fileID: 1649542369}
+  playerMove: {fileID: 55871473}
 --- !u!1 &1661421822
 GameObject:
   m_ObjectHideFlags: 0

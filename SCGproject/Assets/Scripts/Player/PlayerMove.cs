@@ -38,6 +38,23 @@ public class PlayerMove : MonoBehaviour
             animator.SetBool("start_trigger", true);
             StartCoroutine(startwait());
         }
+        if(noPower == true) {
+            //침대로 이동
+            h = - this.transform.position.x;
+            if(h > 1f) {
+                h = 1;
+            }
+            else if(h < -1f) {
+                h = -1;
+            }
+            else if(Mathf.Abs(h) < 0.1f) {
+                h = 0;
+            }
+            else {
+                h = 0;
+            }
+
+        }
         if(start == false || animator.GetBool("isSleep") == true || animator.GetBool("isPhone") == true) {
             return;
         }
