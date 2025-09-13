@@ -1,0 +1,17 @@
+{
+  "roomName": "일공공 수학학원 원장님",
+  "profileImagePath": "Profiles/math_profile",
+  "participants": [
+    { "id": "Me", "nickname": "나", "profileImagePath": "me_profile" },
+    { "id": "math", "nickname": "원장", "profileImagePath": "math_profile" }
+  ],
+  "initialMessages": [
+    { "type": "dateDivider" },
+    
+    { "type": "message", "sender": "math", "content": "해랑 조교님. 방금 학부모님께 전화 받았는데, 이번 학기말 성적표에 오류가 있다고 하네요. 확인해보니 김은지 학생 성적이 지난번보다 10점이나 낮게 입력됐던데, 어떻게 된 걸까요?", "timestamp": "오전 9:01", "isRead": false },
+    { "type": "message", "sender": "Me", "content": "죄송합니다 원장님... 정신이 없어서 제가 수기로 입력하는 과정에서 실수가 있었던 것 같습니다. 바로 수정하고 학부모님께 다시 연락드리겠습니다.", "timestamp": "오전 10:32", "isRead": false },
+    { "type": "message", "sender": "math", "content": "성적표는 학생과 학부모님이 가장 민감하게 보는 부분인데... 아무리 바빠도 그런 기본적인 자료는 두 번, 세 번씩 확인해야죠. 조교님, 지난번에도 숙제 공지 잘못해서 저한테 학생들 질문 폭탄 맞게 하더니, 이번엔 아예 성적표를 잘못 보낸 거예요?", "timestamp": "오전 10:40", "isRead": false },
+    { "type": "message", "sender": "math", "content": "학생의 노력이 점수 10점으로 갈라지는 건데, 조교님 실수로 학생이 억울하게 혼날 뻔했어요.", "timestamp": "오전 10:42", "isRead": false },
+    { "type": "message", "sender": "Me", "content": "네, 원장님... 전화 드리겠습니다. 민폐끼쳐드려 정말 죄송합니다...", "timestamp": "오전 10:52", "isRead": false }
+  ]
+}

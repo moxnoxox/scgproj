@@ -1,0 +1,33 @@
+{
+  "roomName": "20 행성이들",
+  "profileImagePath": "Profiles/dummy_profile",
+  "participants": [
+    { "id": "Me", "nickname": "나", "profileImagePath": "me_profile" },
+    { "id": "A", "nickname": "A", "profileImagePath": "dummy_profile" },
+    { "id": "B", "nickname": "B", "profileImagePath": "dummy_profile" },
+    { "id": "C", "nickname": "C", "profileImagePath": "dummy_profile" },
+    { "id": "D", "nickname": "D", "profileImagePath": "dummy_profile" }
+  ],
+  "initialMessages": [
+    { "type": "dateDivider" },
+    
+    { "type": "message", "sender": "A", "content": "얘들아 나 합격했다!!!😭😭😭", "timestamp": "오후 1:00", "isRead": false },
+    { "type": "message", "sender": "A", "content": "회사 정규직 최종 합격했어!!", "timestamp": "오후 1:00", "isRead": false },
+    { "type": "message", "sender": "B", "content": "미쳤다!! 대박!!!", "timestamp": "오후 1:02", "isRead": false },
+    { "type": "message", "sender": "C", "content": "진짜 축하해!!! 너 잠도 못 자고 준비한 거 다 아는데..ㅠㅠ", "timestamp": "오후 1:02", "isRead": false },
+    { "type": "message", "sender": "D", "content": "이야아아아아!!!!!!🎉🎉🎉 너 될 줄 알았어!!", "timestamp": "오후 1:10", "isRead": false },
+    { "type": "message", "sender": "A", "content": "고마워 얘들아 ㅠㅠ 다들 응원해 준 덕분이야...", "timestamp": "오후 1:10", "isRead": false },
+   
+    { "type": "dateDivider" },
+
+    { "type": "message", "sender": "D", "content": "얘들아 나 대학원 합격했어...ㅠㅠㅠㅠ", "timestamp": "오후 4:00", "isRead": false },
+    { "type": "message", "sender": "A", "content": "헐!! 너무 잘 됐다 진짜 축하해!!!!! ㅠㅠㅠㅠㅠㅠㅠ", "timestamp": "오후 1:02", "isRead": false },
+    { "type": "message", "sender": "B", "content": "와 축하해~!", "timestamp": "오후 4:01", "isRead": false },
+    { "type": "message", "sender": "B", "content": "우리 다 같이 축하파티라도 해야 되는 거 아냐? ㅋㅋㅋㅋ", "timestamp": "오후 4:01", "isRead": false },
+    { "type": "message", "sender": "D", "content": "ㄱㄱㄱ!! 빨리 날짜 정하자 내가 쏠게", "timestamp": "오후 4:01", "isRead": false },
+    { "type": "message", "sender": "C", "content": "헐 너무 좋아~!! 내가 케이크 사 갈게", "timestamp": "오후 4:01", "isRead": false },
+    { "type": "message", "sender": "A", "content": "@해랑 해랑이는 시간 돼?", "timestamp": "오후 4:10", "isRead": false },
+    { "type": "message", "sender": "Me", "content": "난 당분간은 안 될 것 같아.... 그래도 다들 진심으로 축하해!!", "timestamp": "오후 5:33", "isRead": false },
+    { "type": "message", "sender": "A", "content": "오키오킹 ㅜㅜ 아쉽다... 축하해줘서 고마워!", "timestamp": "오후 4:01", "isRead": false }
+  ]
+}

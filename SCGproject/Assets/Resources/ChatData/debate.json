@@ -1,0 +1,26 @@
+{
+  "roomName": "시사토론 학회 - 찬성팀",
+  "profileImagePath": "Profiles/dummy_profile",
+  "participants": [
+    { "id": "Me", "nickname": "나", "profileImagePath": "me_profile" },
+    { "id": "A", "nickname": "A", "profileImagePath": "dummy_profile" },
+    { "id": "B", "nickname": "B", "profileImagePath": "dummy_profile" }
+  ],
+  "initialMessages": [
+    { "type": "dateDivider" },
+    
+    { "type": "message", "sender": "A", "content": "여러분 내일 회의 있습니다! 저번 피드백에 맞게 다들 자료 디벨롭해서 들고 와주세요~", "timestamp": "오후 1:12", "isRead": false },
+    { "type": "message", "sender": "A", "content": "@해랑 해랑이는 지난번 발표 자료에 근거가 부족하다는 피드백이 많았는데, 이번에는 좀 더 탄탄하게 준비해주면 좋을 것 같아요!", "timestamp": "오후 1:12", "isRead": false },
+    { "type": "message", "sender": "Me", "content": "네, 알겠습니다. 이번엔 더 심층적으로 자료 조사하겠습니다.", "timestamp": "오후 3:14", "isRead": false },
+    { "type": "message", "sender": "B", "content": "아 그리고 해랑이도 그렇고 다들 썼던 지난번 자료에 인용 출처가 불분명한 부분도 있어서요! 전문가 의견이나 공신력 있는 기관의 보고서처럼 출처 명확하게 밝혀주세요~!", "timestamp": "오후 4:57", "isRead": false },
+    { "type": "message", "sender": "Me", "content": "넵 최대한 피드백 반영해서 들고 오겠습니다...!", "timestamp": "오후 7:12", "isRead": false },
+
+    { "type": "dateDivider" },
+
+    { "type": "message", "sender": "Me", "content": "어제 말씀하신 부분 보완했습니다. 한번 확인해주시면 감사하겠습니다.", "timestamp": "오후 9:12", "isRead": false },
+    { "type": "message", "sender": "A", "content": "수고했어요! 피드백 드리자면,", "timestamp": "오후 9:32", "isRead": false },
+    { "type": "message", "sender": "A", "content": "자료가 아직 피상적인 내용이 많은 것 같아요! 단순히 의견 제시만으로는 부족하고 좀 더 통계나 전문가의 의견처럼 구체적인 근거가 있으면 좋을 것 같아요", "timestamp": "오후 9:32", "isRead": false },
+    { "type": "message", "sender": "Me", "content": "넵", "timestamp": "오후 9:42", "isRead": false },
+    { "type": "message", "sender": "B", "content": "@해랑 그럼 내일 오전 중으로 피드백 반영해서 여기나 이메일로 자료 최종본 올려주세요~", "timestamp": "오후 9:42", "isRead": false }
+  ]
+}

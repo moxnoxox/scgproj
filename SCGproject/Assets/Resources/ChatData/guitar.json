@@ -1,13 +1,26 @@
 {
-  "roomName": "기타",
+  "roomName": "🎸",
   "profileImagePath": "guitar_profile",
   "participants": [
     { "id": "Me", "nickname": "나", "profileImagePath": "me_profile" },
-    { "id": "guitar", "nickname": "기타", "profileImagePath": "guitar_profile" }
+    { "id": "guitar", "nickname":"🎸", "profileImagePath": "guitar_profile" }
   ],
   "initialMessages": [
-    { "sender": "guitar", "content": "야 뭐해", "timestamp": "오후 12:34", "isRead": false },
-    { "sender": "guitar", "content": "기타주라 기타주라 기타주라 기타주", "timestamp": "오후 12:34", "isRead": false },
-    { "sender": "Me", "content": "메세지 두 줄 테스트 메세지 두 줄 테스트", "timestamp": "오후 5:37", "isRead": false }
+    { "type": "dateDivider" },
+
+    { "type": "message", "sender": "guitar", "content": "야야야야ㅑㅑ", "timestamp": "오후 2:01", "isRead": false },
+    { "type": "message", "sender": "guitar", "content": "신곡 아이디어 생각났어", "timestamp": "오후 2:01", "isRead": false },
+    { "type": "message", "sender": "guitar", "content": "오랜만에 합주 ㄱ??", "timestamp": "오후 2:01", "isRead": false },
+
+    { "type": "dateDivider" },
+
+    { "type": "message", "sender": "guitar", "content": "요즘 뭐하니", "timestamp": "오후 7:27", "isRead": false },
+    { "type": "message", "sender": "guitar", "content": "나 니네 집 근처에 생긴 그", "timestamp": "오후 7:27", "isRead": false },
+    { "type": "message", "sender": "guitar", "content": "파스타집 또 가고 싶음", "timestamp": "오후 7:27", "isRead": false },
+
+    { "type": "dateDivider" },
+    { "type": "message", "sender": "guitar", "content": "나 아이디어 생각난 거 혼자 길에서 연습 중인데", "timestamp": "오전 10:09", "isRead": false },
+    { "type": "message", "sender": "guitar", "content": "너도 같이 하고 싶으면 연락하셈!", "timestamp": "오전 10:09", "isRead": false }
+
   ]
 }
