@@ -1,40 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class player_power : MonoBehaviour
 {
     public int maxPower = 100;
     public int currentPower;
-    public UnityEngine.UI.Slider powerSlider;
+    public Image powerSlider;
     public PlayerMove playerMove;
+
     void Start()
     {
         currentPower = maxPower;
-        powerSlider.maxValue = 10;
-        powerSlider.value = 10;
+        UpdatePowerUI();
     }
+
     void Update()
     {
-        if(currentPower <= 0) {
-            playerMove.noPower = true;
-        }
-        else {
-            playerMove.noPower = false;
-        }
-        powerSlider.value = currentPower/10;
+        playerMove.noPower = currentPower <= 0;
+        UpdatePowerUI();
     }
+
+    void UpdatePowerUI()
+    {
+        if (powerSlider != null)
+            powerSlider.fillAmount = Mathf.Clamp01((float)currentPower / maxPower);
+    }
+
     public void DecreasePower(int amount)
     {
-        currentPower -= amount;
+        currentPower = Mathf.Max(currentPower - amount, 0);
+        UpdatePowerUI();
     }
+
     public void IncreasePower(int amount)
     {
-        currentPower += amount;
-        if (currentPower > maxPower)
-        {
-            currentPower = maxPower;
-        }
+        currentPower = Mathf.Min(currentPower + amount, maxPower);
+        UpdatePowerUI();
     }
 }
 

@@ -9,8 +9,6 @@ using System;
 public class SceneController : MonoBehaviour
 {
     [SerializeField] Slider loadingbar;
-    [SerializeField] TextMeshProUGUI loadprocess;
-    public static string process;
     static string nextscene;
     
     public static void Loadscene(string scenename)
@@ -46,7 +44,6 @@ public class SceneController : MonoBehaviour
                 op.allowSceneActivation = true;
                 yield break;
             }
-            loadprocess.text = Convert.ToString(Mathf.RoundToInt(loadingbar.value * 100)) + "%";
         }
     }
 }
