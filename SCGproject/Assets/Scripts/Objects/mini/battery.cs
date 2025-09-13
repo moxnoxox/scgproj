@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class mirror : MonoBehaviour
+public class battery : MonoBehaviour
 {
     public GameObject player;
     private float xdiff;
@@ -11,6 +12,7 @@ public class mirror : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.Find("Player");
         playerPower = player.GetComponent<player_power>();
     }
 
@@ -23,7 +25,7 @@ public class mirror : MonoBehaviour
             keyInfo.isObject = true;
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                playerPower.DecreasePower(100);
+                playerPower.DecreasePower(5);
             }
         }
         else if(xdiff < 1.01f)

@@ -24,23 +24,30 @@ public class key_info : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(isBed) {
+        if (isBed)
+        {
             S.enabled = true;
         }
-        else {
+        else
+        {
             S.enabled = false;
         }
-        if(isObject) {
+        if (isObject)
+        {
             space.enabled = true;
         }
-        else {
+        else
+        {
             space.enabled = false;
         }
-        if(is_starting) {
+        if (is_starting)
+        {
             ad.enabled = true;
         }
-        else {
+        else
+        {
             ad.enabled = false;
         }
     }
+    
 }

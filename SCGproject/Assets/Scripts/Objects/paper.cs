@@ -1,22 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class computer : MonoBehaviour
+public class paper : MonoBehaviour
 {
+    // Start is called before the first frame update
     public GameObject player;
     private float xdiff;
-    public SpriteRenderer spriteRenderer;
-    public Sprite computerOn;
-    public Sprite computerOff;
     public player_power playerPower;
     public key_info keyInfo;
-    public Image home;
-
+    // Start is called before the first frame update
     void Start()
     {
-        home.enabled = false;
         playerPower = player.GetComponent<player_power>();
     }
 
@@ -26,25 +21,15 @@ public class computer : MonoBehaviour
         xdiff = Mathf.Abs(this.transform.position.x - player.transform.position.x);
         if (xdiff < 1f)
         {
-            spriteRenderer.sprite = computerOn;
             keyInfo.isObject = true;
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                StartCoroutine(ShowHomeImage());
+                playerPower.DecreasePower(100);
             }
         }
         else if(xdiff < 1.01f)
         {
-            spriteRenderer.sprite = computerOff;
             keyInfo.isObject = false;
         }
-    }
-
-    IEnumerator ShowHomeImage()
-    {
-        home.enabled = true;
-        yield return new WaitForSeconds(2.0f);
-        home.enabled = false;
-        playerPower.DecreasePower(10);
     }
 }

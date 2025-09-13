@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -12,6 +13,11 @@ public class CameraController : MonoBehaviour
     private float zoomSpeed = 1f;   // 줌아웃 속도
     private float moveSpeed = 1f;   // 카메라 이동 속도
 
+    private float smoothTimer = 0f;
+    private float smoothDuration = 2.0f; // 부드러운 이동 지속 시간
+    private float leftMaxX = -5.73f;
+    private float rightMaxX = 5.8f;
+
     private Camera cam;
 
     private void Awake()
@@ -22,22 +28,56 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
-        Vector3 targetPosition = player.transform.position;
+        if (gameStart)
+            smoothTimer += Time.deltaTime;
+        if (smoothTimer < smoothDuration)
+        {
+            Smooth();
+        }
+        else
+        {
+            Fast();
+        }
+    }
+
+    void Smooth()
+    {
+        UnityEngine.Vector3 targetPosition = player.transform.position;
         targetPosition.z = __zPos;
         if (gameStart)
-            targetPosition.y += 1.7f;
-        else {
+            targetPosition.y += 1.9f;
+        else
+        {
             targetPosition.x = 0.4f;
         }
 
         // 부드럽게 카메라 이동
-        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * moveSpeed);
+        transform.position = UnityEngine.Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * moveSpeed);
 
         // 줌아웃 처리
         if (cam != null)
         {
             float targetSize = gameStart ? zoomOutSize : normalSize;
-            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetSize, Time.deltaTime * zoomSpeed);
+            cam.orthographicSize = MoveTowards(cam.orthographicSize, targetSize, Time.deltaTime * zoomSpeed);
         }
+    }
+
+    void Fast()
+    {
+        UnityEngine.Vector3 targetPosition = player.transform.position;
+        targetPosition.z = __zPos;
+        targetPosition.y += 1.7f;
+        if (targetPosition.x < leftMaxX)
+            targetPosition.x = leftMaxX;
+        else if (targetPosition.x > rightMaxX)
+            targetPosition.x = rightMaxX;
+        transform.position = targetPosition;
+    }
+    
+    float MoveTowards(float current, float target, float maxDelta)
+    {
+        if (Mathf.Abs(target - current) <= maxDelta)
+            return target;
+        return current + Mathf.Sign(target - current) * maxDelta;
     }
 }
