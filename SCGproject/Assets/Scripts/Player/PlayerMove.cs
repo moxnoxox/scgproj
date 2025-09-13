@@ -12,7 +12,7 @@ public class PlayerMove : MonoBehaviour
     private bool start = false;
     private bool starting = false;
     public bool noPower = false;
-    
+    public player_power playerPower;
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -40,20 +40,20 @@ public class PlayerMove : MonoBehaviour
         }
         if(noPower == true) {
             //침대로 이동
-            h = - this.transform.position.x;
-            if(h > 1f) {
+            h = -this.transform.position.x;
+            if(h > 0.1f) {
                 h = 1;
             }
-            else if(h < -1f) {
+            else if(h < -0.1f) {
                 h = -1;
             }
             else if(Mathf.Abs(h) < 0.1f) {
                 h = 0;
             }
-            else {
-                h = 0;
-            }
-
+        }
+        if(animator.GetBool("isSleep") == true) {
+            playerPower.IncreasePower(1);
+            spriteRenderer.flipX = false;
         }
         if(start == false || animator.GetBool("isSleep") == true || animator.GetBool("isPhone") == true) {
             return;
