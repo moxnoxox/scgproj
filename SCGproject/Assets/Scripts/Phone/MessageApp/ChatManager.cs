@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI; 
 using TMPro;
+using System.Linq;
 
 public class ChatManager : MonoBehaviour
 {
     public List<ChatRoom> chatRooms = new List<ChatRoom>();
     [HideInInspector] public GameClock gameClock; // 코드로 받아옴
 
-    public Transform content; 
+    public RectTransform content; 
     public Button backButton; 
     public TextMeshProUGUI RoomName; 
     public ScrollRect scrollRect;           
@@ -40,6 +41,10 @@ public class ChatManager : MonoBehaviour
     private ChatAppManager appManager;
 
     private Vector2 inputAreaDefaultPos;
+    private VerticalLayoutGroup contentLayout;
+
+    // 현재 방에서 보여줄 선택지
+    private List<ChoiceData> pendingChoices;
 
     private void Awake()
     {
@@ -54,6 +59,12 @@ public class ChatManager : MonoBehaviour
         // InputArea 기본 위치 저장
         if (inputArea != null)
             inputAreaDefaultPos = inputArea.anchoredPosition;
+        
+        if (content != null)
+            contentLayout = content.GetComponent<VerticalLayoutGroup>();
+
+        if (choicePanel != null)
+        choicePanel.SetActive(false);
     }
 
     private IEnumerator DisableAutoScrollNextFrame()
@@ -62,13 +73,18 @@ public class ChatManager : MonoBehaviour
         autoScrollAllowed = false;
     }
 
+    public ChatRoom GetCurrentRoom()
+    {
+        return currentRoom;
+    }
+
     public void SetCurrentRoom(ChatRoom room)
     {
         Debug.Log($"SetCurrentRoom 호출됨: {room.roomName}, " +
                 $"initialMessages={room.initialMessages.Count}, messages={room.messages.Count}");
 
         currentRoom = room;
-        
+        pendingChoices = null; // 초기화
 
         if (RoomName != null)
         {
@@ -110,6 +126,13 @@ public class ChatManager : MonoBehaviour
                     AddOtherMessage(senderName, senderProfile, msg.content, msg.timestamp, autoTime:false, save:false);
                 }
             }
+
+            if (msg.type == "choice" && !msg.isConsumed)
+            {
+                // 채팅방 입장 시에는 보관만 해둠
+                pendingChoices = msg.choices;
+            }
+
         }
 
         autoScrollAllowed = true;
@@ -118,6 +141,17 @@ public class ChatManager : MonoBehaviour
         // 한 프레임 뒤 autoScrollAllowed 끄기
         StartCoroutine(DisableAutoScrollNextFrame());
     }
+
+    private void ShowChoices(List<ChoiceData> choices)
+    {
+        if (choices == null || choices.Count == 0) return;
+
+        pendingChoices = choices;
+
+        choicePanel.SetActive(true);
+        PopulateChoices(choices);
+    }
+
 
     public void SendMessage(ChatRoom room, string sender, string content)
     {
@@ -149,7 +183,7 @@ public class ChatManager : MonoBehaviour
 
         // 직전 메시지가 같은 시간대라면 → 직전 메시지 시간 숨기기
         if (sameTime && lastMyMessageUI != null)
-        lastMyMessageUI.SetTimeVisible(false);
+            lastMyMessageUI.SetTimeVisible(false);
 
         // 새 메시지는 항상 시간 표시
         ui.Setup(text, finalTime, autoTime, true);
@@ -205,7 +239,7 @@ public class ChatManager : MonoBehaviour
         AddMessageCommon();
     }
 
-     public void AddDateDivider(bool save = true)
+    public void AddDateDivider(bool save = true)
     {
         var obj = Instantiate(datePrefab, content);
         var ui = obj.GetComponent<DateDividerUI>();
@@ -257,63 +291,125 @@ public class ChatManager : MonoBehaviour
         if (isChoiceOpen) return;
         isChoiceOpen = true;
 
-        choicePanel.SetActive(true);  
-        string[] options = { "그래, 알겠어", "지금은 바빠", "나중에 얘기하자" };
-        PopulateChoices(options);
+        if (pendingChoices != null && pendingChoices.Count > 0)
+        {
+            ShowChoices(pendingChoices);
 
-        Vector2 target = inputAreaDefaultPos + new Vector2(0, inputRaiseY);
-        StartCoroutine(MoveInputArea(inputArea, target, animTime));
+            // 채팅 내용 패딩 늘리기
+            if (contentLayout != null)
+                contentLayout.padding.bottom = Mathf.RoundToInt(inputRaiseY);
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(content);
+
+            Vector2 target = inputAreaDefaultPos + new Vector2(0, inputRaiseY);
+            StartCoroutine(MoveInputArea(inputArea, target, animTime));
+
+            // 스크롤을 맨 아래로 강제로 고정
+            StartCoroutine(ScrollToBottomNextFrame());
+        }
+        else
+        {
+            Debug.Log("⚠ 선택지가 없음");
+            isChoiceOpen = false;
+        }
     }
 
-    public void OnChoiceSelected(string choiceText)
+    public void OnChoiceSelected(ChoiceData choice) 
     {
-        // 내 메시지 전송
-        AddMyMessage(choiceText);
+        // 내 메시지 보내기
+        if (!string.IsNullOrEmpty(choice.resultMessage))
+        {
+            string time = string.IsNullOrEmpty(choice.timestamp) ? gameClock.GetTimeString() : choice.timestamp;
+            AddMyMessage(choice.resultMessage, time);
+        }
 
         // 선택지 닫기
         choicePanel.SetActive(false);
         StartCoroutine(MoveInputArea(inputArea, inputAreaDefaultPos, animTime));
         isChoiceOpen = false;
 
+        if (contentLayout != null)
+            contentLayout.padding.bottom = 0;
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(content);
         StartCoroutine(ScrollToBottomNextFrame());
 
-        // 상대 답변 예시 (2초 후)
-        StartCoroutine(ReplyAfterDelay("응, 알겠어", 2f));
+        // 액션 처리
+        if (!string.IsNullOrEmpty(choice.action))
+        {
+            HandleChoiceAction(choice);
+        }
+
+        // 상대방 대답 예약
+        if (choice.replies != null)
+        {
+            foreach (var reply in choice.replies)
+                ChatAppManager.Instance.ScheduleReply(currentRoom, reply, reply.delayAfter);
+        }
+
+        // 이번 선택지는 기록에서 제거
+        var choiceMsg = currentRoom.messages.FirstOrDefault(m => m.type == "choice");
+        if (choiceMsg != null)
+            currentRoom.messages.Remove(choiceMsg);
+
+        pendingChoices = null;
     }
 
-    private void PopulateChoices(string[] options)
+
+    private void PopulateChoices(List<ChoiceData> options)
     {
-        // 기존 버튼 제거
         for (int i = choicesContainer.childCount - 1; i >= 0; i--)
             Destroy(choicesContainer.GetChild(i).gameObject);
 
-        foreach (var text in options)
+        foreach (var choice in options)
         {
-            // 프리팹에서 새 버튼 생성
-            var go = Instantiate(choiceButtonPrefab, choicesContainer) as GameObject;
+            var go = Instantiate(choiceButtonPrefab, choicesContainer);
 
-            // 텍스트/사이즈 조정
+            // 텍스트 세팅
             var auto = go.GetComponent<AnswerChoiceUI>();
             if (auto != null)
-            {
-                auto.SetText(text);  // 내부에서 한 프레임 미뤄 사이즈 계산
-            }
-            else
-            {
-                var label = go.GetComponentInChildren<TextMeshProUGUI>();
-                if (label != null) label.text = text;
-            }
+                auto.SetText(choice.text);
 
             // 클릭 이벤트 등록
             var btn = go.GetComponent<Button>();
             if (btn != null)
             {
-                string choice = text;
-                btn.onClick.AddListener(() => OnChoiceSelected(choice));
+                ChoiceData captured = choice; // 클로저 방지
+                btn.onClick.AddListener(() => OnChoiceSelected(captured));
             }
         }
     }
-    
+
+    private void HandleChoiceAction(ChoiceData choice)
+    {
+        switch (choice.action)
+        {
+            case "Monologue":
+                if (choice.monologueText != null && choice.monologueText.Count > 0)
+                    MonologueManager.Instance.ShowMonologuesSequentially(choice.monologueText, 4f, 0.5f);
+                break;
+
+            case "ExitWithMonologue":
+                appManager.BackToList();
+                if (choice.monologueText != null && choice.monologueText.Count > 0)
+                    MonologueManager.Instance.ShowMonologuesSequentially(choice.monologueText, 4f, 0.5f);
+                break;
+
+            default:
+                Debug.LogWarning($"알 수 없는 action: {choice.action}");
+                break;
+        }
+    }
+
+
+    private IEnumerator ReplyAfterDelay(ReplyData reply, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        string time = string.IsNullOrEmpty(reply.timestamp) ? gameClock.GetTimeString() : reply.timestamp;
+        AddOtherMessage(reply.sender, null, reply.content, time);
+    }
+
     // 입력 영역 Y 이동(간단한 코루틴 애니메이션)
     private IEnumerator MoveInputArea(RectTransform target, Vector2 endPos, float duration)
     {
@@ -331,16 +427,6 @@ public class ChatManager : MonoBehaviour
         target.anchoredPosition = endPos;
     }
 
-
-    // 상대방 답변 테스트용
-    private System.Collections.IEnumerator ReplyAfterDelay(string reply, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        // 예: mom에게서 옴 
-        AddOtherMessage("mom", null, reply);
-    }
-
-
     public void ClearAllMessages()
     {
         foreach (Transform child in content)
@@ -353,8 +439,4 @@ public class ChatManager : MonoBehaviour
         lastMyMessageUI = null;
         lastOtherMessageUI = null;
     }
-
 }
-
-
-

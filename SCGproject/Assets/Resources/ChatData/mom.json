@@ -1,27 +1,41 @@
 {
-  "roomName": "엄마",
-  "profileImagePath": "mom_profile",
+  "roomName": "엄마❤️",
+  "profileImagePath": "Profiles/mom_profile",
   "participants": [
     { "id": "Me", "nickname": "나", "profileImagePath": "me_profile" },
-    { "id": "mom", "nickname": "엄마", "profileImagePath": "mom_profile" }
+    { "id": "mom", "nickname": "엄마❤️", "profileImagePath": "mom_profile" }
   ],
   "initialMessages": [
-    { "type": "message", "sender": "Me", "content": "알겠어", "timestamp": "오후 9:34", "isRead": false },
+    { "type": "dateDivider" },
     
-    { "type": "dateDivider" },
-
-    { "type": "message", "sender": "mom", "content": "오늘 뭐해?", "timestamp": "오후 5:13", "isRead": false },
-    { "type": "message", "sender": "mom", "content": "밥은 먹고 다니니?", "timestamp": "오후 5:14", "isRead": false },
-    { "type": "message", "sender": "Me", "content": "집", "timestamp": "오후 5:37", "isRead": false },
-    { "type": "message", "sender": "Me", "content": "먹었어", "timestamp": "오후 5:37", "isRead": false },
+    { "type": "message", "sender": "mom", "content": "울 강아지 요즘 소식이 없네~", "timestamp": "오후 4:05", "isRead": false },
+    { "type": "message", "sender": "mom", "content": "무슨 일 있어?", "timestamp": "오후 4:05", "isRead": false },
 
     { "type": "dateDivider" },
 
-    { "type": "message", "sender": "mom", "content": "너 요즘 목소리 왜 이렇게 힘이 없니", "timestamp": "오후 2:52", "isRead": false },
+    { "type": "message", "sender": "mom", "content": "요즘 날씨도 더운데 엄마가 준 밥이랑 반찬 꼭 냉장보관해서 먹어~", "timestamp": "오후 2:32", "isRead": false },
 
     { "type": "dateDivider" },
 
-    { "type": "message", "sender": "mom", "content": "오늘도 야근이야?", "timestamp": "오후 9:59", "isRead": false },
-    { "type": "message", "sender": "mom", "content": "힘들지...", "timestamp": "오후 9:59", "isRead": false }
+    { "type": "message", "sender": "mom", "content": "전화했네~ 엄마 일한다고 못 봤다 ㅠㅠ", "timestamp": "오후 2:03", "isRead": false },
+    { "type": "message", "sender": "mom", "content": "시간 되면 또 전화줘~ 화이팅!", "timestamp": "오후 2:03", "isRead": false },
+
+    { 
+      "type": "choice",
+      "choices": [
+        { "text": "(솔직하게 말한다)", 
+          "action": "Monologue",
+          "monologueText": ["혼자 있으니 더 외롭고 힘들어…",
+                            "하지만 솔직하게 말하면 걱정하시겠지. 걱정끼쳐드리고 싶지 않아…"]},
+        { "text": "(얼버무린다)", 
+          "resultMessage": "잘못 전화했어", 
+          "timestamp": "오후 4:03", "isRead": false, 
+          "replies": [
+            {"sender": "mom", "content": "그래~ 다음에 전화하면 꼭 받을게~", "delayAfter": 1, "timestamp": "오후 4:03", "isRead": false}
+          ]
+        }
+      ]
+    }
+
   ]
 }

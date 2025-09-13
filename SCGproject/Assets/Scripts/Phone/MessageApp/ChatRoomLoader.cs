@@ -23,27 +23,56 @@ public class ChatRoomLoader : MonoBehaviour
             TextAsset jsonFile = Resources.Load<TextAsset>($"ChatData/{fileName}");
             if (jsonFile == null)
             {
-                Debug.LogError($"ChatRoomLoader: {fileName}.json 을 찾을 수 없습니다!");
+                Debug.LogError($"❌ ChatRoomLoader: {fileName}.json 을 찾을 수 없습니다!");
                 continue;
             }
 
             ChatRoom room = JsonUtility.FromJson<ChatRoom>(jsonFile.text);
+            Debug.Log($"📂 {fileName}.json 로드 완료 → roomName: {room.roomName}");
 
-            // Sprite 로드 (profileImagePath 기반)
+            // Sprite 로드 (room 대표 이미지)
             if (!string.IsNullOrEmpty(room.profileImagePath))
-                room.profileImage = Resources.Load<Sprite>(room.profileImagePath);
+            {
+                var sprite = Resources.Load<Sprite>(room.profileImagePath);
+                if (sprite == null)
+                    Debug.LogError($"❌ 방 대표 프로필 로드 실패: {room.profileImagePath}");
+                else
+                {
+                    Debug.Log($"✅ 방 대표 프로필 로드 성공: {room.profileImagePath}");
+                    room.profileImage = sprite;
+                }
+            }
 
-            // 프로필 로드
+            // 참가자 프로필 로드
+    
             foreach (var user in room.participants)
             {
-                if (!string.IsNullOrEmpty(user.profileImagePath))
-                    user.profileImage = Resources.Load<Sprite>(user.profileImagePath);
+                string path = user.profileImagePath.Trim();
+                Debug.Log($"로드 시도: '{path}'");
+
+                if (!string.IsNullOrEmpty(path))
+                {
+                    var sprite = Resources.Load<Sprite>(path);
+                    if (sprite == null)
+                        Debug.LogError($"❌ 참가자 {user.nickname} 프로필 로드 실패: '{path}'");
+                    else
+                    {
+                        Debug.Log($"✅ 참가자 {user.nickname} 프로필 로드 성공: '{path}'");
+                        user.profileImage = sprite;
+                    }
+                }
+
+                else
+                {
+                    Debug.LogWarning($"⚠ 참가자 {user.nickname} 프로필 경로 없음");
+                }
             }
+
+
 
             loadedRooms.Add(room);
         }
 
-        
-        Debug.Log($"로드된 채팅방 수: {loadedRooms.Count}");
+        Debug.Log($"📌 최종 로드된 채팅방 수: {loadedRooms.Count}");
     }
 }
