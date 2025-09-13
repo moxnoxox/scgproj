@@ -29,22 +29,8 @@ public class ChatRoomLoader : MonoBehaviour
 
             ChatRoom room = JsonUtility.FromJson<ChatRoom>(jsonFile.text);
             Debug.Log($"📂 {fileName}.json 로드 완료 → roomName: {room.roomName}");
-
-            // Sprite 로드 (room 대표 이미지)
-            if (!string.IsNullOrEmpty(room.profileImagePath))
-            {
-                var sprite = Resources.Load<Sprite>(room.profileImagePath);
-                if (sprite == null)
-                    Debug.LogError($"❌ 방 대표 프로필 로드 실패: {room.profileImagePath}");
-                else
-                {
-                    Debug.Log($"✅ 방 대표 프로필 로드 성공: {room.profileImagePath}");
-                    room.profileImage = sprite;
-                }
-            }
-
+            
             // 참가자 프로필 로드
-    
             foreach (var user in room.participants)
             {
                 string path = user.profileImagePath.Trim();
@@ -52,6 +38,10 @@ public class ChatRoomLoader : MonoBehaviour
 
                 if (!string.IsNullOrEmpty(path))
                 {
+                    // Profiles 폴더 경로 자동 보정
+                    if (!path.StartsWith("Profiles/"))
+                        path = "Profiles/" + path;
+
                     var sprite = Resources.Load<Sprite>(path);
                     if (sprite == null)
                         Debug.LogError($"❌ 참가자 {user.nickname} 프로필 로드 실패: '{path}'");
@@ -61,14 +51,11 @@ public class ChatRoomLoader : MonoBehaviour
                         user.profileImage = sprite;
                     }
                 }
-
                 else
                 {
                     Debug.LogWarning($"⚠ 참가자 {user.nickname} 프로필 경로 없음");
                 }
             }
-
-
 
             loadedRooms.Add(room);
         }
