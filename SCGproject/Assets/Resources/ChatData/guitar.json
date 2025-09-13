@@ -1,6 +1,5 @@
 {
   "roomName": "🎸",
-  "profileImagePath": "guitar_profile",
   "participants": [
     { "id": "Me", "nickname": "나", "profileImagePath": "me_profile" },
     { "id": "guitar", "nickname":"🎸", "profileImagePath": "guitar_profile" }

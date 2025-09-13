@@ -1,6 +1,5 @@
 {
   "roomName": "일공공 수학학원 원장님",
-  "profileImagePath": "Profiles/math_profile",
   "participants": [
     { "id": "Me", "nickname": "나", "profileImagePath": "me_profile" },
     { "id": "math", "nickname": "원장", "profileImagePath": "math_profile" }

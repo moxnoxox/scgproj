@@ -1,6 +1,5 @@
 {
   "roomName": "엄마❤️",
-  "profileImagePath": "Profiles/mom_profile",
   "participants": [
     { "id": "Me", "nickname": "나", "profileImagePath": "me_profile" },
     { "id": "mom", "nickname": "엄마❤️", "profileImagePath": "mom_profile" }

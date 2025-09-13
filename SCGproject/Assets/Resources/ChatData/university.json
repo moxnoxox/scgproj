@@ -1,6 +1,5 @@
 {
   "roomName": "20 행성이들",
-  "profileImagePath": "Profiles/dummy_profile",
   "participants": [
     { "id": "Me", "nickname": "나", "profileImagePath": "me_profile" },
     { "id": "A", "nickname": "A", "profileImagePath": "dummy_profile" },
