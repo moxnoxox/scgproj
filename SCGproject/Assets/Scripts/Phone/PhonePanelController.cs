@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PhonePanelController : MonoBehaviour
 {
@@ -29,7 +30,7 @@ public class PhonePanelController : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
     // 폰 열기
     public void TogglePhone()
     {
@@ -43,6 +44,7 @@ public class PhonePanelController : MonoBehaviour
 
         // esc 핸들러 등록
         BackInputManager.Register(ClosePhone);  
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     // 폰 닫기

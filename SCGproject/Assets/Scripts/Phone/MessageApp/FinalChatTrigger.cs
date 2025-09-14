@@ -5,7 +5,15 @@ public class FinalChatTrigger : MonoBehaviour
     public ChatRoomLoader loader;   
     public string targetRoomName = "🎸";  
     public string questJsonFile = "guitar_afterquest"; // 예: Resources/JSON/guitar_afterquest.json
+    public static FinalChatTrigger Instance;
 
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+    }
     public void StartFinalChat()
     {
         ChatRoom targetRoom = loader.loadedRooms
@@ -33,7 +41,7 @@ public class FinalChatTrigger : MonoBehaviour
         // 알림 띄우기 추가해야함@@
         /// PhoneUIManager.Instance.ShowNotification(targetRoom.roomName, msg1.content);
 
-         targetRoom.AfterQuestJson = questJsonFile;
+        targetRoom.AfterQuestJson = questJsonFile;
 
         Debug.Log($"퀘스트 트리거 완료: {targetRoomName} 방에 메시지 2개 추가 + {questJsonFile} 로드");
     }

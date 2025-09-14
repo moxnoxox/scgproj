@@ -25,7 +25,6 @@ public class mirror : MonoBehaviour
             keyInfo.isObject = true;
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                playerPower.DecreasePower(100);
                 GameManager.Instance.onMirrorChecked();
             }
         }

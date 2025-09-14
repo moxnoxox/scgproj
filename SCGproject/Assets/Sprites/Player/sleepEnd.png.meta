@@ -97,10 +97,10 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sleepEnd_0
+      name: sleepEnd_4
       rect:
         serializedVersion: 2
-        x: 2113
+        x: 2119
         y: 0
         width: 320
         height: 512
@@ -142,7 +142,7 @@ TextureImporter:
       name: sleepEnd_3
       rect:
         serializedVersion: 2
-        x: 1594
+        x: 1582
         y: 0
         width: 332
         height: 512
@@ -160,7 +160,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sleepEnd_4
+      name: sleepEnd_5
       rect:
         serializedVersion: 2
         x: 2637
@@ -181,7 +181,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sleepEnd_5
+      name: sleepEnd_6
       rect:
         serializedVersion: 2
         x: 3124
@@ -202,7 +202,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sleepEnd_6
+      name: sleepEnd_7
       rect:
         serializedVersion: 2
         x: 3637
@@ -223,7 +223,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sleepEnd_7
+      name: sleepEnd_8
       rect:
         serializedVersion: 2
         x: 4168
@@ -244,7 +244,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sleepEnd_8
+      name: sleepEnd_9
       rect:
         serializedVersion: 2
         x: 4659
@@ -265,7 +265,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sleepEnd_9
+      name: sleepEnd_10
       rect:
         serializedVersion: 2
         x: 5212
@@ -286,7 +286,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sleepEnd_10
+      name: sleepEnd_11
       rect:
         serializedVersion: 2
         x: 5774
@@ -307,7 +307,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sleepEnd_11
+      name: sleepEnd_12
       rect:
         serializedVersion: 2
         x: 6287
@@ -328,7 +328,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sleepEnd_12
+      name: sleepEnd_0
       rect:
         serializedVersion: 2
         x: 60
@@ -349,7 +349,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sleepEnd_13
+      name: sleepEnd_1
       rect:
         serializedVersion: 2
         x: 574
@@ -380,22 +380,21 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      sleepEnd_0: 1619950996
-      sleepEnd_1: -962183456
-      sleepEnd_10: -1864065317
-      sleepEnd_11: 1495500479
-      sleepEnd_12: -625443376
-      sleepEnd_13: 1995917461
+      sleepEnd_0: -625443376
+      sleepEnd_1: 1995917461
+      sleepEnd_10: 791162707
+      sleepEnd_11: -1864065317
+      sleepEnd_12: 1495500479
       sleepEnd_14: -111554178
       sleepEnd_15: -60829266
       sleepEnd_2: -712067036
       sleepEnd_3: 45228133
-      sleepEnd_4: -1869578408
-      sleepEnd_5: -218574561
-      sleepEnd_6: 2104388907
-      sleepEnd_7: -1441436453
-      sleepEnd_8: 1874394752
-      sleepEnd_9: 791162707
+      sleepEnd_4: 1619950996
+      sleepEnd_5: -1869578408
+      sleepEnd_6: -218574561
+      sleepEnd_7: 2104388907
+      sleepEnd_8: -1441436453
+      sleepEnd_9: 1874394752
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

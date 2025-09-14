@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,7 +42,7 @@ public class paper : MonoBehaviour
     {
         inside.enabled = true;
         insideText.enabled = true;
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(4f);
         inside.enabled = false;
         insideText.enabled = false;
         StartCoroutine(WaitandDisable());

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -10,6 +9,7 @@ public class GameManager : MonoBehaviour
     private Dictionary<string, List<string>> monoData;
     public PlayerMove playermove;
     public key_info keyinfo;
+    public player_power playerPower;
     public UnityEngine.UI.Image notification;
     public bool autoMove = false;
     public static GameManager Instance;
@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
         BedRest,
         PhoneGuide,
         QuestReaction,
+        MirrorScene,
         AfterQuest,
         BedDepressed,
         BuskerContact,
@@ -110,10 +111,8 @@ public class GameManager : MonoBehaviour
         yield return ShowMono("paperReaction", 2f, 1f);
         autoMove = true;
         //플레이어 침대 자동 리턴
-        while (!bedding)
-        {
-            yield return null;
-        }
+        yield return new WaitForSeconds(3f);
+        playermove.SleepExternal();
         // 6. 침대에 누움 + 휴대폰 안내
         scenarioState = ScenarioState.BedRest;
         yield return ShowMono("bedRest", 2f, 1f);
@@ -124,12 +123,16 @@ public class GameManager : MonoBehaviour
         // 7. 퀘스트 확인 후(침대에서 일어나기)
         scenarioState = ScenarioState.QuestReaction;
         yield return ShowMono("questReaction", 2f, 1f);
+
         // 8. 할 일 퀘스트 후, 침대 리턴
         //할일 퀘스트: 카톡 답하기, 노트북 확인, 거울 보기
         while (!(replCount >= 2 && computerChecked && mirrorChecked))
         {
             yield return null;
         }
+        scenarioState = ScenarioState.MirrorScene;
+        yield return ShowMono("mirrorScene", 2f, 1f);
+        playerPower.DecreasePower(100);
         // TODO: 에너지 0으로 만들기
         yield return new WaitForSeconds(4f);
         playermove.SleepExternal();
@@ -147,6 +150,7 @@ public class GameManager : MonoBehaviour
         notification.enabled = true;
         yield return new WaitForSeconds(2f);
         notification.enabled = false;
+        FinalChatTrigger.Instance.StartFinalChat();
         // TODO: 카톡 메시지 UI 연출, 실제 채팅 시스템과 연동 필요
         // yield return ShowBuskerContact();
 
@@ -200,6 +204,10 @@ public class GameManager : MonoBehaviour
     {
         return computerChecked;
     }
+    public bool getMirrorChecked()
+    {
+        return mirrorChecked;
+    }
 
     IEnumerator ShowMono(string key, float showTime, float gapTime)
     {
@@ -222,6 +230,7 @@ public class GameManager : MonoBehaviour
         public List<string> questReaction;
         public List<string> afterQuest;
         public List<string> bedDepressed;
+        public List<string> mirrorScene;
 
         public Dictionary<string, List<string>> ToDictionary()
         {
@@ -236,6 +245,7 @@ public class GameManager : MonoBehaviour
             if (questReaction != null) dict["questReaction"] = questReaction;
             if (afterQuest != null) dict["afterQuest"] = afterQuest;
             if (bedDepressed != null) dict["bedDepressed"] = bedDepressed;
+            if (mirrorScene != null) dict["mirrorScene"] = mirrorScene;
             return dict;
         }
     }
