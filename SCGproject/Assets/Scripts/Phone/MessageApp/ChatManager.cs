@@ -45,6 +45,8 @@ public class ChatManager : MonoBehaviour
 
     // 현재 방에서 보여줄 선택지
     private List<ChoiceData> pendingChoices;
+    private GameObject Player;
+    private player_power playerPower;
 
     private void Awake()
     {
@@ -59,12 +61,15 @@ public class ChatManager : MonoBehaviour
         // InputArea 기본 위치 저장
         if (inputArea != null)
             inputAreaDefaultPos = inputArea.anchoredPosition;
-        
+
         if (content != null)
             contentLayout = content.GetComponent<VerticalLayoutGroup>();
 
         if (choicePanel != null)
-        choicePanel.SetActive(false);
+            choicePanel.SetActive(false);
+        Player = GameObject.FindWithTag("Player");
+        if (Player != null)
+            playerPower = Player.GetComponent<player_power>();
     }
 
     private IEnumerator DisableAutoScrollNextFrame()
@@ -339,6 +344,12 @@ public class ChatManager : MonoBehaviour
         {
             HandleChoiceAction(choice);
         }
+        //에너지 소모 처리
+        if(choice.energyCost > 0)
+        {
+            if (playerPower != null)
+                playerPower.DecreasePower(choice.energyCost);
+        }
 
         // 상대방 대답 예약
         if (choice.replies != null)
@@ -390,15 +401,14 @@ public class ChatManager : MonoBehaviour
                 break;
 
             case "ExitWithMonologue":
-                appManager.BackToList();
-                if (choice.monologueText != null && choice.monologueText.Count > 0)
-                    MonologueManager.Instance.ShowMonologuesSequentially(choice.monologueText, 4f, 0.5f);
+                StartCoroutine(ExitWithMonologueAfterDelay(choice.monologueText, 3f));
                 break;
 
             default:
                 Debug.LogWarning($"알 수 없는 action: {choice.action}");
                 break;
         }
+        GameManager.Instance.onReplCount();
     }
 
 
@@ -408,6 +418,13 @@ public class ChatManager : MonoBehaviour
 
         string time = string.IsNullOrEmpty(reply.timestamp) ? gameClock.GetTimeString() : reply.timestamp;
         AddOtherMessage(reply.sender, null, reply.content, time);
+    }
+    private IEnumerator ExitWithMonologueAfterDelay(List<string> lines, float delay)
+    {
+        if (lines != null && lines.Count > 0)
+            MonologueManager.Instance.ShowMonologuesSequentially(lines, 4f, 0.5f);
+        yield return new WaitForSeconds(delay);
+        appManager.BackToList();
     }
 
     // 입력 영역 Y 이동(간단한 코루틴 애니메이션)

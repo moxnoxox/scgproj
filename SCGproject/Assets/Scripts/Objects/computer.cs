@@ -31,9 +31,10 @@ public class computer : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 StartCoroutine(ShowHomeImage());
+                GameManager.Instance.onComputerChecked();
             }
         }
-        else if(xdiff < 1.01f)
+        else if(xdiff < 1.1f)
         {
             spriteRenderer.sprite = computerOff;
             keyInfo.isObject = false;
@@ -43,7 +44,8 @@ public class computer : MonoBehaviour
     IEnumerator ShowHomeImage()
     {
         home.enabled = true;
-        yield return new WaitForSeconds(2.0f);
+        MonologueManager.Instance.ShowMonologuesSequentially(new List<string> { "파일 정리하기 너무 귀찮아..." }, 3f, 1f);
+        yield return new WaitForSeconds(3.0f);
         home.enabled = false;
         playerPower.DecreasePower(10);
     }

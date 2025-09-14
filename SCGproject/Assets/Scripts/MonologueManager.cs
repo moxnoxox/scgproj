@@ -43,5 +43,8 @@ public class MonologueManager : MonoBehaviour
 
             yield return new WaitForSeconds(gapTime);
         }
+        yield return new WaitForSeconds(gapTime);
+        if (monologueText != null) monologueText.text = "";
+        if (monologuePanel != null) monologuePanel.SetActive(false);
     }
 }

@@ -19,11 +19,13 @@ public class blanket_controller : MonoBehaviour
                 if (player_anim.GetBool("isSleep") == true)
                 {
                     player_anim.SetBool("isSleep", false);
+
                 }
                 else
                 {
                     player_anim.SetBool("isSleep", true);
                     player_anim.SetBool("isWalking", false);
+                    GameManager.Instance.onBedding();
                 }
             }
         }

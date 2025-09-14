@@ -9,10 +9,13 @@ public class PlayerMove : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public Animator animator;
     private bool start = false;
-    private bool starting = false;
-    public bool noPower = false;
+    public bool starting = false;
+    public bool canInput = true;
+    private int sleepcount = 0;
     public player_power playerPower;
     public key_info keyInfo;
+    public GameManager gameManager;
+    public CanvasGroup canvas;
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -23,6 +26,21 @@ public class PlayerMove : MonoBehaviour
         animator.SetBool("isSleep", true); // 시작 시 잠든 상태
         animator.SetBool("isPhone", false);
         keyInfo.isBed = true;
+    }
+
+    public void WakeUpExternal()
+    {
+        if (animator.GetBool("isSleep"))
+        {
+            animator.SetBool("isSleep", false);
+        }
+    }
+    public void SleepExternal()
+    {
+        if (!animator.GetBool("isSleep"))
+        {
+            animator.SetBool("isSleep", true);
+        }
     }
 
     void Update()
@@ -40,30 +58,32 @@ public class PlayerMove : MonoBehaviour
         start = true;
         animator.SetBool("isSleep", false); // 일어나기
         starting = false;
-        if (keyInfo != null){
-            keyInfo.is_starting = true;
+        if (keyInfo != null)
+        {
             keyInfo.isBed = false;
         }
-    }    
+    }
     private bool hasMoved = false;
     private Coroutine startIndicatorCoroutine;
 
     void FixedUpdate()
     {
+        if (!canInput) return;
         float h = Input.GetAxisRaw("Horizontal");
 
         // S키로 시작
         if (!start && !starting && animator.GetBool("isSleep") == false)
         {
-            
+
             starting = true;
             animator.SetBool("start_trigger", true);
             StartCoroutine(StartWait());
         }
 
         // 처음으로 h가 0이 아닌 순간 감지
-        if (start && keyInfo != null && keyInfo.is_starting && !hasMoved && h != 0)
+        if (start && h != 0)
         {
+            gameManager.OnPlayerMoved();
             hasMoved = true;
             if (startIndicatorCoroutine != null)
                 StopCoroutine(startIndicatorCoroutine);
@@ -71,20 +91,31 @@ public class PlayerMove : MonoBehaviour
         }
 
         // 파워가 없으면 침대로 이동
-        if (noPower)
+        if (GameManager.Instance.autoMove == true && playerPower.noPower == true)
         {
+            if (sleepcount == 0)
+            {
+                StartCoroutine(clickIndicator());
+            }
+            
             h = -transform.position.x;
             if (h > 0.1f) h = 1;
             else if (h < -0.1f) h = -1;
             else h = 0;
+        }
+        if(keyInfo.is_click && animator.GetBool("isPhone") == true)
+        {
+            keyInfo.is_click = false;
         }
 
         // 잠든 상태면 파워 회복, 이동 불가
         if (animator.GetBool("isSleep"))
         {
             if (playerPower != null)
-                playerPower.IncreasePower(1);
+                if (playerPower.currentPower < 40)
+                    playerPower.IncreasePower(1);
             spriteRenderer.flipX = false;
+            sleepcount++;
         }
 
         // 시작 전, 잠든 상태, 폰 사용 중엔 이동 불가
@@ -109,5 +140,11 @@ public class PlayerMove : MonoBehaviour
         yield return new WaitForSeconds(3.0f);
         if (keyInfo != null)
             keyInfo.is_starting = false;
+    }
+    IEnumerator clickIndicator()
+    {
+        yield return new WaitForSeconds(2.0f);
+        if (keyInfo != null)
+            keyInfo.is_click = true;
     }
 }

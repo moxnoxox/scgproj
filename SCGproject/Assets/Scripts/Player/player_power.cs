@@ -9,16 +9,16 @@ public class player_power : MonoBehaviour
     public int currentPower;
     public Image powerSlider;
     public PlayerMove playerMove;
-
+    public bool noPower = false;
     void Start()
     {
-        currentPower = maxPower;
+        currentPower = 10;
         UpdatePowerUI();
     }
 
     void Update()
     {
-        playerMove.noPower = currentPower <= 0;
+        noPower = currentPower <= 0;
         UpdatePowerUI();
     }
 

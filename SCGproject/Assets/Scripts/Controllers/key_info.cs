@@ -8,6 +8,7 @@ public class key_info : MonoBehaviour
     public bool isBed;
     public bool isObject;
     public bool is_starting;
+    public bool is_click;
     public Image ad;
     public Image click;
     public Image S;
@@ -48,6 +49,13 @@ public class key_info : MonoBehaviour
         {
             ad.enabled = false;
         }
+        if (is_click)
+        {
+            click.enabled = true;
+        }
+        else
+        {
+            click.enabled = false;
+        }
     }
-    
 }

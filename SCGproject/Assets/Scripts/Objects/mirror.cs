@@ -17,6 +17,8 @@ public class mirror : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(GameManager.Instance.getreplCount() < 2) return;
+        if(GameManager.Instance.getComputerChecked() == false) return;
         xdiff = Mathf.Abs(transform.position.x - player.transform.position.x);
         if (xdiff < 1f)
         {
@@ -24,9 +26,10 @@ public class mirror : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 playerPower.DecreasePower(100);
+                GameManager.Instance.onMirrorChecked();
             }
         }
-        else if(xdiff < 1.01f)
+        else if(xdiff < 1.1f)
         {
             keyInfo.isObject = false;
         }

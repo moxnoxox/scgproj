@@ -15,7 +15,7 @@ public class ChoiceData
     public List<ReplyData> replies;
 
     public List<string> monologueText;
-
+    public int energyCost;
 }
 
 [System.Serializable]
