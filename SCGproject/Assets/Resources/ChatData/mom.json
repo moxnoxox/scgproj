@@ -1,7 +1,7 @@
 {
   "roomName": "엄마❤️",
   "participants": [
-    { "id": "Me", "nickname": "나", "profileImagePath": "me_profile" },
+    { "id": "Me", "nickname": "나", "profileImagePath": "my_proffile"},
     { "id": "mom", "nickname": "엄마❤️", "profileImagePath": "mom_profile" }
   ],
   "initialMessages": [

@@ -59,14 +59,22 @@ public class ChatAppManager : MonoBehaviour
                 // 방이 열려있을 때만 UI 표시
                 if (chatManager != null && chatManager.GetCurrentRoom() == item.room)
                 {
+                    // sender 매칭
+                    string senderId = item.reply.sender.Trim();
+                    User senderUser = item.room.participants.Find(u => u.id == senderId);
+
+                    string senderName = senderUser != null ? senderUser.nickname : item.reply.sender;
+                    Sprite senderProfile = senderUser != null ? senderUser.profileImage : null;
+
                     string time = string.IsNullOrEmpty(item.reply.timestamp)
                         ? GameClock.Instance.GetTimeString()
                         : item.reply.timestamp;
 
-                    chatManager.AddOtherMessage(item.reply.sender, null, item.reply.content, time);
+                    // UI에 출력 (nickname + 프로필)
+                    chatManager.AddOtherMessage(senderName, senderProfile, item.reply.content, time, autoTime:false, save:false);
                 }
 
-                // 기록은 무조건 남김
+                // 기록 남김
                 string recordTime = string.IsNullOrEmpty(item.reply.timestamp)
                     ? GameClock.Instance.GetTimeString()
                     : item.reply.timestamp;
@@ -77,7 +85,8 @@ public class ChatAppManager : MonoBehaviour
                 scheduledReplies.RemoveAt(i);
             }
         }
-    }
+}
+
 
     public void ScheduleReply(ChatRoom room, ReplyData reply, float delay)
     {

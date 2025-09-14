@@ -1,0 +1,15 @@
+{"roomName": "🎸",
+"messages": [
+{ "type": "message", "sender": "Me", "content": "기타?", "timestamp": "오후 6:02", "isRead": false },
+{ "type": "message", "sender": "guitar", "content": "와 대박", "timestamp": "오후 6:03", "isRead": false },
+{ "type": "message", "sender": "guitar", "content": "기타 얘기 하니까 바로 보네 이놈 ㅡㅡ", "timestamp": "오후 6:03", "isRead": false },
+{ "type": "message", "sender": "guitar", "content": "요즘 뭐하냐?", "timestamp": "오후 6:03", "isRead": false },
+{ "type": "message", "sender": "Me", "content": "미안...너무 바빴어", "timestamp": "오후 6:03", "isRead": false, "delayAfter": 4 },
+{ "type": "message", "sender": "guitar", "content": "됐어 사과할 필요는 없어", "timestamp": "오후 6:03", "isRead": false },
+{ "type": "message", "sender": "guitar", "content": "새로 만든 곡 연습 중인데 지금 치는 기타로는 뭔가 느낌이 안 살아", "timestamp": "오후 6:03", "isRead": false, "delayAfter": 3 },
+{ "type": "message", "sender": "guitar", "content": "우리 고딩 때 너네 집에서 쳤던 연습용 기타로 하면 잘 될 것 같아서?", "timestamp": "오후 6:04", "isRead": false , "delayAfter": 3 },
+{ "type": "message", "sender": "Me", "content": "음... 근데 좀 오래 돼서 찾기 힘들 수 있어", "timestamp": "오후 6:04", "isRead": false, "delayAfter": 4  },
+{ "type": "message", "sender": "guitar", "content": "그래? 그럼 내가 찾으러 갈게 집에", "timestamp": "오후 6:04", "isRead": false, "delayAfter": 3},
+{ "type": "message", "sender": "Me", "content": "아냐 ;;", "timestamp": "오후 6:04", "isRead": false },
+{ "type": "message", "sender": "guitar", "content": "칫", "timestamp": "오후 6:04", "isRead": false }
+]}

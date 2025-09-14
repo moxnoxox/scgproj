@@ -140,6 +140,24 @@ public class ChatManager : MonoBehaviour
 
         }
 
+        // 할일 퀘스트 끝나고 
+        if (!string.IsNullOrEmpty(currentRoom.AfterQuestJson))
+        {
+            TextAsset jsonFile = Resources.Load<TextAsset>($"ChatData/{currentRoom.AfterQuestJson}");
+            if (jsonFile != null)
+            {
+                ChatRoom questData = JsonUtility.FromJson<ChatRoom>(jsonFile.text);
+
+                // 자동 메시지들을 순차 출력
+                StartCoroutine(PlayAutoMessages(questData.messages));
+
+                Debug.Log($"✅ 퀘스트 JSON {currentRoom.AfterQuestJson} 불러옴");
+
+                currentRoom.AfterQuestJson = null; // 한 번만 실행
+            }
+        }
+
+
         autoScrollAllowed = true;
         StartCoroutine(ScrollToBottomNextFrame());
 
@@ -411,14 +429,6 @@ public class ChatManager : MonoBehaviour
         GameManager.Instance.onReplCount();
     }
 
-
-    private IEnumerator ReplyAfterDelay(ReplyData reply, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-
-        string time = string.IsNullOrEmpty(reply.timestamp) ? gameClock.GetTimeString() : reply.timestamp;
-        AddOtherMessage(reply.sender, null, reply.content, time);
-    }
     private IEnumerator ExitWithMonologueAfterDelay(List<string> lines, float delay)
     {
         if (lines != null && lines.Count > 0)
@@ -426,6 +436,29 @@ public class ChatManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
         appManager.BackToList();
     }
+
+    private IEnumerator PlayAutoMessages(List<Message> autoMessages)
+    {
+        foreach (var msg in autoMessages)
+        {
+            float delay = msg.delayAfter > 0 ? msg.delayAfter : 2f; // 기본 1초
+            yield return new WaitForSeconds(delay);
+
+            if (msg.sender == "Me")
+            {
+                AddMyMessage(msg.content, msg.timestamp, autoTime:false, save:true);
+            }
+            else
+            {
+                User senderUser = currentRoom.participants.Find(u => u.id == msg.sender);
+                string senderName = senderUser != null ? senderUser.nickname : msg.sender;
+                Sprite senderProfile = senderUser != null ? senderUser.profileImage : null;
+
+                AddOtherMessage(senderName, senderProfile, msg.content, msg.timestamp, autoTime:false, save:true);
+            }
+        }
+    }
+
 
     // 입력 영역 Y 이동(간단한 코루틴 애니메이션)
     private IEnumerator MoveInputArea(RectTransform target, Vector2 endPos, float duration)

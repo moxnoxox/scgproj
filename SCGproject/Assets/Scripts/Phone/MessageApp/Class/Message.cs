@@ -36,6 +36,7 @@ public class Message
     public string content;
     public string timestamp;
     public bool isRead;
+    public float delayAfter; 
 
     public bool isConsumed = false; 
 

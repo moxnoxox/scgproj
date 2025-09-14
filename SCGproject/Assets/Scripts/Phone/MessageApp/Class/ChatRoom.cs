@@ -10,7 +10,9 @@ public class ChatRoom
 
     public List<User> participants;          // 방에 참여하는 유저들
     public List<Message> initialMessages = new List<Message>(); // 시나리오용
-    [HideInInspector] public List<Message> messages = new List<Message>(); // 런타임 누적 메시지
+    public List<Message> messages = new List<Message>(); // 런타임 누적 메시지
+
+    public string AfterQuestJson; // 1챕터 -> 2챕터 넘어갈때 카톡 json 
 
     public ChatRoom(string roomName)
     {
