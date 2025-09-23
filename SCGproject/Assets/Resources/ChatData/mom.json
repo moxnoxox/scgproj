@@ -27,6 +27,7 @@
           "monologueText": ["혼자 있으니 더 외롭고 힘들어…",
                             "하지만 솔직하게 말하면 걱정하시겠지. 걱정끼쳐드리고 싶지 않아…"]},
         { "text": "(얼버무린다)", 
+          "action": "Message",
           "resultMessage": "잘못 전화했어", 
           "timestamp": "오후 4:03", "isRead": false, 
           "replies": [

@@ -56,10 +56,11 @@ public class PhonePanelController : MonoBehaviour
 
         // 배경 어둡게 한 효과 해제
         if (dimPanel != null)
-        dimPanel.SetActive(false);
+            dimPanel.SetActive(false);
 
         // esc 핸들러 제거
         BackInputManager.Unregister(ClosePhone);
+        EventSystem.current.SetSelectedGameObject(null);
     }
     
     private void MoveTo(Vector2 target)
