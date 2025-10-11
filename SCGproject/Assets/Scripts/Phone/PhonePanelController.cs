@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PhonePanelController : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class PhonePanelController : MonoBehaviour
     public Vector2 visiblePos;
     public float duration = 0.3f;
     public GameObject dimPanel;
+    public Button handleButton;
 
     private bool isOpen = false;
     private Coroutine moveCoroutine;
@@ -31,6 +33,20 @@ public class PhonePanelController : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (GameManager.Instance.phoneOpenEnable)
+        {
+            handleButton.interactable = true;
+        }
+        else
+        {
+            handleButton.interactable = false;
+            if (isOpen)
+                ClosePhone();
+        }
+    }
+
     // 폰 열기
     public void TogglePhone()
     {
@@ -43,7 +59,7 @@ public class PhonePanelController : MonoBehaviour
             dimPanel.SetActive(true);
 
         // esc 핸들러 등록
-        BackInputManager.Register(ClosePhone);  
+        BackInputManager.Register(ClosePhone);
         EventSystem.current.SetSelectedGameObject(null);
     }
 

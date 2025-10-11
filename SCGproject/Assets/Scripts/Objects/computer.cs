@@ -44,7 +44,7 @@ public class computer : MonoBehaviour
     IEnumerator ShowHomeImage()
     {
         home.enabled = true;
-        MonologueManager.Instance.ShowMonologuesSequentially(new List<string> { "파일 정리하기 너무 귀찮아..." }, 3f, 1f);
+        MonologueManager.Instance.ShowMonologuesSequentially(new List<string> { "파일 정리하기 너무 귀찮아..." }, 3f);
         yield return new WaitForSeconds(3.0f);
         home.enabled = false;
         playerPower.DecreasePower(10);

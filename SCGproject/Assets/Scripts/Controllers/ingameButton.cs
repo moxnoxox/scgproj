@@ -31,6 +31,7 @@ public class ingameButton : MonoBehaviour
     {
         cameraController.gameStart = true;
         StartCoroutine(FadeOutAndIn());
+        GameManager.Instance.gameStarted = true;
     }
 
     IEnumerator FadeOutAndIn()

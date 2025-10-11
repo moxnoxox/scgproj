@@ -28,28 +28,34 @@ public class paper : MonoBehaviour
         if (xdiff < 1f)
         {
             GameManager.Instance.OnObjectActivated();
+            
+            keyInfo.is_starting = false;
             keyInfo.isObject = true;
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 StartCoroutine(DisplayInside());
-                GameManager.Instance.onPaperOpened();
-                Debug.Log("종이쪼가리 열었음");
-                playerPower.DecreasePower(40);
             }
         }
     }
     IEnumerator DisplayInside()
     {
+        while(GameManager.Instance.papaermonologueDone == false)
+        {
+            yield return null;
+        }
         inside.enabled = true;
         insideText.enabled = true;
-        yield return new WaitForSeconds(4f);
+        GameManager.Instance.onPaperOpened();
+        yield return new WaitForSeconds(5f);
         inside.enabled = false;
         insideText.enabled = false;
+        
+        playerPower.DecreasePower(40);
         StartCoroutine(WaitandDisable());
     }
     IEnumerator WaitandDisable()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         keyInfo.isObject = false;
         Destroy(this.gameObject);
     }

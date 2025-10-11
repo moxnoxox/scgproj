@@ -10,12 +10,14 @@ public class PlayerMove : MonoBehaviour
     public Animator animator;
     private bool start = false;
     public bool starting = false;
-    public bool canInput = true;
+    public bool canInput = false;
     private int sleepcount = 0;
+    private float h = 0f;
     public player_power playerPower;
     public key_info keyInfo;
     public GameManager gameManager;
     public CanvasGroup canvas;
+    public bool movable = true;
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -68,9 +70,14 @@ public class PlayerMove : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!canInput) return;
-        float h = Input.GetAxisRaw("Horizontal");
-
+        if (movable)
+        {
+            h = Input.GetAxisRaw("Horizontal");
+        }
+        else
+        {
+            h = 0;
+        }
         // S키로 시작
         if (!start && !starting && animator.GetBool("isSleep") == false)
         {
@@ -97,13 +104,13 @@ public class PlayerMove : MonoBehaviour
             {
                 StartCoroutine(clickIndicator());
             }
-            
+
             h = -transform.position.x;
             if (h > 0.1f) h = 1;
             else if (h < -0.1f) h = -1;
             else h = 0;
         }
-        if(keyInfo.is_click && animator.GetBool("isPhone") == true)
+        if (keyInfo.is_click && animator.GetBool("isPhone") == true)
         {
             keyInfo.is_click = false;
         }
@@ -146,5 +153,9 @@ public class PlayerMove : MonoBehaviour
         yield return new WaitForSeconds(2.0f);
         if (keyInfo != null)
             keyInfo.is_click = true;
+    }
+    public void showClickIndicator()
+    {
+        StartCoroutine(clickIndicator());
     }
 }

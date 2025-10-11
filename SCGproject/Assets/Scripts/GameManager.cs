@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public player_power playerPower;
     public UnityEngine.UI.Image notification;
     public bool autoMove = false;
+    public bool phoneOpenEnable = false;
     public static GameManager Instance;
     // 시나리오 상태 관리
     private enum ScenarioState
@@ -40,6 +41,8 @@ public class GameManager : MonoBehaviour
     private bool computerChecked = false;
     private bool mirrorChecked = false;
     public bool hasObjectActivated = false;
+    public bool gameStarted = false;
+    public bool papaermonologueDone = false;
 
     void Start()
     {
@@ -68,6 +71,13 @@ public class GameManager : MonoBehaviour
 
     IEnumerator ScenarioFlow()
     {
+        playermove.canInput = false;
+        playermove.movable = false;
+        while (gameStarted == false)
+        {
+            yield return null;
+        }
+        playermove.canInput = true;
         while (playermove.starting == false)
         {
             yield return null;
@@ -75,18 +85,20 @@ public class GameManager : MonoBehaviour
         // 1. 기상
         scenarioState = ScenarioState.WakeUp;
         if (playermove != null) playermove.canInput = false;
-        yield return ShowMono("wakeUp", 2f, 1f);
+        yield return new WaitForSeconds(2f);
+        yield return ShowMono("wakeUp", 2f);
         if (playermove != null) playermove.canInput = true;
         Debug.Log("기상 완료");
-
+        playermove.movable = true;
         // 2. 움직이기 안내
         if (keyinfo != null) keyinfo.is_starting = true;
         scenarioState = ScenarioState.MoveGuide;
-        yield return ShowMono("moveGuide", 2f, 1f);
+        hasMoved = false;
+        yield return Showannouncement("moveGuide", 2f);
         Debug.Log("움직이기 안내 완료");
 
         // 3. 플레이어가 이동할 때까지 대기
-        hasMoved = false;
+        
         while (!hasMoved)
         {
             yield return null;
@@ -95,11 +107,12 @@ public class GameManager : MonoBehaviour
         {
             yield return null;
         }
-
+        keyinfo.is_starting = false;
         // 4. 종이쪼가리 발견
         scenarioState = ScenarioState.FindPaper;
-        yield return ShowMono("findPaper", 2f, 1f);
-
+        playermove.movable = false;
+        yield return ShowMono("findPaper", 2f);
+        papaermonologueDone = true;
 
         while (!paperOpened)
         {
@@ -108,21 +121,28 @@ public class GameManager : MonoBehaviour
 
         // 5. 종이쪼가리 확인 + 리액션
         scenarioState = ScenarioState.PaperReaction;
-        yield return ShowMono("paperReaction", 2f, 1f);
+        yield return ShowMono("paperReaction", 2f);
         autoMove = true;
         //플레이어 침대 자동 리턴
+        playermove.canInput = false;
         yield return new WaitForSeconds(3f);
         playermove.SleepExternal();
+        yield return new WaitForSeconds(2f);
         // 6. 침대에 누움 + 휴대폰 안내
         scenarioState = ScenarioState.BedRest;
-        yield return ShowMono("bedRest", 2f, 1f);
+        yield return ShowMono("bedRest", 2f);
 
         scenarioState = ScenarioState.PhoneGuide;
-        yield return ShowMono("phoneGuide", 2f, 1f);
+        yield return Showannouncement("phoneGuide", 2f);
         playermove.WakeUpExternal();
+        playermove.movable = true;
+        phoneOpenEnable = true;
+        playermove.canInput = true;
+        playermove.showClickIndicator();
+        autoMove = false;
         // 7. 퀘스트 확인 후(침대에서 일어나기)
         scenarioState = ScenarioState.QuestReaction;
-        yield return ShowMono("questReaction", 2f, 1f);
+        yield return ShowMono("questReaction", 2f);
 
         // 8. 할 일 퀘스트 후, 침대 리턴
         //할일 퀘스트: 카톡 답하기, 노트북 확인, 거울 보기
@@ -131,20 +151,26 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
         scenarioState = ScenarioState.MirrorScene;
-        yield return ShowMono("mirrorScene", 2f, 1f);
-        playerPower.DecreasePower(100);
-        // TODO: 에너지 0으로 만들기
-        yield return new WaitForSeconds(4f);
-        playermove.SleepExternal();
         playermove.canInput = false;
+        playermove.movable = false;
+        phoneOpenEnable = false;
+        yield return ShowMono("mirrorScene", 2f);
+        playerPower.DecreasePower(100);
+        autoMove = true;
+        // TODO: 에너지 0으로 만들기
+        yield return new WaitForSeconds(5f);
+        playermove.SleepExternal();
+        autoMove = false;
+        phoneOpenEnable = false;
         scenarioState = ScenarioState.AfterQuest;
-        yield return ShowMono("afterQuest", 2f, 1f);
+        yield return ShowMono("afterQuest", 2f);
 
         // 9. 침대에 누운 후 문구
-        // TODO: 판정문 넣기
         scenarioState = ScenarioState.BedDepressed;
-        yield return ShowMono("bedDepressed", 2f, 1f);
-        
+        yield return ShowMono("bedDepressed", 2f);
+        playermove.canInput = true;
+        playermove.movable = true;
+        phoneOpenEnable = true;
         // 10. 버스커 연락 (카톡 메시지 연출)
         scenarioState = ScenarioState.BuskerContact;
         notification.enabled = true;
@@ -181,7 +207,7 @@ public class GameManager : MonoBehaviour
         if (!hasObjectActivated)
         {
             hasObjectActivated = true;
-            StartCoroutine(ShowMono("findPaper", 2f, 1f));
+            StartCoroutine(ShowMono("findPaper", 2f));
         }
     }
     public void onReplCount()
@@ -209,11 +235,17 @@ public class GameManager : MonoBehaviour
         return mirrorChecked;
     }
 
-    IEnumerator ShowMono(string key, float showTime, float gapTime)
+    IEnumerator ShowMono(string key, float showTime)
     {
         if (monoData.ContainsKey(key))
-            MonologueManager.Instance.ShowMonologuesSequentially(monoData[key], showTime, gapTime);
-        yield return new WaitForSeconds(monoData.ContainsKey(key) ? monoData[key].Count * (showTime + gapTime) : 0f);
+            MonologueManager.Instance.ShowMonologuesSequentially(monoData[key], showTime);
+        yield return new WaitForSeconds(monoData.ContainsKey(key) ? monoData[key].Count * showTime : 0f);
+    }
+    IEnumerator Showannouncement(string key, float showTime)
+    {
+        if (monoData.ContainsKey(key))
+            MonologueManager.Instance.ShowAnnouncement(monoData[key], showTime);
+        yield return new WaitForSeconds(monoData.ContainsKey(key) ? monoData[key].Count * showTime : 0f);
     }
 
     // Mono.json 파싱용 클래스

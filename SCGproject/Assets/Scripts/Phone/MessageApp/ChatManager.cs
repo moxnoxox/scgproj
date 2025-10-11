@@ -415,7 +415,7 @@ public class ChatManager : MonoBehaviour
         {
             case "Monologue":
                 if (choice.monologueText != null && choice.monologueText.Count > 0)
-                    MonologueManager.Instance.ShowMonologuesSequentially(choice.monologueText, 4f, 0.5f);
+                    MonologueManager.Instance.ShowMonologuesSequentially(choice.monologueText, 4f);
                 break;
 
             case "ExitWithMonologue":
@@ -432,7 +432,7 @@ public class ChatManager : MonoBehaviour
     private IEnumerator ExitWithMonologueAfterDelay(List<string> lines, float delay)
     {
         if (lines != null && lines.Count > 0)
-            MonologueManager.Instance.ShowMonologuesSequentially(lines, 4f, 0.5f);
+            MonologueManager.Instance.ShowMonologuesSequentially(lines, 4f);
         yield return new WaitForSeconds(delay);
         appManager.BackToList();
     }

@@ -46,7 +46,7 @@ public class ChatRoomButtonManager : MonoBehaviour
             {
                 MonologueManager.Instance.ShowMonologuesSequentially(
                     new List<string> { "여긴 별 볼일 없어..." },
-                    3f, 0f // 3초 동안 보여주고, 0초 쉬고
+                    3f // 3초 동안 보여주고, 0초 쉬고
                 );
             });
         }

@@ -17,6 +17,7 @@ public class CameraController : MonoBehaviour
     private float smoothDuration = 2.0f; // 부드러운 이동 지속 시간
     private float leftMaxX = -5.73f;
     private float rightMaxX = 5.8f;
+    private UnityEngine.Vector3 varPosition;
 
     private Camera cam;
 
@@ -68,16 +69,31 @@ public class CameraController : MonoBehaviour
         targetPosition.z = __zPos;
         targetPosition.y += 1.7f;
         if (targetPosition.x < leftMaxX)
+        {
+            varPosition.x = targetPosition.x - leftMaxX;
             targetPosition.x = leftMaxX;
+        }
         else if (targetPosition.x > rightMaxX)
+        {
+            varPosition.x = targetPosition.x - rightMaxX;
             targetPosition.x = rightMaxX;
+        }
+        else
+        {
+            varPosition.x = 0;
+        }
         transform.position = targetPosition;
     }
-    
+
     float MoveTowards(float current, float target, float maxDelta)
     {
         if (Mathf.Abs(target - current) <= maxDelta)
             return target;
         return current + Mathf.Sign(target - current) * maxDelta;
+    }
+
+    public UnityEngine.Vector3 getVarpos()
+    {
+        return varPosition;
     }
 }

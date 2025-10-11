@@ -34,7 +34,7 @@ public class AppButtonManager : MonoBehaviour
             {
                 MonologueManager.Instance.ShowMonologuesSequentially(
                     new List<string> { "이 앱은 잘 쓰지 않아." },
-                    3f, 0f
+                    3f
                 );
             });
         }

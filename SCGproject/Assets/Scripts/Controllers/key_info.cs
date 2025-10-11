@@ -13,7 +13,9 @@ public class key_info : MonoBehaviour
     public Image click;
     public Image S;
     public Image space;
-    // Start is called before the first frame update
+    public CameraController camcon;
+    private UnityEngine.Vector3 pos;
+
     void Start()
     {
         S.enabled = false;
@@ -22,7 +24,7 @@ public class key_info : MonoBehaviour
         space.enabled = false;
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         if (isBed)
@@ -57,5 +59,6 @@ public class key_info : MonoBehaviour
         {
             click.enabled = false;
         }
+        
     }
 }

@@ -47,9 +47,9 @@ public class GalleryManager : MonoBehaviour
         if (lockedStates[index])
         {
             // 🔒 잠겨 있으면 팝업 대신 독백 출력
-            MonologueManager.Instance.ShowMonologuesSequentially(
+            MonologueManager.Instance.ShowAnnouncement(
                 new List<string> { "\'잠금 해제 시 열람 가능\'" },
-                2f, 0f
+                2f
             );
         }
         else

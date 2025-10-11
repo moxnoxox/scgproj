@@ -9,10 +9,11 @@ public class MonologueManager : MonoBehaviour
 
     public GameObject monologuePanel;
     public TextMeshProUGUI monologueText;
+    public TextMeshProUGUI announcementText;
 
     private void Awake()
     {
-         if (Instance == null)
+        if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
@@ -24,27 +25,50 @@ public class MonologueManager : MonoBehaviour
     /// <summary>
     /// 여러 개의 독백을 순차적으로 보여줌
     /// </summary>
-    public void ShowMonologuesSequentially(List<string> lines, float showTime = 5f, float gapTime = 2f)
+    public void ShowMonologuesSequentially(List<string> lines, float showTime = 5f)
     {
         if (lines == null || lines.Count == 0) return;
-        StartCoroutine(ShowMonologueRoutine(lines, showTime, gapTime));
+        StartCoroutine(ShowMonologueRoutine(lines, showTime));
     }
 
-    private IEnumerator ShowMonologueRoutine(List<string> lines, float showTime, float gapTime)
+    private IEnumerator ShowMonologueRoutine(List<string> lines, float showTime)
     {
+        if (lines == null || lines.Count == 0)
+        {
+            monologueText.gameObject.SetActive(false);
+            yield break;
+        }
+        monologueText.gameObject.SetActive(true);
         foreach (var line in lines)
         {
-            if (monologuePanel != null) monologuePanel.SetActive(true);
-            if (monologueText != null) monologueText.text = line;
-
+            monologueText.text = line;
             yield return new WaitForSeconds(showTime);
-
-            if (monologuePanel != null) monologuePanel.SetActive(false);
-
-            yield return new WaitForSeconds(gapTime);
         }
-        yield return new WaitForSeconds(gapTime);
-        if (monologueText != null) monologueText.text = "";
-        if (monologuePanel != null) monologuePanel.SetActive(false);
+        monologueText.gameObject.SetActive(false);
     }
+    public void ShowAnnouncement(List<string> messages, float duration = 3f)
+    {
+        if (messages == null || messages.Count == 0 || announcementText == null) return;
+        StartCoroutine(ShowAnnouncementRoutine(messages, duration));
+    }
+    // 여러 줄도 가능하게
+    private IEnumerator ShowAnnouncementRoutine(List<string> messages, float duration)
+    {
+        if (messages == null || messages.Count == 0)
+        {
+            announcementText.gameObject.SetActive(false);
+            yield break;
+        }
+
+        announcementText.gameObject.SetActive(true);
+
+        foreach (var line in messages)
+        {
+            announcementText.text = line;
+            yield return new WaitForSeconds(duration);
+        }
+
+        announcementText.gameObject.SetActive(false);
+    }
+
 }
