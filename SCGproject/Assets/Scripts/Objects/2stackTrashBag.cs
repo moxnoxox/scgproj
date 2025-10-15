@@ -20,7 +20,7 @@ public class TrashBag2Stack : MonoBehaviour
         if (bottomRb != null)
         {
             bottomRb.isKinematic = true;
-            bottomRb.velocity = Vector2.zero;
+            bottomRb.linearVelocity = Vector2.zero;
             bottomRb.angularVelocity = 0f;
         }
 
@@ -29,7 +29,7 @@ public class TrashBag2Stack : MonoBehaviour
         if (topRb != null)
         {
             topRb.simulated = false;
-            topRb.velocity = Vector2.zero;
+            topRb.linearVelocity = Vector2.zero;
             topRb.angularVelocity = 0f;
         }
 

@@ -76,7 +76,7 @@ public class PlayerMove : MonoBehaviour
         // 좌우 이동 키를 뗄 때 속도 감소
         if (Input.GetButtonUp("Horizontal"))
         {
-            rigid.velocity = new Vector2(rigid.velocity.normalized.x * 0.5f, rigid.velocity.y);
+            rigid.linearVelocity = new Vector2(rigid.linearVelocity.normalized.x * 0.5f, rigid.linearVelocity.y);
         }
 
         // 💡 Space 입력 처리 (PlayerMove만 담당)
@@ -177,7 +177,7 @@ public class PlayerMove : MonoBehaviour
             else h = 0;
 
             // 이동 적용
-            rigid.velocity = new Vector2(h * maxSpeed, rigid.velocity.y);
+            rigid.linearVelocity = new Vector2(h * maxSpeed, rigid.linearVelocity.y);
         }
 
         if (keyInfo.is_click && animator.GetBool("isPhone") == true)
@@ -200,7 +200,7 @@ public class PlayerMove : MonoBehaviour
             return;
 
         // 이동
-        rigid.velocity = new Vector2(h * maxSpeed, rigid.velocity.y);
+        rigid.linearVelocity = new Vector2(h * maxSpeed, rigid.linearVelocity.y);
 
         // 방향 전환
         if (h > 0)
@@ -253,7 +253,7 @@ public class PlayerMove : MonoBehaviour
         {
             rb.simulated = true;
             rb.bodyType = RigidbodyType2D.Dynamic;
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
         }
 
