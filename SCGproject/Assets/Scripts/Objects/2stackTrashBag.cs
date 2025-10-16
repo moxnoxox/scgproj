@@ -6,16 +6,15 @@ public class TrashBag2Stack : MonoBehaviour
     public GameObject bottomBag;
     private GameObject player;
     private bool isSeparated = false;
+    private int originalOrder;
 
     void Awake()
     {
-        // 💡 2단 상태일 때 1단 스크립트 비활성화
         if (topBag.GetComponent<TrashBag1Stack>())
             topBag.GetComponent<TrashBag1Stack>().enabled = false;
         if (bottomBag.GetComponent<TrashBag1Stack>())
             bottomBag.GetComponent<TrashBag1Stack>().enabled = false;
 
-        // 💡 하단 봉지는 고정 (밀리지 않게)
         Rigidbody2D bottomRb = bottomBag.GetComponent<Rigidbody2D>();
         if (bottomRb != null)
         {
@@ -24,7 +23,6 @@ public class TrashBag2Stack : MonoBehaviour
             bottomRb.angularVelocity = 0f;
         }
 
-        // 💡 상단 봉지는 중력/충돌 비활성화 (떨어지지 않게)
         Rigidbody2D topRb = topBag.GetComponent<Rigidbody2D>();
         if (topRb != null)
         {
@@ -33,7 +31,6 @@ public class TrashBag2Stack : MonoBehaviour
             topRb.angularVelocity = 0f;
         }
 
-        // 💡 초기 위치 강제 동기화 (물리 갱신 전에 좌표 고정)
         Physics2D.SyncTransforms();
     }
 
@@ -63,7 +60,6 @@ public class TrashBag2Stack : MonoBehaviour
     {
         if (move == null || move.isHolding || isSeparated) return;
 
-        // 💡 2단 분리
         topBag.transform.parent = null;
         bottomBag.transform.parent = null;
 
@@ -77,7 +73,7 @@ public class TrashBag2Stack : MonoBehaviour
         {
             topRb.simulated = true;
             topRb.bodyType = RigidbodyType2D.Dynamic;
-            topRb.simulated = false; // 들릴 때 중력 비활성화
+            topRb.simulated = false;
         }
 
         Rigidbody2D bottomRb = bottomBag.GetComponent<Rigidbody2D>();
@@ -96,17 +92,33 @@ public class TrashBag2Stack : MonoBehaviour
             animator.SetTrigger("hold_start");
 
         SpriteRenderer sr = move.GetComponent<SpriteRenderer>();
-        Vector3 holdPos = move.transform.position + new Vector3(0.8f * (sr.flipX ? 1 : -1), 0.3f, 0);
+        Vector3 holdPos = move.transform.position + new Vector3(0.1f * (sr.flipX ? 1 : -1), 0.001f, 0);
         topBag.transform.position = holdPos;
 
         Collider2D[] cols = topBag.GetComponents<Collider2D>();
         foreach (var col in cols)
             col.enabled = false;
 
+        // 💡 플레이어보다 앞으로 보이게 정렬
+        var bagRenderer = topBag.GetComponent<SpriteRenderer>();
+        var playerRenderer = move.GetComponent<SpriteRenderer>();
+        if (bagRenderer != null && playerRenderer != null)
+        {
+            originalOrder = bagRenderer.sortingOrder;
+            bagRenderer.sortingOrder = playerRenderer.sortingOrder + 1;
+        }
+
         move.pickupTarget = null;
         isSeparated = true;
         gameObject.SetActive(false);
 
-        Debug.Log("2단 분리 완료 → topBag 들림 (Awake 초기화로 튐 방지)");
+        Debug.Log("2단 분리 완료 → topBag 들림 (앞으로 보이게 정렬)");
+    }
+
+    public void ResetSortingOrder()
+    {
+        var sr = topBag.GetComponent<SpriteRenderer>();
+        if (sr != null)
+            sr.sortingOrder = originalOrder;
     }
 }
