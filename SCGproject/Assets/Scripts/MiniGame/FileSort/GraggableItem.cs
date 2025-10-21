@@ -1,29 +1,45 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
+using TMPro;
 
 public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public FileCategory category;
-    public Canvas parentCanvas;            // FileSortGameCanvas 참조
-    [HideInInspector] public Transform homeParent;
+    public Canvas parentCanvas;            // FileSortGameCanvas
+    public Transform homeParent;           // 기본은 DesktopArea
+    public Vector2 rememberHomePosition;   // 초기 위치 저장
+    public TextMeshProUGUI label;          // 파일명 표시용
+
+    [HideInInspector] public FileData fileData;
     [HideInInspector] public bool isCorrectlyPlaced = false;
 
-    CanvasGroup canvasGroup;
     RectTransform rect;
+    CanvasGroup canvasGroup;
 
     void Awake()
     {
         rect = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
-        if (canvasGroup == null) canvasGroup = gameObject.AddComponent<CanvasGroup>();
+        if (!canvasGroup) canvasGroup = gameObject.AddComponent<CanvasGroup>();
+
+
+        if (parentCanvas == null)
+        {
+            parentCanvas = GetComponentInParent<Canvas>();
+            if (parentCanvas == null)
+                Debug.LogWarning($"{name}: parentCanvas를 자동으로 찾지 못했습니다.");
+        }
+    }
+
+    public void SetFileData(FileData data)
+    {
+        fileData = data;
+        if (label) label.text = $"{data.fileName}.{data.extension}";
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        homeParent = transform.parent;
         transform.SetParent(parentCanvas.transform, true);
-        canvasGroup.blocksRaycasts = false; // 드랍받도록
+        canvasGroup.blocksRaycasts = false;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -35,11 +51,9 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         canvasGroup.blocksRaycasts = true;
 
-        // 드롭 실패(슬롯에 못 내려앉음)면 복귀
+        // 슬롯으로 흘러들어가지 않았다면 바탕화면으로 복귀
         if (transform.parent == parentCanvas.transform)
-        {
             ReturnHome();
-        }
     }
 
     public void SnapTo(Transform newParent)
@@ -50,12 +64,14 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void ReturnHome()
     {
-        // 이미 정답으로 놓였던 걸 빼온 경우, 상태 갱신
+        // 정답으로 놓여 있던 상태였다면 해제
         if (isCorrectlyPlaced)
         {
+            FileSortGameManager.Instance.NotifyPlacementResult(true, false);
             isCorrectlyPlaced = false;
-            FileSortGameManager.Instance.NotifyPlacementChanged(this, false);
         }
-        SnapTo(homeParent);
+
+        transform.SetParent(homeParent, false);
+        rect.anchoredPosition = rememberHomePosition;
     }
 }
