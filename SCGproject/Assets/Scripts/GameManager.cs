@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public UnityEngine.UI.Image notification;
     public bool autoMove = false;
     public bool phoneOpenEnable = false;
+    public bool AfterQuest = false;
     public static GameManager Instance;
     // 시나리오 상태 관리
     private enum ScenarioState
@@ -160,6 +161,7 @@ public class GameManager : MonoBehaviour
         // TODO: 에너지 0으로 만들기
         yield return new WaitForSeconds(5f);
         playermove.SleepExternal();
+        AfterQuest = true;
         autoMove = false;
         phoneOpenEnable = false;
         scenarioState = ScenarioState.AfterQuest;
@@ -168,6 +170,7 @@ public class GameManager : MonoBehaviour
         // 9. 침대에 누운 후 문구
         scenarioState = ScenarioState.BedDepressed;
         yield return ShowMono("bedDepressed", 2f);
+        AfterQuest = false;
         playermove.canInput = true;
         playermove.movable = true;
         phoneOpenEnable = true;

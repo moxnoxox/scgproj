@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -35,6 +36,10 @@ public class CameraController : MonoBehaviour
         {
             Smooth();
         }
+        else if (GameManager.Instance.AfterQuest)
+        {
+            ZoomIn();
+        }
         else
         {
             Fast();
@@ -59,6 +64,17 @@ public class CameraController : MonoBehaviour
         if (cam != null)
         {
             float targetSize = gameStart ? zoomOutSize : normalSize;
+            cam.orthographicSize = MoveTowards(cam.orthographicSize, targetSize, Time.deltaTime * zoomSpeed);
+        }
+    }
+    void ZoomIn()// smooth 반대과정
+    {
+        UnityEngine.Vector3 targetPosition = new UnityEngine.Vector3(0.4f, player.transform.position.y - 0.3f, __zPos);
+
+        transform.position = UnityEngine.Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * moveSpeed * 0.7f);
+        if (cam != null)
+        {
+            float targetSize = 2f;
             cam.orthographicSize = MoveTowards(cam.orthographicSize, targetSize, Time.deltaTime * zoomSpeed);
         }
     }
