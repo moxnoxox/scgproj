@@ -3,6 +3,7 @@ using UnityEngine;
 public class TrashBag1Stack : MonoBehaviour
 {
     private GameObject player;
+    private int originalOrder; // 💡 원래 정렬 순서 저장용
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -48,9 +49,25 @@ public class TrashBag1Stack : MonoBehaviour
         foreach (var col in cols)
             col.enabled = false;
 
+        // 💡 플레이어보다 앞으로 보이게 정렬 순서 변경
+        var bagRenderer = GetComponent<SpriteRenderer>();
+        var playerRenderer = move.GetComponent<SpriteRenderer>();
+        if (bagRenderer != null && playerRenderer != null)
+        {
+            originalOrder = bagRenderer.sortingOrder;
+            bagRenderer.sortingOrder = playerRenderer.sortingOrder + 1;
+        }
+
         move.pickupTarget = null;
 
-        Debug.Log("🧤 1단 쓰레기 들었음 (PlayerMove 입력으로 Lift)");
+        Debug.Log("🧤 1단 쓰레기 들었음 (앞으로 보이게 정렬)");
+    }
+
+    public void ResetSortingOrder()
+    {
+        var sr = GetComponent<SpriteRenderer>();
+        if (sr != null)
+            sr.sortingOrder = originalOrder;
     }
 
     public static void ResetHeldStatus() { }

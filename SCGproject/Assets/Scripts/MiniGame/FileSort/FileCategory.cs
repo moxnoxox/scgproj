@@ -1,6 +1,8 @@
 public enum FileCategory
 {
-    Music,
     Photo,
-    Docs
+    Docs,
+    Music,
+    Etc,
+    Trash
 }

@@ -217,7 +217,7 @@ public class PlayerMove : MonoBehaviour
         // 들고 있는 오브젝트가 있다면 따라오게 하기
         if (isHolding && heldObject != null)
         {
-            Vector3 holdPos = transform.position + new Vector3(0.8f * (spriteRenderer.flipX ? 1 : -1), 0.3f, 0);
+            Vector3 holdPos = transform.position + new Vector3(0.1f * (spriteRenderer.flipX ? 1 : -1), 0.001f, 0);
             heldObject.transform.position = holdPos;
         }
     }
@@ -261,7 +261,7 @@ public class PlayerMove : MonoBehaviour
         StartCoroutine(ReenableCollider(heldObject));
 
         // 플레이어 앞에 놓기
-        Vector3 dropPos = transform.position + new Vector3(spriteRenderer.flipX ? 1.2f : -1.2f, -0.2f, 0);
+        Vector3 dropPos = transform.position + new Vector3(spriteRenderer.flipX ? 0.6f : -0.6f, -0.25f, 0);
         heldObject.transform.position = dropPos;
         heldObject.transform.parent = null;
 
