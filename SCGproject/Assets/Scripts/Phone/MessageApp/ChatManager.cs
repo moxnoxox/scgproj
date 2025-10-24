@@ -128,7 +128,9 @@ public class ChatManager : MonoBehaviour
                     Sprite senderProfile = senderUser != null ? senderUser.profileImage : null;
 
                     Debug.Log($"상대 메시지 출력: {senderName} / {msg.content}");
-                    AddOtherMessage(senderName, senderProfile, msg.content, msg.timestamp, autoTime:false, save:false);
+                    string format = string.IsNullOrEmpty(msg.format) ? "text" : msg.format;
+                    AddOtherMessage(senderName, senderProfile, msg.content, msg.timestamp, autoTime:false, save:false, format: format);
+
                 }
             }
 
@@ -219,6 +221,7 @@ public class ChatManager : MonoBehaviour
         if (save && currentRoom != null)
         {
             Message newMsg = new Message("Me", text, finalTime);
+            newMsg.isRead = true;
             currentRoom.messages.Add(newMsg);
         }
 
@@ -226,7 +229,7 @@ public class ChatManager : MonoBehaviour
     }
 
     // --- 상대 메시지 ---
-    public void AddOtherMessage(string sender, Sprite profile, string text, string time = "", bool autoTime = true, bool save = true)
+    public void AddOtherMessage(string sender, Sprite profile, string text, string time = "", bool autoTime = true, bool save = true, string format = "text")
     {
         Debug.Log($"메시지 추가됨: {text}");
 
@@ -245,8 +248,14 @@ public class ChatManager : MonoBehaviour
         bool showProfile = !sameSender;
         bool showName = !sameSender;
 
-        // 새 메시지는 항상 시간 표시
-        ui.Setup(sender, profile, text, finalTime, showProfile, showName, true, autoTime);
+        if (format == "image")
+        {
+            ui.SetupImage(sender, profile, text, finalTime, showProfile, showName, true, autoTime);
+        }
+        else
+        {
+            ui.SetupText(sender, profile, text, finalTime, showProfile, showName, true, autoTime);
+        }
 
         // 상태 갱신
         lastSender = sender;

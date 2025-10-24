@@ -29,7 +29,8 @@ public class ChatRoom
             int count = 0;
             foreach (var msg in messages)
             {
-                if (!msg.isRead) count++;
+                if (msg.type == "message" && msg.sender != "Me" && !msg.isRead)
+                    count++;
             }
             return count;
         }

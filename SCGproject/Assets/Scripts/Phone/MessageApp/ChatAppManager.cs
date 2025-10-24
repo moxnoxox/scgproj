@@ -82,6 +82,8 @@ public class ChatAppManager : MonoBehaviour
                 Message newMsg = new Message(item.reply.sender, item.reply.content, recordTime);
                 item.room.messages.Add(newMsg);
 
+                FindObjectOfType<ChatRoomButtonManager>()?.UpdateUnreadDots();
+
                 scheduledReplies.RemoveAt(i);
             }
         }
@@ -123,6 +125,17 @@ public class ChatAppManager : MonoBehaviour
         if (chatManager != null)
             chatManager.SetCurrentRoom(roomData);
 
+        // ✅ 방 들어올 때 한 번에 읽음 처리
+        foreach (var msg in roomData.messages)
+        {
+            if (msg.sender != "Me")
+                msg.isRead = true;
+        }
+
+        // ✅ 버튼에 있는 배지 점 갱신
+        FindObjectOfType<ChatRoomButtonManager>()?.UpdateUnreadDots();
+
+
         currentRoomPanel.SetActive(true);
 
         BackInputManager.Register(OnBackPressedFromRoom);
@@ -147,6 +160,8 @@ public class ChatAppManager : MonoBehaviour
             currentRoomPanel = null;
             chatManager = null;
             chatListPanel.SetActive(true);
+
+             FindObjectOfType<ChatRoomButtonManager>()?.UpdateUnreadDots();
         }
     }
 }

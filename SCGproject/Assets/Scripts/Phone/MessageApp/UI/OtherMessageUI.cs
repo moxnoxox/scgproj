@@ -4,147 +4,212 @@ using UnityEngine.UI;
 
 public class OtherMessageUI : MonoBehaviour
 {
-    [Header("UI Elements")]
+    [Header("공통 UI")]
     public Image profileImage;
     public TextMeshProUGUI nameText;
+
+    [Header("텍스트 메시지용")]
+    public GameObject otherBubble;
     public TextMeshProUGUI messageText;
-    public TextMeshProUGUI timeText;
+    public TextMeshProUGUI timeText_text;
     public RectTransform bubble; 
 
-    [Header("Layout Settings")]
-    [SerializeField] private float maxWidth = 600f;
+    [Header("이미지 메시지용")]
+    public GameObject imageObject;           
+    public Image imageComponent;             
+    public TextMeshProUGUI timeText_image;   
+
+    [Header("레이아웃 설정")]
+    [SerializeField] private float maxWidth = 300f;
+    [SerializeField] private float maxImageHeight = 300f;
     [SerializeField] private float bubblePaddingX = 40f;
     [SerializeField] private float bubblePaddingY = 30f;
     [SerializeField] private float profileOffsetX = 20f;
     [SerializeField] private float profileSize = 80f;
-    [SerializeField] private float spacingNameToBubble = 15f;   // 이름 → 말풍선 간격
-    [SerializeField] private float spacingBetweenBubbles = 10f; // 연속 말풍선 간격
+    [SerializeField] private float spacingNameToBubble = 15f;
+    [SerializeField] private float spacingBetweenBubbles = 10f;
     [SerializeField] private float spacingBubbleToTime = 6f;
 
-    /// <summary>
-    /// OtherMessage 세팅
-    /// </summary>
-    public void Setup(string senderName, Sprite profile, string message, string time = "",
-                      bool showProfile = true, bool showName = true, bool showTime = true, bool autoTime = true)
-    {
-        // 시간 결정
-        string finalTime = autoTime 
-            ? FindObjectOfType<GameClock>().GetTimeString() 
-            : time;
+    private RectTransform self;
 
-        // UI 표시 여부 
+    private void Awake()
+    {
+        self = GetComponent<RectTransform>();
+    }
+
+    // --- 텍스트 메시지 ---
+    public void SetupText(string senderName, Sprite profile, string message, string time = "",
+                          bool showProfile = true, bool showName = true, bool showTime = true, bool autoTime = true)
+    {
+        SetActiveMode(isImage: false);
+
+        string finalTime = autoTime ? FindObjectOfType<GameClock>().GetTimeString() : time;
+
+        // 프로필/이름 표시
         profileImage.gameObject.SetActive(showProfile);
         nameText.gameObject.SetActive(showName);
-        timeText.gameObject.SetActive(showTime);
+        timeText_text.gameObject.SetActive(showTime);
 
-        // 내용 적용
         if (showProfile)
         {
             profileImage.sprite = profile;
             profileImage.rectTransform.sizeDelta = new Vector2(profileSize, profileSize);
+            profileImage.rectTransform.anchorMin = profileImage.rectTransform.anchorMax = new Vector2(0, 1);
+            profileImage.rectTransform.pivot = new Vector2(0, 1);
+            profileImage.rectTransform.anchoredPosition = new Vector2(profileOffsetX, 0);
         }
-        if (showName)nameText.text = senderName;
-        if (showTime) timeText.text = finalTime;
 
-        // 메시지 줄바꿈 허용
+        if (showName)
+        {
+            nameText.text = senderName;
+            nameText.rectTransform.anchorMin = nameText.rectTransform.anchorMax = new Vector2(0, 1);
+            nameText.rectTransform.pivot = new Vector2(0, 1);
+            nameText.rectTransform.anchoredPosition = new Vector2(profileOffsetX + profileSize, 0);
+        }
+
+        // 텍스트 계산
         messageText.text = message;
         messageText.enableWordWrapping = true;
         messageText.ForceMeshUpdate();
 
-        // 메세지 크기 
         Vector2 preferred = messageText.GetPreferredValues(message, maxWidth, Mathf.Infinity);
         float width = Mathf.Min(preferred.x, maxWidth);
         float height = preferred.y;
-
 
         // 말풍선 크기
         messageText.rectTransform.sizeDelta = new Vector2(width, height);
         bubble.sizeDelta = new Vector2(width + bubblePaddingX, height + bubblePaddingY);
 
-        // 내부 배치 
-        LayoutElements(width, height, showProfile, showName, showTime);
+        // 말풍선 위치
+        float bubbleX = profileOffsetX + profileSize + 10f;
+        float bubbleY = showName ? -(nameText.preferredHeight + spacingNameToBubble) : -spacingBetweenBubbles;
+        bubble.anchorMin = bubble.anchorMax = new Vector2(0, 1);
+        bubble.pivot = new Vector2(0, 1);
+        bubble.anchoredPosition = new Vector2(bubbleX, bubbleY);
 
-        // OtherMessage 전체 프리팹 폭을 Content와 동일하게
-        RectTransform self = GetComponent<RectTransform>();
-        float fullWidth = ((RectTransform)self.parent).rect.width;
-        self.sizeDelta = new Vector2(fullWidth, self.sizeDelta.y);
+        // 메시지 텍스트 위치
+        messageText.rectTransform.anchorMin = messageText.rectTransform.anchorMax = new Vector2(0, 1);
+        messageText.rectTransform.pivot = new Vector2(0, 1);
+        messageText.rectTransform.anchoredPosition = new Vector2(bubblePaddingX * 0.5f, -bubblePaddingY * 0.5f);
+
+        // 시간 위치
+        if (showTime)
+        {
+            timeText_text.rectTransform.anchorMin = timeText_text.rectTransform.anchorMax = new Vector2(0, 1);
+            timeText_text.rectTransform.pivot = new Vector2(0, 1);
+            timeText_text.rectTransform.anchoredPosition = new Vector2(
+                bubble.anchoredPosition.x + bubble.sizeDelta.x + 10f,
+                bubble.anchoredPosition.y - msgHeight(bubble) + 8f
+            );
+            timeText_text.text = finalTime;
+        }
+
+        UpdateTotalHeight(showName, nameText.preferredHeight, bubble.sizeDelta.y);
     }
 
-    private void LayoutElements(float msgWidth, float msgHeight, bool showProfile, bool showName, bool showTime)
+    // --- 이미지 메시지 ---
+    public void SetupImage(string senderName, Sprite profile, string imagePath, string time = "",
+                           bool showProfile = true, bool showName = true, bool showTime = true, bool autoTime = true)
     {
-        // 1. 프로필 위치
+        SetActiveMode(isImage: true);
+
+        string finalTime = autoTime ? FindObjectOfType<GameClock>().GetTimeString() : time;
+
+        // 프로필/이름 위치는 텍스트 버전과 동일
         if (showProfile)
         {
-            profileImage.rectTransform.anchorMin = new Vector2(0, 1);
-            profileImage.rectTransform.anchorMax = new Vector2(0, 1);
+            profileImage.sprite = profile;
+            profileImage.rectTransform.sizeDelta = new Vector2(profileSize, profileSize);
+            profileImage.rectTransform.anchorMin = profileImage.rectTransform.anchorMax = new Vector2(0, 1);
             profileImage.rectTransform.pivot = new Vector2(0, 1);
             profileImage.rectTransform.anchoredPosition = new Vector2(profileOffsetX, 0);
         }
 
-        // 2. 이름 위치
         if (showName)
         {
-            nameText.rectTransform.anchorMin = new Vector2(0, 1);
-            nameText.rectTransform.anchorMax = new Vector2(0, 1);
+            nameText.text = senderName;
+            nameText.rectTransform.anchorMin = nameText.rectTransform.anchorMax = new Vector2(0, 1);
             nameText.rectTransform.pivot = new Vector2(0, 1);
-
-            float nameX = profileOffsetX + profileSize;
-            nameText.rectTransform.anchoredPosition = new Vector2(nameX, 0);
+            nameText.rectTransform.anchoredPosition = new Vector2(profileOffsetX + profileSize, 0);
         }
 
-        // 3. 말풍선 
-        bubble.anchorMin = new Vector2(0, 1);
-        bubble.anchorMax = new Vector2(0, 1);
-        bubble.pivot = new Vector2(0, 1);
+        // 이미지 로드
+        Sprite sprite = Resources.Load<Sprite>(imagePath);
+        if (sprite == null)
+        {
+            Debug.LogWarning($"❌ 이미지 로드 실패: {imagePath}");
+            return;
+        }
 
-        float bubbleX = profileOffsetX + profileSize + 10f;
-        float bubbleY = 0f;
-        if (showName)
-            bubbleY -= nameText.preferredHeight + spacingNameToBubble;
-        else
-            bubbleY -= spacingBetweenBubbles; // 연속 메시지일 때 작은 간격
+        imageComponent.sprite = sprite;
+        // 🔹 비율 유지
+        float ratio = sprite.rect.height / sprite.rect.width;
 
-        bubble.anchoredPosition = new Vector2(bubbleX, bubbleY);
+        // 🔹 기준 폭을 무조건 maxWidth로 두고 비율에 맞게 계산
+        float width = maxWidth;
+        float height = width * ratio;
 
-        // 4. 메시지 텍스트
-        messageText.rectTransform.pivot = new Vector2(0, 1);
-        messageText.rectTransform.anchorMin = new Vector2(0, 1);
-        messageText.rectTransform.anchorMax = new Vector2(0, 1);
-        messageText.rectTransform.anchoredPosition = new Vector2(
-            bubblePaddingX * 0.5f,
-            -bubblePaddingY * 0.5f
-        );
+        // 🔹 세로 제한
+        if (height > maxImageHeight)
+        {
+            height = maxImageHeight;
+            width = height / ratio;
+        }
 
-        // 5. 시간 
+        imageComponent.rectTransform.sizeDelta = new Vector2(width, height);
+        imageObject.GetComponent<RectTransform>().sizeDelta = imageComponent.rectTransform.sizeDelta;
+
+        // 이미지 위치
+        RectTransform imgRect = imageComponent.rectTransform;
+        imgRect.anchorMin = imgRect.anchorMax = new Vector2(0, 1);
+        imgRect.pivot = new Vector2(0, 1);
+        float imgX = profileOffsetX + profileSize + 10f;
+        float imgY = showName ? -(nameText.preferredHeight + spacingNameToBubble) : -spacingBetweenBubbles;
+        imgRect.anchoredPosition = new Vector2(imgX, imgY);
+
+        // 시간 위치
         if (showTime)
         {
-            timeText.rectTransform.anchorMin = new Vector2(0, 1);
-            timeText.rectTransform.anchorMax = new Vector2(0, 1);
-            timeText.rectTransform.pivot = new Vector2(0, 1);
-            timeText.rectTransform.anchoredPosition = new Vector2(
-                bubble.anchoredPosition.x + bubble.sizeDelta.x + 10f,
-                bubble.anchoredPosition.y - msgHeight
+            timeText_image.rectTransform.anchorMin = timeText_image.rectTransform.anchorMax = new Vector2(0, 1);
+            timeText_image.rectTransform.pivot = new Vector2(0, 1);
+            timeText_image.rectTransform.anchoredPosition = new Vector2(
+                imgRect.anchoredPosition.x + width + 10f,
+                imgRect.anchoredPosition.y - height + 18f
             );
+            timeText_image.text = finalTime;
         }
 
-        // 6. 프리팹 전체 높이 갱신 (VerticalLayoutGroup용)
-        float totalHeight = bubble.sizeDelta.y;
-        if (showName)
-            totalHeight += nameText.preferredHeight + spacingNameToBubble;
-        else
-            totalHeight += spacingBetweenBubbles;
-
-        GetComponent<RectTransform>().sizeDelta = new Vector2(
-            GetComponent<RectTransform>().sizeDelta.x,
-            totalHeight
-        );
+        UpdateTotalHeight(showName, nameText.preferredHeight, height);
     }
 
-    /// <summary>
-    /// ChatManager에서 같은 시간대 직전 메시지의 시간 숨길 때 호출
-    /// </summary>
+    private void SetActiveMode(bool isImage)
+    {
+        otherBubble.SetActive(!isImage);
+        messageText.gameObject.SetActive(!isImage);
+        timeText_text.gameObject.SetActive(!isImage);
+
+        imageObject.SetActive(isImage);
+        imageComponent.gameObject.SetActive(isImage);
+        timeText_image.gameObject.SetActive(isImage);
+    }
+
+    private void UpdateTotalHeight(bool showName, float nameHeight, float contentHeight)
+    {
+        float totalHeight = contentHeight;
+        if (showName) totalHeight += nameHeight + spacingNameToBubble;
+        else totalHeight += spacingBetweenBubbles;
+
+        self.sizeDelta = new Vector2(self.sizeDelta.x, totalHeight);
+    }
+
+    private float msgHeight(RectTransform bubble)
+    {
+        return bubble.sizeDelta.y - bubblePaddingY * 0.5f;
+    }
+
     public void SetTimeVisible(bool visible)
     {
-        timeText.gameObject.SetActive(visible);
+        timeText_text.gameObject.SetActive(visible);
+        timeText_image.gameObject.SetActive(visible);
     }
 }

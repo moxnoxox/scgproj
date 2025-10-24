@@ -19,7 +19,15 @@
 
     { "type": "dateDivider" },
     { "type": "message", "sender": "guitar", "content": "나 아이디어 생각난 거 혼자 길에서 연습 중인데", "timestamp": "오전 10:09", "isRead": false },
-    { "type": "message", "sender": "guitar", "content": "너도 같이 하고 싶으면 연락하셈!", "timestamp": "오전 10:09", "isRead": false }
+    { "type": "message", "sender": "guitar", "content": "너도 같이 하고 싶으면 연락하셈!", "timestamp": "오전 10:09", "isRead": false },
 
+    {
+      "type": "message",
+      "sender": "guitar",
+      "format": "image",
+      "content": "ChatData/obj_guitar_fixed",
+      "timestamp": "오후 7:27",
+      "isRead": false
+    }
   ]
 }
