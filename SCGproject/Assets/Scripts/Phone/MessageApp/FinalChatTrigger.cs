@@ -29,21 +29,25 @@ public class FinalChatTrigger : MonoBehaviour
         targetRoom.messages.Add(divider);
 
         // 트리거 메시지 추가
-        Message msg1 = new Message("guitar", "야 혹시", "오후 6:02");
+        Message msg1 = new Message("guitar", "야", "오후 6:01");
         msg1.isRead = false;
 
-        Message msg2 = new Message("guitar", "너네 집에 있는 내 기타 좀 찾아줄 수 있어?", "오후 6:02");
+        Message msg2 = new Message("guitar", "야아아아ㅏ", "오후 6:01");
         msg2.isRead = false;
+
+        Message msg3 = new Message("guitar", "ㅑㅑㅑ", "오후 6:01");
+        msg3.isRead = false;
 
         targetRoom.messages.Add(msg1);
         targetRoom.messages.Add(msg2);
+        targetRoom.messages.Add(msg3);
 
         // 알림 띄우기 추가해야함@@
         /// PhoneUIManager.Instance.ShowNotification(targetRoom.roomName, msg1.content);
 
         targetRoom.AfterQuestJson = questJsonFile;
 
-        Debug.Log($"퀘스트 트리거 완료: {targetRoomName} 방에 메시지 2개 추가 + {questJsonFile} 로드");
+        Debug.Log($"퀘스트 트리거 완료: {targetRoomName} 방에 메시지 3개 추가 + {questJsonFile} 로드");
     }
 }
 

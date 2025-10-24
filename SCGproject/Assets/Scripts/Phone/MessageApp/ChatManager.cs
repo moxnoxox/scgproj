@@ -117,30 +117,31 @@ public class ChatManager : MonoBehaviour
             if (msg.type == "message")
             {
                 if (msg.sender == "Me")
-                {
-                    Debug.Log($"내 메시지 출력: {msg.content}");
                     AddMyMessage(msg.content, msg.timestamp, autoTime:false, save:false);
-                }
                 else
                 {
                     User senderUser = currentRoom.participants.Find(u => u.id == msg.sender);
                     string senderName = senderUser != null ? senderUser.nickname : msg.sender;
                     Sprite senderProfile = senderUser != null ? senderUser.profileImage : null;
 
-                    Debug.Log($"상대 메시지 출력: {senderName} / {msg.content}");
-                    string format = string.IsNullOrEmpty(msg.format) ? "text" : msg.format;
-                    AddOtherMessage(senderName, senderProfile, msg.content, msg.timestamp, autoTime:false, save:false, format: format);
-
+                    AddOtherMessage(senderName, senderProfile, msg.content, msg.timestamp, autoTime:false, save:false, format:"text");
                 }
+            }
+            else if (msg.type == "image")
+            {
+                User senderUser = currentRoom.participants.Find(u => u.id == msg.sender);
+                string senderName = senderUser != null ? senderUser.nickname : msg.sender;
+                Sprite senderProfile = senderUser != null ? senderUser.profileImage : null;
+
+                AddOtherMessage(senderName, senderProfile, msg.content, msg.timestamp, autoTime:false, save:false, format:"image");
             }
 
             if (msg.type == "choice" && !msg.isConsumed)
             {
-                // 채팅방 입장 시에는 보관만 해둠
                 pendingChoices = msg.choices;
             }
-
         }
+    
 
         // 할일 퀘스트 끝나고 
         if (!string.IsNullOrEmpty(currentRoom.AfterQuestJson))
@@ -231,7 +232,7 @@ public class ChatManager : MonoBehaviour
     // --- 상대 메시지 ---
     public void AddOtherMessage(string sender, Sprite profile, string text, string time = "", bool autoTime = true, bool save = true, string format = "text")
     {
-        Debug.Log($"메시지 추가됨: {text}");
+        Debug.Log($"[AddOtherMessage] sender={sender}, format={format}, text={text}");
 
         string finalTime = autoTime ? gameClock.GetTimeString() : time;
         bool sameSender = (lastSender == sender);
@@ -450,23 +451,35 @@ public class ChatManager : MonoBehaviour
     {
         foreach (var msg in autoMessages)
         {
-            float delay = msg.delayAfter > 0 ? msg.delayAfter : 2f; // 기본 1초
+            float delay = msg.delayAfter > 0 ? msg.delayAfter : 2f;
             yield return new WaitForSeconds(delay);
 
-            if (msg.sender == "Me")
+            if (msg.type == "message")
             {
-                AddMyMessage(msg.content, msg.timestamp, autoTime:false, save:true);
+                if (msg.sender == "Me")
+                    AddMyMessage(msg.content, msg.timestamp, autoTime: false, save: true);
+                else
+                {
+                    User senderUser = currentRoom.participants.Find(u => u.id == msg.sender);
+                    string senderName = senderUser != null ? senderUser.nickname : msg.sender;
+                    Sprite senderProfile = senderUser != null ? senderUser.profileImage : null;
+                    AddOtherMessage(senderName, senderProfile, msg.content, msg.timestamp, autoTime: false, save: true, format:"text");
+                }
             }
-            else
+            else if (msg.type == "image") // 🔹 추가
             {
                 User senderUser = currentRoom.participants.Find(u => u.id == msg.sender);
                 string senderName = senderUser != null ? senderUser.nickname : msg.sender;
                 Sprite senderProfile = senderUser != null ? senderUser.profileImage : null;
-
-                AddOtherMessage(senderName, senderProfile, msg.content, msg.timestamp, autoTime:false, save:true);
+                AddOtherMessage(senderName, senderProfile, msg.content, msg.timestamp, autoTime:false, save:true, format:"image");
+            }
+            else if (msg.type == "dateDivider")
+            {
+                AddDateDivider(save: true);
             }
         }
     }
+
 
 
     // 입력 영역 Y 이동(간단한 코루틴 애니메이션)

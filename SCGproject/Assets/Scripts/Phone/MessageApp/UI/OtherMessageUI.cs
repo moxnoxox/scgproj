@@ -111,6 +111,8 @@ public class OtherMessageUI : MonoBehaviour
     public void SetupImage(string senderName, Sprite profile, string imagePath, string time = "",
                            bool showProfile = true, bool showName = true, bool showTime = true, bool autoTime = true)
     {
+        Debug.Log($"[SetupImage] 실행됨, imagePath={imagePath}");
+
         SetActiveMode(isImage: true);
 
         string finalTime = autoTime ? FindObjectOfType<GameClock>().GetTimeString() : time;
