@@ -30,7 +30,7 @@ public class blanket_controller : MonoBehaviour
                 {
                     player_anim.SetBool("isSleep", true);
                     player_anim.SetBool("isWalking", false);
-                    GameManager.Instance.onBedding();
+                    if(GameManager.Instance != null) GameManager.Instance.onBedding();
                     StartCoroutine(motionWait());
                 }
             }

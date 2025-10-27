@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,13 +6,12 @@ using UnityEngine;
 public class Chapter2Manager : MonoBehaviour
 {
     public static Chapter2Manager Instance;
-    public bool autoMove = false;
 
     // 플레이어, UI, 기타 연결 오브젝트들
     public PlayerMove playerMove;
     public player_power playerPower;
-    public UnityEngine.UI.Image notification;
-
+    public UnityEngine.UI.Image on;
+    public bool autoMove;
     // 모놀로그 데이터
     private Dictionary<string, List<string>> monoData;
 
@@ -59,7 +59,7 @@ public class Chapter2Manager : MonoBehaviour
         TextAsset monoJson = Resources.Load<TextAsset>("MonologueData/Mono2");
         if (monoJson != null)
         {
-            monoData = JsonUtility.FromJson<Wrapper>(WrapJson(monoJson.text)).dict;
+            monoData = JsonUtility.FromJson<MonoDataWrapper>(monoJson.text).ToDictionary();
             Debug.Log($"Mono2.json 로드 완료. 총 {monoData.Count}개의 키를 읽음");
         }
         else
@@ -71,12 +71,6 @@ public class Chapter2Manager : MonoBehaviour
         StartCoroutine(ScenarioFlow());
     }
 
-    // JsonUtility가 Dictionary를 바로 읽지 못하므로 Wrapper로 감싸서 처리
-    [System.Serializable]
-    private class Wrapper
-    {
-        public Dictionary<string, List<string>> dict;
-    }
 
     private string WrapJson(string json)
     {
@@ -86,10 +80,12 @@ public class Chapter2Manager : MonoBehaviour
     IEnumerator ScenarioFlow()
     {
         scenarioState = ScenarioState.StartContact;
-
+        // 버스커와 연락
+        
         // 1. 버스커에게 온 사진 확인 (에너지 +10)
         scenarioState = ScenarioState.ShowPhoto;
         Debug.Log("1. 버스커가 기타 사진을 보냄");
+        // 플레이어가 버스커에게 온 사진을 확인할 때까지 대기
         yield return ShowMono("showPhoto", 2f);
         playerPower.IncreasePower(10);
 
@@ -176,7 +172,12 @@ public class Chapter2Manager : MonoBehaviour
 
         yield return new WaitForSeconds(monoData.ContainsKey(key) ? monoData[key].Count * showTime : 0f);
     }
-
+    IEnumerator Showannouncement(string key, float showTime)
+    {
+        if (monoData.ContainsKey(key))
+            MonologueManager.Instance.ShowAnnouncement(monoData[key], showTime);
+        yield return new WaitForSeconds(monoData.ContainsKey(key) ? monoData[key].Count * showTime : 0f);
+    }
     public void PlayUSBFirstDialogue(int usbIndex)
     {
         string key = $"usb{usbIndex}_first";
@@ -195,6 +196,7 @@ public class Chapter2Manager : MonoBehaviour
             2f
         );
     }
+    
 
     // -----------------------------
     // 외부에서 상태 갱신용 함수
@@ -208,4 +210,37 @@ public class Chapter2Manager : MonoBehaviour
     public void OnGuitarCaseFound() => guitarCaseFound = true;
     public void OnPaperPuzzleDone() => paperPuzzleDone = true;
     public void OnGuitarPartsAllFound() => guitarPartsAllFound = true;
+
+    [System.Serializable]
+    public class MonoDataWrapper
+    {
+        public List<string> wakeUp;
+        public List<string> moveGuide;
+        public List<string> findPaper;
+        public List<string> paperReaction;
+        public List<string> bedGuide;
+        public List<string> bedRest;
+        public List<string> phoneGuide;
+        public List<string> questReaction;
+        public List<string> afterQuest;
+        public List<string> bedDepressed;
+        public List<string> mirrorScene;
+
+        public Dictionary<string, List<string>> ToDictionary()
+        {
+            var dict = new Dictionary<string, List<string>>();
+            if (wakeUp != null) dict["wakeUp"] = wakeUp;
+            if (moveGuide != null) dict["moveGuide"] = moveGuide;
+            if (findPaper != null) dict["findPaper"] = findPaper;
+            if (paperReaction != null) dict["paperReaction"] = paperReaction;
+            if (bedGuide != null) dict["bedGuide"] = bedGuide;
+            if (bedRest != null) dict["bedRest"] = bedRest;
+            if (phoneGuide != null) dict["phoneGuide"] = phoneGuide;
+            if (questReaction != null) dict["questReaction"] = questReaction;
+            if (afterQuest != null) dict["afterQuest"] = afterQuest;
+            if (bedDepressed != null) dict["bedDepressed"] = bedDepressed;
+            if (mirrorScene != null) dict["mirrorScene"] = mirrorScene;
+            return dict;
+        }
+    }
 }

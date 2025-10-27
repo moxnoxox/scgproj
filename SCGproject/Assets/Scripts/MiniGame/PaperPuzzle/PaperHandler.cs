@@ -11,7 +11,7 @@ public class PaperHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
     //paperpuzzlecontroller에서 startpuzzle 실행 시에만 실행
     //todo: paperpuzllecontroller의 pieces를 가져와서 드래그로 위위치옮기기, 더블클릭으로 회전(90도))
     //todo: 퍼즐 드래그앤드롭 시 퍼즐 조각이 특정 범위 내에 들어오면 자동으로 자리 지정
-    //todo: 퍼즐은 unityengine.ui.image, 9개, 위치는 3x3 격자, 퍼즐 조각은 100x100
+    //todo: 퍼즐은 unityengine.ui.image
     public Vector3 originalPosition;
     public Transform[] correctPosition;
     public int pieceIndex; // 퍼즐 조각 인덱스 (0~8)
@@ -42,7 +42,9 @@ public class PaperHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
         for (int i = 0; i < correctPosition.Length; i++)
         {
             distance = Vector3.Distance(transform.position, correctPosition[i].position);
-            if (distance < 50f)
+            //todo: 거리 대신, correctPosition 위에 있는지 판별
+            bool onPosition = RectTransformUtility.RectangleContainsScreenPoint(correctPosition[i].GetComponent<RectTransform>(), Input.mousePosition);
+            if (onPosition)
             {
                 // 위치에 스냅(부드럽게)
                 StartCoroutine(SnapToPosition(correctPosition[i].position));

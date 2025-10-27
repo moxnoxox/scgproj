@@ -10,7 +10,6 @@ public class SceneController : MonoBehaviour
 {
     [SerializeField] Slider loadingbar;
     static string nextscene;
-    
     public static void Loadscene(string scenename)
     {
         nextscene = scenename;

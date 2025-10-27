@@ -13,7 +13,7 @@ public class PlayerMove : MonoBehaviour
     public bool starting = false;
     public bool canInput = false;
     private int sleepcount = 0;
-    private float h = 0f;
+    [SerializeField] float h = 0f;
     public player_power playerPower;
     public key_info keyInfo;
     public GameManager gameManager;
@@ -35,7 +35,7 @@ public class PlayerMove : MonoBehaviour
             animator = GetComponent<Animator>();
         animator.SetBool("isWalking", false);
         animator.SetBool("isPhone", false);
-        keyInfo.isBed = true;
+        if(currentScene == "SampleScene") keyInfo.isBed = true;
 
         // 여기서만 SceneManager 호출 (UnityException 방지)
         currentScene = SceneManager.GetActiveScene().name;
@@ -125,7 +125,7 @@ public class PlayerMove : MonoBehaviour
             h = 0;
         }
         // S키로 시작
-        if (!start && !starting && animator.GetBool("isSleep") == false)
+        if (!start && !starting && animator.GetBool("isSleep") == false && currentScene == "SampleScene")
         {
             starting = true;
             animator.SetBool("start_trigger", true);

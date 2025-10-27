@@ -184,6 +184,7 @@ public class GameManager : MonoBehaviour
         // yield return ShowBuskerContact();
 
         scenarioState = ScenarioState.Done;
+        //SceneController.Loadsceneprosess(Chapter2);
         // TODO: 챕터2로 전환, 화면 어두워짐 등 연출 필요
     }
 

@@ -13,7 +13,6 @@ public class key_info : MonoBehaviour
     public Image click;
     public Image S;
     public Image space;
-    public CameraController camcon;
     private UnityEngine.Vector3 pos;
 
     void Start()

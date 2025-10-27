@@ -14,6 +14,8 @@ public class PhonePanelController : MonoBehaviour
     public float duration = 0.3f;
     public GameObject dimPanel;
     public Button handleButton;
+    private bool enabled;
+    private int SceneNum;
 
     private bool isOpen = false;
     private Coroutine moveCoroutine;
@@ -31,11 +33,29 @@ public class PhonePanelController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "SampleScene")
+        {
+            SceneNum = 1;
+            enabled = GameManager.Instance.phoneOpenEnable;
+        }
+        else if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Chapter2")
+        {
+            SceneNum = 2;
+            enabled = true;//추후 조정
+        }
     }
 
     void Update()
     {
-        if (GameManager.Instance.phoneOpenEnable)
+        if(SceneNum == 1)
+        {
+            enabled = GameManager.Instance.phoneOpenEnable;
+        }
+        else if(SceneNum == 2)
+        {
+            enabled = true;//추후 조정
+        }
+        if (enabled)
         {
             handleButton.interactable = true;
         }
