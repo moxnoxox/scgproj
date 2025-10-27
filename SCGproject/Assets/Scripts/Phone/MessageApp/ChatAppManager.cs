@@ -4,17 +4,16 @@ using System.Collections.Generic;
 
 public class ChatAppManager : MonoBehaviour
 {
-    public static ChatAppManager Instance { get; private set; } // 싱글톤 인스턴스
+    public static ChatAppManager Instance { get; private set; }
 
     [Header("패널들")]
-    public GameObject chatListPanel;       // 채팅방 리스트 화면
-    public GameObject chatRoomPrefab;      // 채팅방 프리팹 (ChatRoomPanel)
-    public Transform ChatAppPanel;         // ChatRoomPanel이 들어갈 부모
+    public GameObject chatListPanel;
+    public GameObject chatRoomPrefab;
+    public Transform ChatAppPanel;
 
-    private GameObject currentRoomPanel;   // 현재 열려있는 채팅방 인스턴스
-    private ChatManager chatManager;       // 현재 방의 ChatManager
+    private GameObject currentRoomPanel;
+    private ChatManager chatManager;
 
-    // === reply 스케줄 관리 ===
     private class ScheduledReply
     {
         public ChatRoom room;
@@ -26,7 +25,6 @@ public class ChatAppManager : MonoBehaviour
 
     private void Awake()
     {
-        // 싱글톤 보장
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -38,7 +36,6 @@ public class ChatAppManager : MonoBehaviour
 
     private void OnEnable()
     {
-        // 시작할 때 리스트 열기
         OpenChatList();
     }
 
@@ -56,10 +53,8 @@ public class ChatAppManager : MonoBehaviour
             {
                 var item = scheduledReplies[i];
 
-                // 방이 열려있을 때만 UI 표시
                 if (chatManager != null && chatManager.GetCurrentRoom() == item.room)
                 {
-                    // sender 매칭
                     string senderId = item.reply.sender.Trim();
                     User senderUser = item.room.participants.Find(u => u.id == senderId);
 
@@ -70,11 +65,9 @@ public class ChatAppManager : MonoBehaviour
                         ? GameClock.Instance.GetTimeString()
                         : item.reply.timestamp;
 
-                    // UI에 출력 (nickname + 프로필)
-                    chatManager.AddOtherMessage(senderName, senderProfile, item.reply.content, time, autoTime:false, save:false);
+                    chatManager.AddOtherMessage(senderName, senderProfile, item.reply.content, time, autoTime: false, save: false);
                 }
 
-                // 기록 남김
                 string recordTime = string.IsNullOrEmpty(item.reply.timestamp)
                     ? GameClock.Instance.GetTimeString()
                     : item.reply.timestamp;
@@ -87,8 +80,7 @@ public class ChatAppManager : MonoBehaviour
                 scheduledReplies.RemoveAt(i);
             }
         }
-}
-
+    }
 
     public void ScheduleReply(ChatRoom room, ReplyData reply, float delay)
     {
@@ -114,8 +106,25 @@ public class ChatAppManager : MonoBehaviour
 
     public void OpenChatRoomWithData(ChatRoom roomData)
     {
+        // 🔹 자동 대화 중엔 방 이동 불가
+        if (chatManager != null && chatManager.IsAutoPlaying)
+        {
+            Debug.Log("⚠ 자동 대화 중엔 다른 방으로 이동할 수 없습니다.");
+            return;
+        }
+
         chatListPanel.SetActive(false);
 
+        // 🔹 같은 방이면 새로 만들지 않고 이어서 사용
+        if (chatManager != null && chatManager.GetCurrentRoom() == roomData)
+        {
+            Debug.Log("✅ 이미 같은 방이 열려 있음 — 새로 만들지 않음");
+            currentRoomPanel.SetActive(true);
+            chatManager.SetCurrentRoom(roomData); // 이어붙이기 포함
+            return;
+        }
+
+        // 🔹 다른 방일 때만 새로 생성
         if (currentRoomPanel != null)
             Destroy(currentRoomPanel);
 
@@ -125,43 +134,55 @@ public class ChatAppManager : MonoBehaviour
         if (chatManager != null)
             chatManager.SetCurrentRoom(roomData);
 
-        // ✅ 방 들어올 때 한 번에 읽음 처리
+        // ✅ 방 들어올 때 읽음 처리
         foreach (var msg in roomData.messages)
         {
             if (msg.sender != "Me")
                 msg.isRead = true;
         }
 
-        // ✅ 버튼에 있는 배지 점 갱신
+        // ✅ 버튼 배지 갱신
         FindObjectOfType<ChatRoomButtonManager>()?.UpdateUnreadDots();
 
-
         currentRoomPanel.SetActive(true);
-
         BackInputManager.Register(OnBackPressedFromRoom);
     }
 
     public void BackToList()
     {
+        if (chatManager != null && chatManager.IsAutoPlaying)
+        {
+            Debug.Log("⚠ 자동 대화 중엔 나갈 수 없습니다.");
+            return;
+        }
+
         CloseRoom();
     }
 
     private void OnBackPressedFromRoom()
     {
+        if (chatManager != null && chatManager.IsAutoPlaying)
+        {
+            Debug.Log("⚠ 자동 대화 중엔 나갈 수 없습니다.");
+            return;
+        }
+
         CloseRoom();
         BackInputManager.Unregister(OnBackPressedFromRoom);
     }
 
     private void CloseRoom()
     {
+        InputBlocker.Disable();
+
         if (currentRoomPanel != null)
         {
             Destroy(currentRoomPanel);
             currentRoomPanel = null;
             chatManager = null;
-            chatListPanel.SetActive(true);
-
-             FindObjectOfType<ChatRoomButtonManager>()?.UpdateUnreadDots();
         }
+
+        chatListPanel.SetActive(true);
+        FindObjectOfType<ChatRoomButtonManager>()?.UpdateUnreadDots();
     }
 }
