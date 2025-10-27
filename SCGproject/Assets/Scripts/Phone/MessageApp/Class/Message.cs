@@ -39,8 +39,10 @@ public class Message
     public float delayAfter; 
 
     public bool isConsumed = false; 
-
     public List<ChoiceData> choices; 
+
+    // 🔹 추가된 필드: 이미지 / 텍스트 구분용
+    public string format = "text";  
 
     public Message(string sender, string content, string gameTime)
     {
@@ -49,11 +51,14 @@ public class Message
         this.content = content;
         this.timestamp = gameTime; 
         this.isRead = false;
+        this.format = "text"; // 기본값
     }
 
     public Message(string type)
     {
         this.type = type;
+        this.format = "text";
     }
 }
+
 

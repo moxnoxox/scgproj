@@ -137,8 +137,8 @@ public class PlayerMove : MonoBehaviour
         {
             if (!hasMoved)
             {
-                // 현재 씬이 Chapter1(SampleScene)이고, gameManager가 연결돼 있을 때만 호출
-                if (currentScene == "SampleScene" && gameManager != null)
+                // 현재 씬이 Chapter1이고, gameManager가 연결돼 있을 때만 호출
+                if (currentScene == "Chapter1" && gameManager != null)
                     gameManager.OnPlayerMoved();
 
                 hasMoved = true;
@@ -153,7 +153,7 @@ public class PlayerMove : MonoBehaviour
         bool autoMoveActive = false;
 
         // 씬 이름으로 먼저 분기 → 해당 매니저만 접근
-        if (currentScene == "SampleScene")
+        if (currentScene == "Chapter1")
         {
             if (GameManager.Instance != null && GameManager.Instance.autoMove)
                 autoMoveActive = true;
