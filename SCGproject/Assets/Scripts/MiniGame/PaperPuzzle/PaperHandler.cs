@@ -16,6 +16,10 @@ public class PaperHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
     public Transform[] correctPosition;
     public int pieceIndex; // 퍼즐 조각 인덱스 (0~8)
     public bool isCorrectPosition = false;
+    // index of the correctPosition this piece is currently snapped to (-1 = none)
+    private int currentSnappedIndex = -1;
+    // allowable angle (degrees) to consider rotation "matching"
+    private const float rotationMatchThreshold = 1f;
     
     private float lastClickTime = 0f;
     private float doubleClickThreshold = 0.3f;
@@ -25,6 +29,9 @@ public class PaperHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
     {
         if (!PaperpuzzleController.Instance.isPuzzleActive) return;
         originalPosition = transform.position;
+        // when user starts dragging, it's no longer considered snapped/correct
+        currentSnappedIndex = -1;
+        isCorrectPosition = false;
 
         transform.SetAsLastSibling(); // 드래그 시작 시 가장 위로 이동
 
@@ -47,10 +54,15 @@ public class PaperHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
             if (onPosition)
             {
                 // 위치에 스냅(부드럽게)
-                StartCoroutine(SnapToPosition(correctPosition[i].position));
-                isCorrectPosition = (i == pieceIndex && transform.rotation == correctPosition[i].rotation); // 올바른 위치인지 확인
+                currentSnappedIndex = i;
+                StartCoroutine(SnapToPosition(correctPosition[i].position, i));
                 break;
             }
+        }
+        // if not snapped to any target, mark as not snapped
+        if (currentSnappedIndex == -1)
+        {
+            isCorrectPosition = false;
         }
     }
     void Start()
@@ -64,6 +76,7 @@ public class PaperHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
         }
         originalPosition = transform.position;
         isCorrectPosition = false;
+        currentSnappedIndex = -1;
     }
 
     // 클릭 이벤트 처리 (더블클릭으로 회전)
@@ -85,7 +98,7 @@ public class PaperHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
         if(!PaperpuzzleController.Instance.isPuzzleActive) return;
     }
     // 퍼즐 조각 위치 스냅(부드럽게)
-    IEnumerator SnapToPosition(Vector3 targetPosition)
+    IEnumerator SnapToPosition(Vector3 targetPosition, int targetIndex)
     {
         Vector3 startPosition = transform.position;
         float duration = 0.2f;
@@ -99,6 +112,20 @@ public class PaperHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
         }
 
         transform.position = targetPosition;
+
+        // After snapping, determine whether this piece is in the correct slot with correct rotation
+        if (targetIndex >= 0)
+        {
+            currentSnappedIndex = targetIndex;
+            // consider rotation match within a small threshold
+            bool rotationMatch = Quaternion.Angle(transform.rotation, correctPosition[targetIndex].rotation) <= rotationMatchThreshold;
+            isCorrectPosition = (targetIndex == pieceIndex && rotationMatch);
+        }
+        else
+        {
+            currentSnappedIndex = -1;
+            isCorrectPosition = false;
+        }
     }
 
     // 퍼즐 조각 90도 회전(부드럽게)
@@ -117,5 +144,11 @@ public class PaperHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
         }
 
         transform.rotation = endRotation;
+            // If this piece is currently snapped to a slot, re-evaluate correctness after rotation
+            if (currentSnappedIndex >= 0)
+            {
+                bool rotationMatch = Quaternion.Angle(transform.rotation, correctPosition[currentSnappedIndex].rotation) <= rotationMatchThreshold;
+                isCorrectPosition = (currentSnappedIndex == pieceIndex && rotationMatch);
+            }
     }
 }

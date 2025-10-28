@@ -46,6 +46,7 @@ public class Chapter2Manager : MonoBehaviour
     private bool guitarCaseFound = false;
     private bool paperPuzzleDone = false;
     private bool guitarPartsAllFound = false;
+    
 
     void Awake()
     {
@@ -71,90 +72,82 @@ public class Chapter2Manager : MonoBehaviour
         StartCoroutine(ScenarioFlow());
     }
 
-
-    private string WrapJson(string json)
-    {
-        return "{\"dict\":" + json + "}";
-    }
-
     IEnumerator ScenarioFlow()
     {
+        // 막막해하기
         scenarioState = ScenarioState.StartContact;
-        // 버스커와 연락
-        
-        // 1. 버스커에게 온 사진 확인 (에너지 +10)
+        yield return ShowMono("ch2start", 2f);
+        // 버스커와 연락(카톡 자동으로 열림)
         scenarioState = ScenarioState.ShowPhoto;
         Debug.Log("1. 버스커가 기타 사진을 보냄");
-        // 플레이어가 버스커에게 온 사진을 확인할 때까지 대기
         yield return ShowMono("showPhoto", 2f);
         playerPower.IncreasePower(10);
 
-        // 2. 기타 찾기 다짐
+        // 카메라로 집 전경 보여주기
+
+        // 집청소나 할까 생각하기
         scenarioState = ScenarioState.DecideToSearch;
         Debug.Log("2. 기타를 찾아야겠다고 생각함");
         yield return ShowMono("decideSearch", 2f);
-
-        // 3. 퀘스트 추가
+        // 할 일 퀘스트 생성(1. 기타 찾기)
         Debug.Log("3. 퀘스트 추가: 기타 찾기");
-
-        // 4. 쓰레기봉지 접근 대기
+        // 쓰레기 치우기 튜토리얼 - 처음 쓰레기통 ontrigger 진입 시 space 안내, 스페이스 누르면 선택지 제공. -> 치운다 선택 시 튜토리얼 진행
         scenarioState = ScenarioState.TrashBagApproach;
-        Debug.Log("4. 쓰레기봉지 앞 도착 대기 중...");
         while (!playerNearTrashBag) yield return null;
         Debug.Log("쓰레기봉지 앞에 도착함. 스페이스 안내 출력");
-
-        // 5. USB 접근 대기
+        //todo: 선택지
+        // 쓰레기 치우기 선택 시
+        yield return Showannouncement("cleantutorial", 2f);
+        
+        // 첫 usb 발견
         scenarioState = ScenarioState.USBApproach;
         Debug.Log("5. USB 근처 접근 대기 중...");
         while (!playerNearUSB) yield return null;
         Debug.Log("USB 앞에 도착함. 상호작용 안내 출력");
-
-        // 6. USB 상호작용
+        yield return Showannouncement("usb1_first", 2f);
         scenarioState = ScenarioState.USBInteraction;
-        Debug.Log("6. USB 상호작용 대기 중...");
         while (!usbInteracted) yield return null;
         Debug.Log("USB 획득. 퀘스트 완료 + 노트북 퀘스트 추가");
         playerPower.IncreasePower(10);
-
-        // 7. 노트북 실행 (파일정리 미니게임)
+        //할일퀘스트 생성(2. 노트북 열기)
+        
+        // 노트북 열람 시 파일정리 미니게임 시작
         scenarioState = ScenarioState.LaptopOpened;
         Debug.Log("7. 노트북 열기 대기 중...");
         while (!laptopOpened) yield return null;
         Debug.Log("노트북 열림 → 미니게임(파일정리) 시작");
-
         scenarioState = ScenarioState.FileSortGameStart;
         while (!fileSortGameDone) yield return null;
         scenarioState = ScenarioState.FileSortGameComplete;
         Debug.Log("미니게임 완료! 에너지 +10");
         playerPower.IncreasePower(10);
-
-        // 8. 기타 본체 찾기
+        // 기타 본체 찾음 -> 다른 파츠를 찾는 할일퀘스트 생성(이는 메인퀘스트임)(1. 기타 줄 찾기 2. 조율기 찾기 3. 기타 케이스 찾기)
         scenarioState = ScenarioState.GuitarBodyFound;
         Debug.Log("8. 기타 본체 찾기 대기 중...");
         while (!guitarBodyFound) yield return null;
         Debug.Log("기타 본체 발견! 퀘스트 추가: 줄, 조율기, 케이스 찾기");
-
-        // 9. 기타 케이스 찾기 (종이조각 미니게임)
+        // 기타 케이스 찾기 시 종이조각 맞추기 미니게임 시작
         scenarioState = ScenarioState.GuitarCaseFound;
         Debug.Log("9. 기타 케이스 찾기 대기 중...");
         while (!guitarCaseFound) yield return null;
         Debug.Log("기타 케이스 찾음 → 미니게임 시작");
 
         scenarioState = ScenarioState.PaperPuzzleStart;
-        while (!paperPuzzleDone) yield return null;
+        PaperpuzzleController.Instance.StartPuzzle();
+        while (!PaperpuzzleController.Instance.isCompleted) yield return null;
         scenarioState = ScenarioState.PaperPuzzleComplete;
         Debug.Log("미니게임 완료! 갤러리 해금 + 에너지 +10");
         playerPower.IncreasePower(10);
-
-        // 10. 모든 기타 파츠 발견 시
+        // 모든 기타 파츠 찾기 완료 시 3챕터로 넘어가기
         Debug.Log("10. 기타 파츠 전부 찾는 중...");
         while (!guitarPartsAllFound) yield return null;
         Debug.Log("모든 기타 파츠 발견! 에너지 +40");
         playerPower.IncreasePower(40);
 
         scenarioState = ScenarioState.EndingTransition;
-        Debug.Log("챕터2 종료 → 챕터3로 전환 준비");
+        Debug.Log("챕터2 종료 → 챕터3로 전환");
     }
+
 
     // -----------------------------
     // 모놀로그 관련
@@ -214,32 +207,24 @@ public class Chapter2Manager : MonoBehaviour
     [System.Serializable]
     public class MonoDataWrapper
     {
-        public List<string> wakeUp;
-        public List<string> moveGuide;
-        public List<string> findPaper;
-        public List<string> paperReaction;
-        public List<string> bedGuide;
-        public List<string> bedRest;
-        public List<string> phoneGuide;
-        public List<string> questReaction;
-        public List<string> afterQuest;
-        public List<string> bedDepressed;
-        public List<string> mirrorScene;
+        public List<string> ch2start;
+        public List<string> todoalarm1;
+        public List<string> cleantutorial;
+        public List<string> usb1_first;
+        public List<string> usb2_first;
+        public List<string> usb3_first;
+        public List<string> laptop_open;
 
         public Dictionary<string, List<string>> ToDictionary()
         {
             var dict = new Dictionary<string, List<string>>();
-            if (wakeUp != null) dict["wakeUp"] = wakeUp;
-            if (moveGuide != null) dict["moveGuide"] = moveGuide;
-            if (findPaper != null) dict["findPaper"] = findPaper;
-            if (paperReaction != null) dict["paperReaction"] = paperReaction;
-            if (bedGuide != null) dict["bedGuide"] = bedGuide;
-            if (bedRest != null) dict["bedRest"] = bedRest;
-            if (phoneGuide != null) dict["phoneGuide"] = phoneGuide;
-            if (questReaction != null) dict["questReaction"] = questReaction;
-            if (afterQuest != null) dict["afterQuest"] = afterQuest;
-            if (bedDepressed != null) dict["bedDepressed"] = bedDepressed;
-            if (mirrorScene != null) dict["mirrorScene"] = mirrorScene;
+            if (ch2start != null) dict["ch2start"] = ch2start;
+            if (todoalarm1 != null) dict["todoalarm1"] = todoalarm1;
+            if (cleantutorial != null) dict["cleantutorial"] = cleantutorial;
+            if (usb1_first != null) dict["usb1_first"] = usb1_first;
+            if (usb2_first != null) dict["usb2_first"] = usb2_first;
+            if (usb3_first != null) dict["usb3_first"] = usb3_first;
+
             return dict;
         }
     }
