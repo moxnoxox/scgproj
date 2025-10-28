@@ -15,11 +15,11 @@ public class PlayerMove : MonoBehaviour
     private int sleepcount = 0;
     [SerializeField] float h = 0f;
     public player_power playerPower;
-    public key_info keyInfo;
+    public GameObject key_info;
     public GameManager gameManager;
     public CanvasGroup canvas;
     public bool movable = true;
-
+    private key_info keyInfo;
     public bool isHolding = false;
     public GameObject heldObject = null;
     public GameObject pickupTarget = null; // 💡 근처의 들 수 있는 오브젝트
@@ -35,6 +35,8 @@ public class PlayerMove : MonoBehaviour
             animator = GetComponent<Animator>();
         animator.SetBool("isWalking", false);
         animator.SetBool("isPhone", false);
+        if(currentScene == "Chapter1") keyInfo = key_info.GetComponent<key_info>();
+        else if(currentScene == "Chapter2") keyInfo = key_info.GetComponent<key_info>();
         if(currentScene == "Chapter1") keyInfo.isBed = true;
 
         // 여기서만 SceneManager 호출 (UnityException 방지)
@@ -45,7 +47,7 @@ public class PlayerMove : MonoBehaviour
             // 챕터2: 바로 일어난 상태로 시작
             animator.SetBool("isSleep", false);
             start = true;
-            keyInfo.isBed = false;
+            
         }
         else
         {
@@ -179,10 +181,11 @@ public class PlayerMove : MonoBehaviour
             // 이동 적용
             rigid.linearVelocity = new Vector2(h * maxSpeed, rigid.linearVelocity.y);
         }
-
-        if (keyInfo.is_click && animator.GetBool("isPhone") == true)
-        {
-            keyInfo.is_click = false;
+        if (currentScene == "Chapter1") {
+            if (keyInfo.is_click && animator.GetBool("isPhone") == true)
+            {
+                keyInfo.is_click = false;
+            }
         }
 
         // 잠든 상태면 파워 회복, 이동 불가
