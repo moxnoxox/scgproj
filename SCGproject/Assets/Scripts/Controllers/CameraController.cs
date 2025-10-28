@@ -74,7 +74,7 @@ public class CameraController : MonoBehaviour
         transform.position = UnityEngine.Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * moveSpeed * 0.7f);
         if (cam != null)
         {
-            float targetSize = 2f;
+            float targetSize = 3f;
             cam.orthographicSize = MoveTowards(cam.orthographicSize, targetSize, Time.deltaTime * zoomSpeed);
         }
     }

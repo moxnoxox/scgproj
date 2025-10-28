@@ -2,6 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,6 +19,13 @@ public class GameManager : MonoBehaviour
     public bool AfterQuest = false;
     public static GameManager Instance;
     public bool canInput;
+
+    //선택지 
+    public Transform choicePanel;
+    public GameObject choiceButtonPrefab;
+    private bool choiceSelected;
+    private int selectedIndex;
+    
 
     // 시나리오 상태 관리
     private enum ScenarioState
@@ -101,7 +111,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("움직이기 안내 완료");
 
         // 3. 플레이어가 이동할 때까지 대기
-        
+
         while (!hasMoved)
         {
             yield return null;
@@ -171,7 +181,7 @@ public class GameManager : MonoBehaviour
         autoMove = false;
         phoneOpenEnable = false;
         scenarioState = ScenarioState.AfterQuest;
-        
+
 
         // 9. 침대에 누운 후 문구
         scenarioState = ScenarioState.BedDepressed;
@@ -196,8 +206,8 @@ public class GameManager : MonoBehaviour
         yield return ShowMono("bedDepressed4", 2f);
 
         FinalChatTrigger.Instance.StartFinalChat();
-        // TODO: 카톡 메시지 UI 연출, 실제 채팅 시스템과 연동 필요
-        // yield return ShowBuskerContact();
+        yield return new WaitUntil(() => FinalChatTrigger.Instance.isChatDone);
+        yield return ShowMono("afterMessage", 2f);
 
         scenarioState = ScenarioState.Done;
         //SceneController.Loadsceneprosess(Chapter2);
@@ -258,9 +268,39 @@ public class GameManager : MonoBehaviour
     IEnumerator ShowMono(string key, float showTime)
     {
         canInput = false;
+
         if (monoData.ContainsKey(key))
-            MonologueManager.Instance.ShowMonologuesSequentially(monoData[key], showTime);
-        yield return new WaitForSeconds(monoData.ContainsKey(key) ? monoData[key].Count * showTime : 0f);
+        {
+            List<string> lines = monoData[key];
+            foreach (var rawLine in lines)
+            {
+                // choice 객체 판별: JSON 형태인지 확인
+                if (rawLine.TrimStart().StartsWith("{"))
+                {
+                    ChoiceData choice = JsonUtility.FromJson<ChoiceData>(rawLine);
+                    if (choice != null && choice.type == "choice")
+                    {
+                        yield return ShowChoices(choice.options);
+                        int choiceResult = GetChoiceResult();
+
+                        // 선택 결과에 따라 다음 대사 분기
+                        if (choiceResult == 0)
+                            yield return ShowMono(choice.nextKeys[0], showTime);
+                        else if (choiceResult == 1 && choice.nextKeys.Count > 1)
+                            yield return ShowMono(choice.nextKeys[1], showTime);
+
+                        yield break;
+                    }
+                }
+                else
+                {
+                    // 일반 대사 출력
+                    MonologueManager.Instance.ShowMonologuesSequentially(new List<string> { rawLine }, showTime);
+                    yield return new WaitForSeconds(showTime);
+                }
+            }
+        }
+
         canInput = true;
     }
     IEnumerator Showannouncement(string key, float showTime)
@@ -270,6 +310,70 @@ public class GameManager : MonoBehaviour
             MonologueManager.Instance.ShowAnnouncement(monoData[key], showTime);
         yield return new WaitForSeconds(monoData.ContainsKey(key) ? monoData[key].Count * showTime : 0f);
         canInput = true;
+    }
+
+    IEnumerator ShowChoices(List<string> options)
+    {
+        choiceSelected = false;
+        selectedIndex = -1;
+
+        if (!choicePanel.gameObject.activeSelf)
+            choicePanel.gameObject.SetActive(true);
+
+        foreach (Transform child in choicePanel)
+            Destroy(child.gameObject);
+
+        for (int i = 0; i < options.Count; i++)
+        {
+            int index = i;
+            GameObject btnObj = Instantiate(choiceButtonPrefab, choicePanel);
+
+            // 🔹 Button 컴포넌트 강제 활성화
+            var buttonComp = btnObj.GetComponent<Button>();
+            if (buttonComp != null)
+                buttonComp.enabled = true;
+
+            // 🔹 Image도 혹시 모르니 켜주기
+            var img = btnObj.GetComponent<Image>();
+            if (img != null)
+                img.enabled = true;
+
+            // 🔹 TMP 텍스트 찾기 + 강제 활성화
+            var tmp = btnObj.GetComponentInChildren<TextMeshProUGUI>(true);
+            if (tmp != null)
+            {
+                tmp.enabled = true;                 // TMP 컴포넌트 자체가 꺼져 있던 경우
+                tmp.gameObject.SetActive(true);     // GameObject 비활성화 대비
+                tmp.text = options[i];
+            }
+            else
+            {
+                Debug.LogWarning($"TMP 텍스트를 찾지 못했음: {btnObj.name}");
+            }
+
+            // 클릭 이벤트 연결
+            buttonComp.onClick.AddListener(() => OnChoiceSelected(index));
+        }
+
+        yield return new WaitUntil(() => choiceSelected);
+
+        foreach (Transform child in choicePanel)
+            Destroy(child.gameObject);
+
+        choicePanel.gameObject.SetActive(false);
+    }
+
+
+
+    void OnChoiceSelected(int index)
+    {
+        selectedIndex = index;
+        choiceSelected = true;
+    }
+
+    public int GetChoiceResult()
+    {
+        return selectedIndex;
     }
 
     // Mono.json 파싱용 클래스
@@ -291,6 +395,8 @@ public class GameManager : MonoBehaviour
         public List<string> bedDepressed3;
         public List<string> bedDepressed4;
         public List<string> mirrorScene;
+        public List<string> afterMessage;
+        public List<string> afterMessage2;
 
         public Dictionary<string, List<string>> ToDictionary()
         {
@@ -310,8 +416,17 @@ public class GameManager : MonoBehaviour
             if (bedDepressed3 != null) dict["bedDepressed3"] = bedDepressed3;
             if (bedDepressed4 != null) dict["bedDepressed4"] = bedDepressed4;
             if (mirrorScene != null) dict["mirrorScene"] = mirrorScene;
+            if (afterMessage != null) dict["afterMessage"] = afterMessage;
+            if (afterMessage2 != null) dict["afterMessage2"] = afterMessage2;
             return dict;
         }
     }
 
+    [System.Serializable]
+    public class ChoiceData
+    {
+        public string type;
+        public List<string> options;
+        public List<string> nextKeys;
+    }
 }

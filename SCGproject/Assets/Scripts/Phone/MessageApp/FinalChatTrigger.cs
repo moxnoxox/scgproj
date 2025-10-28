@@ -6,6 +6,8 @@ public class FinalChatTrigger : MonoBehaviour
     public string targetRoomName = "🎸";  
     public string questJsonFile = "guitar_afterquest"; // 예: Resources/JSON/guitar_afterquest.json
     public static FinalChatTrigger Instance;
+    public bool isChatDone = false;
+
 
     private void Awake()
     {
@@ -16,6 +18,7 @@ public class FinalChatTrigger : MonoBehaviour
     }
     public void StartFinalChat()
     {
+        isChatDone = false;
         ChatRoom targetRoom = loader.loadedRooms
             .Find(r => r.roomName == targetRoomName);
 

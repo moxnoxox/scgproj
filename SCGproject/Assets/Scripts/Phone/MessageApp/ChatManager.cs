@@ -439,6 +439,12 @@ public class ChatManager : MonoBehaviour
 
         InputBlocker.Disable(); // 입력 복구
         isAutoPlaying = false;
+        
+        if (currentRoom != null && currentRoom.roomName == "🎸" && FinalChatTrigger.Instance != null)
+        {
+            FinalChatTrigger.Instance.isChatDone = true;
+            Debug.Log("FinalChatTrigger: 🎸방 자동 대화 완료 신호 보냄");
+        }
     }
 
     // ===== 유틸 =====
