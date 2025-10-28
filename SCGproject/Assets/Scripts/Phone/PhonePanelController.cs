@@ -33,7 +33,7 @@ public class PhonePanelController : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "SampleScene")
+        if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Chapter1")
         {
             SceneNum = 1;
             enabled = GameManager.Instance.phoneOpenEnable;

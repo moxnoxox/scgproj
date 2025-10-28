@@ -302,7 +302,6 @@ MonoBehaviour:
   click: {fileID: 1169462421}
   S: {fileID: 405333910}
   space: {fileID: 1016523265}
-  camcon: {fileID: 519420033}
 --- !u!1 &55871468
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,6 +487,7 @@ MonoBehaviour:
   animator: {fileID: 55871474}
   starting: 0
   canInput: 1
+  h: 0
   playerPower: {fileID: 55871476}
   keyInfo: {fileID: 52113458}
   gameManager: {fileID: 295625446}
@@ -1905,6 +1905,7 @@ MonoBehaviour:
   autoMove: 0
   phoneOpenEnable: 0
   AfterQuest: 0
+  canInput: 0
   hasObjectActivated: 0
   gameStarted: 0
   papaermonologueDone: 0
@@ -14826,6 +14827,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 112227815}
     m_Modifications:
+    - target: {fileID: 1268510727702237371, guid: 862e4006be6ce644888fe54d1e4fd5a2, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 3499209321631841087, guid: 862e4006be6ce644888fe54d1e4fd5a2, type: 3}
       propertyPath: m_Name
       value: MonologuePanel
@@ -14936,6 +14941,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8916513141600950141, guid: 862e4006be6ce644888fe54d1e4fd5a2, type: 3}
       propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8916513141600950141, guid: 862e4006be6ce644888fe54d1e4fd5a2, type: 3}
+      propertyPath: m_ActiveFontFeatures.Array.size
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

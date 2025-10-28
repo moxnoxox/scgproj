@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     public bool phoneOpenEnable = false;
     public bool AfterQuest = false;
     public static GameManager Instance;
+    public bool canInput;
+
     // 시나리오 상태 관리
     private enum ScenarioState
     {
@@ -113,6 +115,7 @@ public class GameManager : MonoBehaviour
         scenarioState = ScenarioState.FindPaper;
         playermove.movable = false;
         yield return ShowMono("findPaper", 2f);
+        yield return Showannouncement("objectGuide", 2f);
         papaermonologueDone = true;
 
         while (!paperOpened)
@@ -123,8 +126,10 @@ public class GameManager : MonoBehaviour
         // 5. 종이쪼가리 확인 + 리액션
         scenarioState = ScenarioState.PaperReaction;
         yield return ShowMono("paperReaction", 2f);
+        playerPower.DecreasePower(10);
         autoMove = true;
         //플레이어 침대 자동 리턴
+        StartCoroutine(Showannouncement("bedGuide", 2f));
         playermove.canInput = false;
         yield return new WaitForSeconds(3f);
         playermove.SleepExternal();
@@ -157,19 +162,20 @@ public class GameManager : MonoBehaviour
         phoneOpenEnable = false;
         yield return ShowMono("mirrorScene", 2f);
         playerPower.DecreasePower(100);
+        yield return new WaitForSeconds(5f);
+        yield return ShowMono("afterQuest", 2f);
         autoMove = true;
-        // TODO: 에너지 0으로 만들기
         yield return new WaitForSeconds(5f);
         playermove.SleepExternal();
         AfterQuest = true;
         autoMove = false;
         phoneOpenEnable = false;
         scenarioState = ScenarioState.AfterQuest;
-        yield return ShowMono("afterQuest", 2f);
+        
 
         // 9. 침대에 누운 후 문구
         scenarioState = ScenarioState.BedDepressed;
-        yield return ShowMono("bedDepressed", 2f);
+        yield return ShowMono("bedDepressed1", 2f);
         AfterQuest = false;
         playermove.canInput = true;
         playermove.movable = true;
@@ -179,6 +185,16 @@ public class GameManager : MonoBehaviour
         notification.enabled = true;
         yield return new WaitForSeconds(2f);
         notification.enabled = false;
+        yield return ShowMono("bedDepressed2", 2f);
+        notification.enabled = true;
+        yield return new WaitForSeconds(2f);
+        notification.enabled = false;
+        yield return ShowMono("bedDepressed3", 2f);
+        notification.enabled = true;
+        yield return new WaitForSeconds(1f);
+        notification.enabled = false;
+        yield return ShowMono("bedDepressed4", 2f);
+
         FinalChatTrigger.Instance.StartFinalChat();
         // TODO: 카톡 메시지 UI 연출, 실제 채팅 시스템과 연동 필요
         // yield return ShowBuskerContact();
@@ -241,15 +257,19 @@ public class GameManager : MonoBehaviour
 
     IEnumerator ShowMono(string key, float showTime)
     {
+        canInput = false;
         if (monoData.ContainsKey(key))
             MonologueManager.Instance.ShowMonologuesSequentially(monoData[key], showTime);
         yield return new WaitForSeconds(monoData.ContainsKey(key) ? monoData[key].Count * showTime : 0f);
+        canInput = true;
     }
     IEnumerator Showannouncement(string key, float showTime)
     {
+        canInput = false;
         if (monoData.ContainsKey(key))
             MonologueManager.Instance.ShowAnnouncement(monoData[key], showTime);
         yield return new WaitForSeconds(monoData.ContainsKey(key) ? monoData[key].Count * showTime : 0f);
+        canInput = true;
     }
 
     // Mono.json 파싱용 클래스
@@ -259,13 +279,17 @@ public class GameManager : MonoBehaviour
         public List<string> wakeUp;
         public List<string> moveGuide;
         public List<string> findPaper;
+        public List<string> objectGuide;
         public List<string> paperReaction;
         public List<string> bedGuide;
         public List<string> bedRest;
         public List<string> phoneGuide;
         public List<string> questReaction;
         public List<string> afterQuest;
-        public List<string> bedDepressed;
+        public List<string> bedDepressed1;
+        public List<string> bedDepressed2;
+        public List<string> bedDepressed3;
+        public List<string> bedDepressed4;
         public List<string> mirrorScene;
 
         public Dictionary<string, List<string>> ToDictionary()
@@ -274,13 +298,17 @@ public class GameManager : MonoBehaviour
             if (wakeUp != null) dict["wakeUp"] = wakeUp;
             if (moveGuide != null) dict["moveGuide"] = moveGuide;
             if (findPaper != null) dict["findPaper"] = findPaper;
+            if (objectGuide != null) dict["objectGuide"] = objectGuide;
             if (paperReaction != null) dict["paperReaction"] = paperReaction;
             if (bedGuide != null) dict["bedGuide"] = bedGuide;
             if (bedRest != null) dict["bedRest"] = bedRest;
             if (phoneGuide != null) dict["phoneGuide"] = phoneGuide;
             if (questReaction != null) dict["questReaction"] = questReaction;
             if (afterQuest != null) dict["afterQuest"] = afterQuest;
-            if (bedDepressed != null) dict["bedDepressed"] = bedDepressed;
+            if (bedDepressed1 != null) dict["bedDepressed1"] = bedDepressed1;
+            if (bedDepressed2 != null) dict["bedDepressed2"] = bedDepressed2;
+            if (bedDepressed3 != null) dict["bedDepressed3"] = bedDepressed3;
+            if (bedDepressed4 != null) dict["bedDepressed4"] = bedDepressed4;
             if (mirrorScene != null) dict["mirrorScene"] = mirrorScene;
             return dict;
         }

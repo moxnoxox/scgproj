@@ -25,7 +25,7 @@ public class paper : MonoBehaviour
     void Update()
     {
         xdiff = Mathf.Abs(this.transform.position.x - player.transform.position.x);
-        if (xdiff < 1f)
+        if (xdiff < 1f && GameManager.Instance.canInput)
         {
             GameManager.Instance.OnObjectActivated();
             
