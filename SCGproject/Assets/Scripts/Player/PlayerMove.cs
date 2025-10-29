@@ -42,19 +42,25 @@ public class PlayerMove : MonoBehaviour
         // 여기서만 SceneManager 호출 (UnityException 방지)
         currentScene = SceneManager.GetActiveScene().name;
 
-        if (currentScene == "Chapter2") // 챕터2 씬 이름 정확히 입력
+        if (key_info != null)
+        keyInfo = key_info.GetComponent<key_info>();
+
+        if (currentScene == "Chapter1")
         {
-            // 챕터2: 바로 일어난 상태로 시작
+            if (keyInfo != null)
+                keyInfo.isBed = true;
+        }
+
+        // ✅ 씬별 초기 상태 설정
+        if (currentScene == "Chapter2")
+        {
             animator.SetBool("isSleep", false);
             start = true;
-            
         }
         else
         {
-            // 챕터1: 누워서 시작
             animator.SetBool("isSleep", true);
             start = false;
-            keyInfo.isBed = true;
         }
     }
 

@@ -489,7 +489,7 @@ MonoBehaviour:
   canInput: 1
   h: 0
   playerPower: {fileID: 55871476}
-  keyInfo: {fileID: 52113458}
+  key_info: {fileID: 52113456}
   gameManager: {fileID: 295625446}
   canvas: {fileID: 112227816}
   movable: 1
@@ -2970,6 +2970,7 @@ MonoBehaviour:
   chatListPanel: {fileID: 1388161552}
   chatRoomPrefab: {fileID: 7723451654970528974, guid: 5154b4de1ce8b6f4089e2781cbbf1fac, type: 3}
   ChatAppPanel: {fileID: 411159830}
+  chatManager: {fileID: 0}
 --- !u!114 &411159832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2985,6 +2986,7 @@ MonoBehaviour:
   loader: {fileID: 92243980}
   targetRoomName: "\U0001F3B8"
   questJsonFile: guitar_afterquest
+  nextQuestJsonFile: guitar_afterquest2
   isChatDone: 0
 --- !u!1 &419135047
 GameObject:

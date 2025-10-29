@@ -12,7 +12,7 @@ public class ChatAppManager : MonoBehaviour
     public Transform ChatAppPanel;
 
     private GameObject currentRoomPanel;
-    private ChatManager chatManager;
+    public ChatManager chatManager;
 
     private class ScheduledReply
     {

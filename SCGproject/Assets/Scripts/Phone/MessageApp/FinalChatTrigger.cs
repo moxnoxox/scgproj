@@ -3,8 +3,9 @@ using UnityEngine;
 public class FinalChatTrigger : MonoBehaviour
 {
     public ChatRoomLoader loader;   
-    public string targetRoomName = "🎸";  
+    public string targetRoomName = "🎸";
     public string questJsonFile = "guitar_afterquest"; // 예: Resources/JSON/guitar_afterquest.json
+    public string nextQuestJsonFile = "guitar_afterquest2";
     public static FinalChatTrigger Instance;
     public bool isChatDone = false;
 
@@ -49,6 +50,7 @@ public class FinalChatTrigger : MonoBehaviour
         /// PhoneUIManager.Instance.ShowNotification(targetRoom.roomName, msg1.content);
 
         targetRoom.AfterQuestJson = questJsonFile;
+        targetRoom.AfterQuestJsonNext = nextQuestJsonFile; ;
 
         Debug.Log($"퀘스트 트리거 완료: {targetRoomName} 방에 메시지 3개 추가 + {questJsonFile} 로드");
     }

@@ -401,13 +401,13 @@ public class ChatManager : MonoBehaviour
     }
 
     // ===== 자동 대화 (InputBlocker 기반) =====
-    private IEnumerator PlayAutoMessages(List<Message> autoMessages)
+    public IEnumerator PlayAutoMessages(List<Message> autoMessages)
     {
         isAutoPlaying = true;
 
         InputBlocker.Enable(); // 전역 입력 차단
 
-        foreach (var msg in autoMessages)
+        foreach (var msg in new List<Message>(autoMessages))
         {
             float delay = msg.delayAfter > 0 ? msg.delayAfter : 2f;
             yield return new WaitForSeconds(delay);
@@ -439,12 +439,79 @@ public class ChatManager : MonoBehaviour
 
         InputBlocker.Disable(); // 입력 복구
         isAutoPlaying = false;
-        
+
         if (currentRoom != null && currentRoom.roomName == "🎸" && FinalChatTrigger.Instance != null)
         {
             FinalChatTrigger.Instance.isChatDone = true;
             Debug.Log("FinalChatTrigger: 🎸방 자동 대화 완료 신호 보냄");
         }
+        
+        // 🔹 2) 다음 자동대화가 있으면 자동으로 이어붙이기
+        /*if (currentRoom != null && !string.IsNullOrEmpty(currentRoom.AfterQuestJsonNext))
+        {
+            Debug.Log($"📨 다음 자동대화 {currentRoom.AfterQuestJsonNext} 로 이어집니다.");
+
+            string nextJson = currentRoom.AfterQuestJsonNext;
+            currentRoom.AfterQuestJsonNext = null;
+
+            ChatRoomLoader loader = FindObjectOfType<ChatRoomLoader>();
+
+            // 🔹 비활성화된 오브젝트까지 포함해서 찾기
+            if (loader == null)
+            {
+                loader = Resources.FindObjectsOfTypeAll<ChatRoomLoader>()
+                    .FirstOrDefault(l => l.name.Contains("ChatRoomLoader"));
+                if (loader != null)
+                    Debug.Log("🔍 비활성화된 ChatRoomLoader를 Resources.FindObjectsOfTypeAll()로 찾음");
+            }
+
+
+            if (loader == null)
+            {
+                Debug.LogError("❌ ChatRoomLoader를 찾을 수 없습니다. 씬에 ChatRoomLoader 오브젝트가 존재하는지 확인하세요.");
+                yield break;
+            }
+
+            if (currentRoom == null)
+            {
+                Debug.LogError("❌ currentRoom이 null 상태입니다. 자동대화 이어붙이기 중단.");
+                yield break;
+            }
+
+            int beforeCount = currentRoom.messages != null ? currentRoom.messages.Count : -1;
+            currentRoom.AfterQuestJson = nextJson;
+
+            try
+            {
+                loader.LoadOtherJson(currentRoom);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"❌ LoadOtherJson 실행 중 예외 발생: {e.Message}\n{e.StackTrace}");
+                yield break;
+            }
+
+            if (currentRoom.messages == null)
+            {
+                Debug.LogError("❌ currentRoom.messages가 null입니다.");
+                yield break;
+            }
+
+            int afterCount = currentRoom.messages.Count;
+            Debug.Log($"✅ LoadOtherJson 완료: 메시지 {afterCount - beforeCount}개 추가됨");
+
+            yield return null;
+
+            var newlyAdded = currentRoom.messages.Skip(beforeCount).ToList();
+            Debug.Log($"🎬 새 메시지 {newlyAdded.Count}개 재생 예정");
+
+            if (newlyAdded.Count > 0)
+                yield return StartCoroutine(PlayAutoMessages(newlyAdded));
+            else
+                Debug.LogWarning("⚠ 새로 추가된 메시지가 없습니다. 자동대화 종료");
+        }
+        */
+
     }
 
     // ===== 유틸 =====

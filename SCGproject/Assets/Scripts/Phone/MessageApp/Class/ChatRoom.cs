@@ -13,6 +13,7 @@ public class ChatRoom
     public List<Message> messages = new List<Message>(); // 런타임 누적 메시지
 
     public string AfterQuestJson; // 1챕터 -> 2챕터 넘어갈때 카톡 json 
+    public string AfterQuestJsonNext; 
 
     public ChatRoom(string roomName)
     {

@@ -209,6 +209,27 @@ public class GameManager : MonoBehaviour
         yield return new WaitUntil(() => FinalChatTrigger.Instance.isChatDone);
         yield return ShowMono("afterMessage", 2f);
 
+        ChatRoom currentRoom = ChatAppManager.Instance.chatManager.GetCurrentRoom();
+        if (currentRoom != null)
+        {
+            // 두 번째 자동 대화 JSON 파일명
+            string nextJson = "guitar_afterquest2";  // 네가 만든 파일 이름 그대로
+            TextAsset jsonFile = Resources.Load<TextAsset>($"ChatData/{nextJson}");
+
+            if (jsonFile != null)
+            {
+                ChatRoom nextData = JsonUtility.FromJson<ChatRoom>(jsonFile.text);
+                Debug.Log($"✅ 자동카톡2 JSON 로드 완료 ({nextData.messages.Count}개 메시지)");
+
+                // 새 메시지만 뽑아서 재생
+                yield return StartCoroutine(ChatAppManager.Instance.chatManager.PlayAutoMessages(nextData.messages));
+            }
+            else
+            {
+                Debug.LogError($"❌ {nextJson}.json 파일을 찾을 수 없습니다.");
+            }
+        }
+
         scenarioState = ScenarioState.Done;
         //SceneController.Loadsceneprosess(Chapter2);
         // TODO: 챕터2로 전환, 화면 어두워짐 등 연출 필요

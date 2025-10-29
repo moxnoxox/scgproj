@@ -1,0 +1,10 @@
+{
+    "roomName": "🎸",
+    "participants": [
+    { "id": "Me", "nickname": "나", "profileImagePath": "my_profile" },
+    { "id": "guitar", "nickname": "🎸", "profileImagePath": "guitar_profile" }
+    ],
+    "messages": [
+    { "type": "message", "sender": "Me", "content": "그래", "timestamp": "오후 6:08", "isRead": false},
+    { "type": "message", "sender": "Me", "content": "찾아볼게", "timestamp": "오후 6:08", "isRead": false}
+    ]}
