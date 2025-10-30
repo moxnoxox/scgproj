@@ -198,7 +198,6 @@ public class GameManager : MonoBehaviour
         // 9. 침대에 누운 후 문구
         scenarioState = ScenarioState.BedDepressed;
         yield return ShowMono("bedDepressed1", 2f);
-        AfterQuest = false;
         playermove.canInput = true;
         playermove.movable = true;
         phoneOpenEnable = true;
