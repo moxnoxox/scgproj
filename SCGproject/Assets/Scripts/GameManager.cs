@@ -144,15 +144,12 @@ public class GameManager : MonoBehaviour
 
         // 5. 종이쪼가리 확인 + 리액션
         scenarioState = ScenarioState.PaperReaction;
-        yield return ShowMono("paperReaction", 2f);
-        playerPower.DecreasePower(10);
-        autoMove = true;
+        yield return StartCoroutine(ShowMono("paperReaction", 2f));
         //플레이어 침대 자동 리턴
-        StartCoroutine(Showannouncement("bedGuide", 2f));
+        playerPower.DecreasePower(10);
+        yield return Showannouncement("bedGuide", 2f);
         playermove.canInput = false;
-        yield return new WaitForSeconds(3f);
-        playermove.SleepExternal();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         // 6. 침대에 누움 + 휴대폰 안내
         scenarioState = ScenarioState.BedRest;
         yield return ShowMono("bedRest", 2f);
@@ -416,6 +413,17 @@ public class GameManager : MonoBehaviour
     {
         return selectedIndex;
     }
+    public string GetCurrentScenarioState()
+    {
+        return scenarioState.ToString();
+    }
+
+    private IEnumerator StartAutoMoveAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        autoMove = true;
+    }
+
 
     // Mono.json 파싱용 클래스
     [System.Serializable]
