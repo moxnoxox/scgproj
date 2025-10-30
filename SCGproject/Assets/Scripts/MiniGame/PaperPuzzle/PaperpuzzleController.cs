@@ -31,10 +31,37 @@ public class PaperpuzzleController : MonoBehaviour
         puzzlePanel.interactable = false;
         puzzlePanel.blocksRaycasts = false;
         //디버그용
+        //StartPuzzle();
     }
     public void StartPuzzle()
     {
         StartCoroutine(PuzzleRoutine());
+    }
+    public void OnExitButton()
+    {
+        isPuzzleActive = false;
+        puzzlePanel.interactable = false;
+        puzzlePanel.blocksRaycasts = false;
+        puzzlePanel.alpha = 0;
+        //reset puzzle
+        foreach (var handler in pieceHandlers)
+        {
+            handler.transform.position = handler.originalPosition;
+            handler.transform.rotation = handler.originalRotation;
+            handler.isCorrectPosition = false;
+            handler.currentSnappedIndex = -1;
+        }
+    }
+    public void OnResetButton()
+    {
+        foreach (var handler in pieceHandlers)
+        {
+            handler.transform.position = handler.originalPosition;
+            handler.transform.rotation = handler.originalRotation;
+            handler.isCorrectPosition = false;
+            handler.currentSnappedIndex = -1;
+        }
+        isCompleted = false;
     }
 
     IEnumerator PuzzleRoutine()

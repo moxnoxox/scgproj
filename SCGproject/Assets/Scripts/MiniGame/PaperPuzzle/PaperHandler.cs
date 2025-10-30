@@ -13,11 +13,12 @@ public class PaperHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
     //todo: 퍼즐 드래그앤드롭 시 퍼즐 조각이 특정 범위 내에 들어오면 자동으로 자리 지정
     //todo: 퍼즐은 unityengine.ui.image
     public Vector3 originalPosition;
+    public Quaternion originalRotation;
     public Transform[] correctPosition;
     public int pieceIndex; // 퍼즐 조각 인덱스 (0~8)
     public bool isCorrectPosition = false;
     // index of the correctPosition this piece is currently snapped to (-1 = none)
-    private int currentSnappedIndex = -1;
+    public int currentSnappedIndex = -1;
     // allowable angle (degrees) to consider rotation "matching"
     private const float rotationMatchThreshold = 1f;
     
@@ -75,6 +76,7 @@ public class PaperHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
             }
         }
         originalPosition = transform.position;
+        originalRotation = transform.rotation;
         isCorrectPosition = false;
         currentSnappedIndex = -1;
     }
