@@ -10,6 +10,7 @@ public class MonologueManager : MonoBehaviour
     public GameObject monologuePanel;
     public TextMeshProUGUI monologueText;
     public TextMeshProUGUI announcementText;
+   
 
     private void Awake()
     {
@@ -59,7 +60,6 @@ public class MonologueManager : MonoBehaviour
             announcementText.gameObject.SetActive(false);
             yield break;
         }
-
         announcementText.gameObject.SetActive(true);
 
         foreach (var line in messages)

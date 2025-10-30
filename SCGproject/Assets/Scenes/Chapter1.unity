@@ -1906,6 +1906,7 @@ MonoBehaviour:
   phoneOpenEnable: 0
   AfterQuest: 0
   canInput: 0
+  computerScript: {fileID: 625545910}
   choicePanel: {fileID: 662022735}
   choiceButtonPrefab: {fileID: 1446364494}
   hasObjectActivated: 0
@@ -5187,6 +5188,7 @@ MonoBehaviour:
   playerPower: {fileID: 0}
   keyInfo: {fileID: 52113458}
   home: {fileID: 1539368484}
+  isHomeClosed: 0
 --- !u!1 &631784416
 GameObject:
   m_ObjectHideFlags: 0

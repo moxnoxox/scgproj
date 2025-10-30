@@ -13,6 +13,7 @@ public class computer : MonoBehaviour
     public player_power playerPower;
     public key_info keyInfo;
     public Image home;
+    public bool isHomeClosed = false;
 
     void Start()
     {
@@ -47,6 +48,8 @@ public class computer : MonoBehaviour
         MonologueManager.Instance.ShowMonologuesSequentially(new List<string> { "파일 정리하기 너무 귀찮아..." }, 3f);
         yield return new WaitForSeconds(3.0f);
         home.enabled = false;
+        isHomeClosed = true; 
         playerPower.DecreasePower(10);
+        
     }
 }

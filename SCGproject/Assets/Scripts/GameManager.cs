@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public bool canInput;
 
+    public computer computerScript;  
+
+
     //선택지 
     public Transform choicePanel;
     public GameObject choiceButtonPrefab;
@@ -159,6 +162,13 @@ public class GameManager : MonoBehaviour
         // 7. 퀘스트 확인 후(침대에서 일어나기)
         scenarioState = ScenarioState.QuestReaction;
         yield return ShowMono("questReaction", 2f);
+
+        //7.5 .. 카톡 + 노트북 확인 완료 시 
+        while (!(replCount >= 2 && computerChecked && computerScript.isHomeClosed))
+        {
+            yield return null;
+        }
+        yield return ShowMono("afterMonitor", 2f);
 
         // 8. 할 일 퀘스트 후, 침대 리턴
         //할일 퀘스트: 카톡 답하기, 노트북 확인, 거울 보기
@@ -410,6 +420,7 @@ public class GameManager : MonoBehaviour
         public List<string> bedRest;
         public List<string> phoneGuide;
         public List<string> questReaction;
+        public List<string> afterMonitor;
         public List<string> afterQuest;
         public List<string> bedDepressed1;
         public List<string> bedDepressed2;
@@ -431,6 +442,7 @@ public class GameManager : MonoBehaviour
             if (bedRest != null) dict["bedRest"] = bedRest;
             if (phoneGuide != null) dict["phoneGuide"] = phoneGuide;
             if (questReaction != null) dict["questReaction"] = questReaction;
+            if (afterMonitor != null) dict["afterMonitor"] = afterMonitor;
             if (afterQuest != null) dict["afterQuest"] = afterQuest;
             if (bedDepressed1 != null) dict["bedDepressed1"] = bedDepressed1;
             if (bedDepressed2 != null) dict["bedDepressed2"] = bedDepressed2;
