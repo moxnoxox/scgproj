@@ -10,7 +10,7 @@ public class TrashBag1Stack : MonoBehaviour, IInteractable
     public void Interact(PlayerMove player)
     {
         // When the player interacts, call the TryLift method.
-        TryLift(player);
+        if(Chapter2Manager.Instance != null) if (Chapter2Manager.Instance.canHold) TryLift(player);
     }
 
     public void TryLift(PlayerMove move)

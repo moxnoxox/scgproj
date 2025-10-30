@@ -98,7 +98,7 @@ public class TrashBag2Stack : MonoBehaviour, IInteractable
     // IInteractable implementation so PlayerMove can call Interact(player)
     public void Interact(PlayerMove player)
     {
-        TryLift(player);
+        if(Chapter2Manager.Instance != null) if (Chapter2Manager.Instance.canHold) TryLift(player);
     }
 
     public void ResetSortingOrder()

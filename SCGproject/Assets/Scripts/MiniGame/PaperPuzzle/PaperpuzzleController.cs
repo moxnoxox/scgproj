@@ -68,7 +68,7 @@ public class PaperpuzzleController : MonoBehaviour
         puzzlePanel.blocksRaycasts = false;
         puzzlePanel.alpha = 0;
         Chapter2Manager.Instance.OnPaperPuzzleDone();
-        Chapter2Manager.Instance.movable = true;
+        Chapter2Manager.Instance.ch2_movable = true;
         yield return null;
     }
 }

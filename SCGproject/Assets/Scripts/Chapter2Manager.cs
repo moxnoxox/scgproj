@@ -23,7 +23,7 @@ public class Chapter2Manager : MonoBehaviour
 
     // --- 시나리오 진행 관련 변수들 ---
     public bool autoMove; // 플레이어 자동 이동 활성화 여부
-    public bool movable;
+    public bool ch2_movable;
     private Dictionary<string, List<string>> monoData; // Mono2.json 데이터 저장
     private ScenarioState scenarioState; // 현재 시나리오 단계
 
@@ -42,6 +42,7 @@ public class Chapter2Manager : MonoBehaviour
     // --- 선택지 관련 변수들 ---
     private bool choiceSelected; // 선택지가 선택되었는지 여부
     private int selectedIndex; // 선택된 선택지의 인덱스
+    public bool canHold = false;
 
     // --- 연출용 오브젝트 참조 ---
     public GameObject trashCanObject; // Inspector에서 등장할 쓰레기통 오브젝트 연결
@@ -86,7 +87,7 @@ public class Chapter2Manager : MonoBehaviour
         // 싱글톤 설정
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
-        movable = false;
+        ch2_movable = false;
     }
 
     void Start()
@@ -183,7 +184,7 @@ public class Chapter2Manager : MonoBehaviour
         // --- [수정됨] 상세한 쓰레기 튜토리얼 시퀀스 ---
         scenarioState = ScenarioState.TrashBagApproach;
         yield return ShowMono("trashTutorial_Start", 2f); // "사방에...", "밀어볼까?..."
-        movable = true;
+        ch2_movable = true;
         // 튜토리얼 대상 2단 쓰봉으로 이동 안내 (포인터 연출 가정)
         // tutorialManager?.ShowPointer(tutorialTargetTrashBag);
         Debug.Log("튜토리얼: 지정된 2단 쓰레기봉지로 이동하세요.");
@@ -209,7 +210,7 @@ public class Chapter2Manager : MonoBehaviour
 
         // 선택지 표시: '치우자' / '돌아가자'
         // [수정] ShowChoices가 코루틴이므로 yield return 사용
-        yield return ShowChoices(new List<string> { "쓰레기봉지를 치우자", "그냥 돌아서 가자" });
+        yield return ShowChoices(new List<string> { "> 쓰레기봉지를 치우자", "> 그냥 돌아서 가자" });
         int choiceResult = GetChoiceResult();
 
         if (choiceResult == 0) // '쓰레기봉지를 치우자' 선택
@@ -218,7 +219,9 @@ public class Chapter2Manager : MonoBehaviour
             scenarioState = ScenarioState.TrashTutorialExecution;
             Debug.Log("튜토리얼: '쓰레기봉지를 치우자' 선택됨.");
             // 안내: '**‘쓰레기봉지를 치우자’**를 눌러 보세요." (선택했으므로 다음 단계 안내)
-            yield return ShowAnnouncement(new List<string> { "**‘쓰레기봉지를 치우자’**를 선택했습니다." , "스페이스바를 눌러 쓰레기봉지를 드세요."}, 4f);
+            canHold = true;
+            Debug.Log("플레이어가 물체를 들 수 있는 상태(canHold = true)로 변경됨.");
+            yield return ShowAnnouncement(new List<string> { "<b>‘쓰레기봉지를 치우자’</b>를 선택했습니다." , "스페이스바를 눌러 쓰레기봉지를 드세요."}, 4f);
 
 
             // 플레이어가 스페이스바를 눌러 쓰봉 들기를 기다림
@@ -240,15 +243,37 @@ public class Chapter2Manager : MonoBehaviour
             Debug.Log("튜토리얼: 쓰레기봉지를 버렸습니다.");
 
             // 튜토리얼 완료 독백
-            yield return ShowMono("trashTutorial_End", 2f);
+            yield return ShowAnnouncement(monoData["trashTutorial_End"], 2f);
         }
         else // '그냥 돌아서 가자' 선택
         {
             trashTutorialSkipped = true;
-            Debug.Log("튜토리얼: '그냥 돌아서 가자' 선택됨. 튜토리얼 건너뛰기.");
-            // 건너뛰는 경우 별도 안내나 독백 추가 가능
-            // 예: yield return ShowMono("tutorial_skipped_mono", 2f);
+            scenarioState = ScenarioState.TrashTutorialChoices;
+
+            Debug.Log("튜토리얼: '그냥 돌아서 가자' 선택됨.");
+
+            // 💬 회피 반응 대사
+            yield return ShowMono("trashTutorial_Skip", 2f);
+            // ex) "치우기 싫다... 그냥 두자."
+
+            // ex) "…근데, 이걸 안 치우면 지나갈 수가 없잖아."
+
+            // ex) "하… 알겠어. 그냥 치우자."
+
+            canHold = true;
+            scenarioState = ScenarioState.TrashTutorialExecution;
+            Debug.Log("플레이어가 결국 쓰레기봉지를 치우기로 결심함 (canHold = true)");
+
+            yield return ShowAnnouncement(new List<string> { "스페이스바를 눌러 쓰레기봉지를 드세요." }, 3f);
+            
+            // 플레이어가 스페이스바를 눌러 쓰봉 버리기를 기다림
+            yield return new WaitUntil(() => playerMove != null && !playerMove.isHolding);
+            Debug.Log("튜토리얼: 쓰레기봉지를 버렸습니다.");
+
+            // 튜토리얼 완료 독백
+            yield return ShowAnnouncement(monoData["trashTutorial_End"], 2f);
         }
+
         // --- 쓰레기 튜토리얼 시퀀스 끝 ---
 
 
@@ -535,7 +560,7 @@ public class Chapter2Manager : MonoBehaviour
     private void StartFileSortGame()
     {
         if (fileSortGameDone) return; // 이미 완료했다면 시작하지 않음
-        movable = false;
+        ch2_movable = false;
         scenarioState = ScenarioState.FileSortGameStart;
         Debug.Log("노트북 열림 → 미니게임(파일정리) 시작");
         // 예: FileSortGameManager.Instance.ShowGameUI(); // 실제 미니게임 시작 호출
@@ -560,7 +585,7 @@ public class Chapter2Manager : MonoBehaviour
          fileSortGameDone = true;
          scenarioState = ScenarioState.FileSortGameComplete;
          Debug.Log("파일 정렬 미니게임 완료! 에너지 +10");
-         movable = true;
+         ch2_movable = true;
          playerPower?.IncreasePower(10);
          questManager?.CompleteComputerQuest(); // 퀘스트 완료 처리
          // 파일 정렬 완료 후 독백 등 추가 가능
@@ -597,7 +622,7 @@ public class Chapter2Manager : MonoBehaviour
     // 종이 퍼즐 게임 시작 함수
     private void StartPaperPuzzleGame() {
          if (paperPuzzleDone) return; // 이미 완료했다면 시작 안 함
-         movable = false;
+         ch2_movable = false;
          scenarioState = ScenarioState.PaperPuzzleStart;
          Debug.Log("종이 퍼즐 미니게임 시작 (구현 필요)");
          // 예: PaperpuzzleController.Instance.StartPuzzle(); // 실제 퍼즐 시작 호출
@@ -685,6 +710,7 @@ public class Chapter2Manager : MonoBehaviour
         public List<string> trashTutorial_Fail;
         public List<string> trashTutorial_FindCan;
         public List<string> trashTutorial_CanFound;
+        public List<string> trashTutorial_Skip;
         public List<string> trashTutorial_End;
         public List<string> trashTutorial_ToFreeMove;
 
@@ -717,6 +743,7 @@ public class Chapter2Manager : MonoBehaviour
             if (trashTutorial_Fail != null) dict.Add("trashTutorial_Fail", trashTutorial_Fail);
             if (trashTutorial_FindCan != null) dict.Add("trashTutorial_FindCan", trashTutorial_FindCan);
             if (trashTutorial_CanFound != null) dict.Add("trashTutorial_CanFound", trashTutorial_CanFound);
+            if (trashTutorial_Skip != null) dict.Add("trashTutorial_Skip", trashTutorial_Skip);
             if (trashTutorial_End != null) dict.Add("trashTutorial_End", trashTutorial_End);
             if (trashTutorial_ToFreeMove != null) dict.Add("trashTutorial_ToFreeMove", trashTutorial_ToFreeMove);
             if (usb1_first != null) dict.Add("usb1_first", usb1_first);

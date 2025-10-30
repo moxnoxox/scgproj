@@ -115,6 +115,16 @@ public class FileSortGameManager : MonoBehaviour
     {
         if (!gameActive) return;
 
+        UpdateTimerView();
+    }
+
+    void UpdateTimerView()
+    {
+        if (timerText) timerText.text = $"{timer:F1}";
+    }
+
+    void FixedUpdate()
+    {
         timer -= Time.deltaTime;
         if (timer <= 0)
         {
@@ -125,13 +135,6 @@ public class FileSortGameManager : MonoBehaviour
             EndGame(false);
             return;
         }
-
-        UpdateTimerView();
-    }
-
-    void UpdateTimerView()
-    {
-        if (timerText) timerText.text = $"{timer:F1}";
     }
 
     public void ApplyPenalty(float seconds)

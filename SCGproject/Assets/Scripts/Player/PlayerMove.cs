@@ -23,6 +23,7 @@ public class PlayerMove : MonoBehaviour
     public bool isHolding = false;
     public GameObject heldObject = null;
     
+    
     private IInteractable interactionTarget = null;
 
     private string currentScene;
@@ -92,6 +93,11 @@ public class PlayerMove : MonoBehaviour
             {
                 interactionTarget.Interact(this);
             }
+        }
+        if(currentScene == "Chapter2")
+        {
+            if (Chapter2Manager.Instance != null)
+             movable = Chapter2Manager.Instance.ch2_movable;
         }
     }
 
@@ -259,12 +265,20 @@ public class PlayerMove : MonoBehaviour
         Vector3 dropPos = transform.position + new Vector3(spriteRenderer.flipX ? 0.6f : -0.6f, -0.25f, 0);
         heldObject.transform.position = dropPos;
         heldObject.transform.parent = null;
-        
+
+        // 💡 플레이어가 쓰레기통 안에 있으면 즉시 삭제
+        if (TrashCan.PlayerInside)
+        {
+            Debug.Log($"TrashCan 범위 안에서 '{heldObject.name}'을(를) 버림. 즉시 파괴.");
+            Destroy(heldObject);
+        }
+
         isHolding = false;
         heldObject = null;
 
         Debug.Log("DropHeldObject: Object dropped.");
     }
+
 
     private IEnumerator ReenableCollider(GameObject obj)
     {

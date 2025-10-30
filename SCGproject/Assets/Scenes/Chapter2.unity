@@ -1853,7 +1853,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -250, y: -380}
+  m_AnchoredPosition: {x: -250, y: -300}
   m_SizeDelta: {x: 455, y: 917}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &218653998
@@ -6847,6 +6847,8 @@ MonoBehaviour:
   choicePanel: {fileID: 1548073731}
   choiceButtonPrefab: {fileID: 1581502404}
   autoMove: 0
+  ch2_movable: 0
+  canHold: 0
   trashCanObject: {fileID: 544978982}
   tutorialTargetTrashBag: {fileID: 526061387}
   phoneController: {fileID: 824452842}
@@ -7709,7 +7711,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   phonePanel: {fileID: 218653997}
-  hiddenPos: {x: -250, y: -380}
+  hiddenPos: {x: -250, y: -300}
   visiblePos: {x: -250, y: 500}
   duration: 0.3
   dimPanel: {fileID: 865282911}
@@ -7787,6 +7789,7 @@ MonoBehaviour:
   chatListPanel: {fileID: 1663755859}
   chatRoomPrefab: {fileID: 7723451654970528974, guid: 5154b4de1ce8b6f4089e2781cbbf1fac, type: 3}
   ChatAppPanel: {fileID: 828235956}
+  chatManager: {fileID: 0}
 --- !u!114 &828235958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7802,6 +7805,7 @@ MonoBehaviour:
   loader: {fileID: 580852065}
   targetRoomName: "\U0001F3B8"
   questJsonFile: guitar_afterquest
+  nextQuestJsonFile: guitar_afterquest2
   isChatDone: 0
 --- !u!1 &835087994
 GameObject:
@@ -9401,6 +9405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da4993d775e8d40d29f66d778b26ae84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::guitar
+  showSpaceHint: 1
 --- !u!1 &974546975
 GameObject:
   m_ObjectHideFlags: 0
@@ -9578,7 +9583,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.32453847, y: -0.20720923}
+  m_Offset: {x: 0.34848022, y: -0.1804508}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -9588,7 +9593,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.7551322, y: 0.76935744}
+  m_Size: {x: 0.8030157, y: 0.8228743}
   m_EdgeRadius: 0
 --- !u!61 &1010602868
 BoxCollider2D:
@@ -13497,7 +13502,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: -0.000080109, y: 408.5001}
-  m_SizeDelta: {x: 455, y: 78}
+  m_SizeDelta: {x: 455, y: 158.6458}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1316819027
 MonoBehaviour:
@@ -15678,7 +15683,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 64000113589928029, guid: 7448aff0f7ca3da49ae0d54c0c7d1cd8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -376.00003
+      value: -390
       objectReference: {fileID: 0}
     - target: {fileID: 64000113589928029, guid: 7448aff0f7ca3da49ae0d54c0c7d1cd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -15789,7 +15794,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 1
-  m_Spacing: 10
+  m_Spacing: 5
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
