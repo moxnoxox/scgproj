@@ -30,7 +30,7 @@ public class MonologueManager : MonoBehaviour
         StartCoroutine(ShowMonologueRoutine(lines, showTime));
     }
 
-    private IEnumerator ShowMonologueRoutine(List<string> lines, float showTime)
+    public IEnumerator ShowMonologueRoutine(List<string> lines, float showTime)
     {
         if (lines == null || lines.Count == 0)
         {

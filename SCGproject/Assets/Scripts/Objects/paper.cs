@@ -15,6 +15,7 @@ public class paper : MonoBehaviour, IInteractable
 
     private bool isPlayerNear = false;
     private bool hasBeenInteracted = false;
+    public bool canInteractPaper = false; 
 
     void Start()
     {
@@ -49,6 +50,8 @@ public class paper : MonoBehaviour, IInteractable
         // 거리 기반 근접 체크를 다시 한 번 수행(안전성)
         float xdiff = Mathf.Abs(this.transform.position.x - playerMove.transform.position.x);
         if (xdiff >= 1f) return;
+
+        if (canInteractPaper == false) return;
 
         Debug.Log("Player interacted with the paper.");
         hasBeenInteracted = true;

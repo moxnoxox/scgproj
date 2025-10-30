@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public bool AfterQuest = false;
     public static GameManager Instance;
     public bool canInput;
+    public paper Paper;
 
     public computer computerScript;  
 
@@ -126,12 +127,15 @@ public class GameManager : MonoBehaviour
         }
         Debug.Log("변수까진 작동함");
         keyinfo.is_starting = false;
+        
         // 4. 종이쪼가리 발견
         scenarioState = ScenarioState.FindPaper;
         playermove.movable = false;
         yield return ShowMono("findPaper", 2f);
         yield return Showannouncement("objectGuide", 2f);
         papaermonologueDone = true;
+        Paper.canInteractPaper = true; 
+  
 
         while (!paperOpened)
         {
@@ -140,15 +144,12 @@ public class GameManager : MonoBehaviour
 
         // 5. 종이쪼가리 확인 + 리액션
         scenarioState = ScenarioState.PaperReaction;
-        yield return ShowMono("paperReaction", 2f);
-        playerPower.DecreasePower(10);
-        autoMove = true;
+        yield return StartCoroutine(ShowMono("paperReaction", 2f));
         //플레이어 침대 자동 리턴
-        StartCoroutine(Showannouncement("bedGuide", 2f));
+        playerPower.DecreasePower(10);
+        yield return Showannouncement("bedGuide", 2f);
         playermove.canInput = false;
-        yield return new WaitForSeconds(3f);
-        playermove.SleepExternal();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         // 6. 침대에 누움 + 휴대폰 안내
         scenarioState = ScenarioState.BedRest;
         yield return ShowMono("bedRest", 2f);
@@ -170,6 +171,7 @@ public class GameManager : MonoBehaviour
         {
             yield return null;
         }
+        yield return new WaitForSeconds(1f);
         yield return ShowMono("afterMonitor", 2f);
 
         // 8. 할 일 퀘스트 후, 침대 리턴
@@ -411,6 +413,17 @@ public class GameManager : MonoBehaviour
     {
         return selectedIndex;
     }
+    public string GetCurrentScenarioState()
+    {
+        return scenarioState.ToString();
+    }
+
+    private IEnumerator StartAutoMoveAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        autoMove = true;
+    }
+
 
     // Mono.json 파싱용 클래스
     [System.Serializable]

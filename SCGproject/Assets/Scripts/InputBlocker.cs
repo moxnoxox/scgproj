@@ -12,15 +12,39 @@ public class InputBlocker : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         if (blocker == null)
         {
             blocker = new GameObject("GlobalInputBlocker");
-            Canvas canvas = blocker.AddComponent<Canvas>();
+
+            // 화면 최상단 캔버스
+            var canvas = blocker.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvas.sortingOrder = 9999; // 최상단
+            canvas.sortingOrder = 9999;
+
             blocker.AddComponent<GraphicRaycaster>();
-            blocker.AddComponent<Image>().color = new Color(0, 0, 0, 0); // 완전 투명
+
+            // ✅ 반드시 자기 자신에 컴포넌트를 붙여서 Update()가 돌게 한다
+            blocker.AddComponent<InputBlocker>();
+
+            // ✅ 화면 전체를 덮도록 RectTransform 설정
+            var rt = blocker.GetComponent<RectTransform>();
+            rt.anchorMin = Vector2.zero;
+            rt.anchorMax = Vector2.one;
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
+
+            // 투명 이미지(레이캐스트 타겟 기본값 = true)
+            var img = blocker.AddComponent<Image>();
+            img.color = new Color(0, 0, 0, 0);
         }
+
         blocker.SetActive(true);
         isBlocked = true;
+
+        // 이벤트 시스템이 없으면 클릭 차단이 안 됨
+        if (EventSystem.current == null)
+        {
+            new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
+        }
     }
+
 
     public static void Disable()
     {

@@ -22,6 +22,7 @@ public class PlayerMove : MonoBehaviour
     private key_info keyInfo;
     public bool isHolding = false;
     public GameObject heldObject = null;
+    bool showedTiredDialogue = false;
     
     
     private IInteractable interactionTarget = null;
@@ -70,11 +71,14 @@ public class PlayerMove : MonoBehaviour
     }
     public void SleepExternal()
     {
-        if (!animator.GetBool("isSleep"))
-        {
-            animator.SetBool("isSleep", true);
-        }
+        if (animator.GetBool("isSleep")) return;   // 이미 수면 상태면 무시
+
+        animator.SetBool("isWalking", false);      // 걷기 끄기
+        animator.SetBool("isSleep", true);         // 수면 on
+        rigid.linearVelocity = Vector2.zero;             // 완전 정지
+        if (GameManager.Instance) GameManager.Instance.autoMove = false; // 자동이동 차단
     }
+
 
     void Update()
     {
@@ -187,9 +191,31 @@ public class PlayerMove : MonoBehaviour
             if (h > 0.1f) h = 1;
             else if (h < -0.1f) h = -1;
             else h = 0;
-
             rigid.linearVelocity = new Vector2(h * maxSpeed, rigid.linearVelocity.y);
+
+            if (!showedTiredDialogue && MonologueManager.Instance != null)
+            {
+                List<string> lines = new List<string>
+                {
+                    "윽…… 또 가슴이 답답해. 왜 이러지…?",
+                    "일단… 잠깐만 쉬었다가 시작하자."
+                };
+                MonologueManager.Instance.ShowMonologuesSequentially(lines, 3f);
+            }
+            Debug.Log("플레이어 x위치: " + transform.position.x);
+
+
+             if (Mathf.Abs(transform.position.x) <= 0.08f)
+            {
+                rigid.linearVelocity = Vector2.zero; // 이동 멈춤
+                autoMoveActive = false;
+                if (GameManager.Instance) GameManager.Instance.autoMove = false;         // 자동 이동 종료
+                SleepExternal();                     // 눕기 실행
+                Debug.Log("침대 도착 → 눕기 실행");
+            }
+            
         }
+        
         if (currentScene == "Chapter1" && keyInfo != null) {
             if (keyInfo.is_click && animator.GetBool("isPhone") == true)
             {

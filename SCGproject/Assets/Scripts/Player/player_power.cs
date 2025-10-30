@@ -21,6 +21,7 @@ public class player_power : MonoBehaviour
         noPower = currentPower <= 0;
         if(noPower) GameManager.Instance.autoMove = true;
         UpdatePowerUI();
+
     }
 
     void UpdatePowerUI()
