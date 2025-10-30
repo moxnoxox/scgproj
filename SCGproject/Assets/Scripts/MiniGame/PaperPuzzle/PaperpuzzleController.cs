@@ -27,8 +27,10 @@ public class PaperpuzzleController : MonoBehaviour
         {
             pieceHandlers[i] = pieces[i].GetComponent<PaperHandler>();
         }
+        puzzlePanel.alpha = 0;
+        puzzlePanel.interactable = false;
+        puzzlePanel.blocksRaycasts = false;
         //디버그용
-        StartPuzzle();
     }
     public void StartPuzzle()
     {
@@ -65,6 +67,8 @@ public class PaperpuzzleController : MonoBehaviour
         puzzlePanel.interactable = false;
         puzzlePanel.blocksRaycasts = false;
         puzzlePanel.alpha = 0;
+        Chapter2Manager.Instance.OnPaperPuzzleDone();
+        Chapter2Manager.Instance.movable = true;
         yield return null;
     }
 }

@@ -1,7 +1,7 @@
 {
   "roomName": "🔥공시 스터디🔥",
   "participants": [
-    { "id": "Me", "nickname": "나", "profileImagePath": "my_proffile"},
+    { "id": "Me", "nickname": "나", "profileImagePath": "dummy_profile"},
     { "id": "A", "nickname": "A", "profileImagePath": "dummy_profile" },
     { "id": "B", "nickname": "B", "profileImagePath": "dummy_profile" },
     { "id": "C", "nickname": "C", "profileImagePath": "dummy_profile" }

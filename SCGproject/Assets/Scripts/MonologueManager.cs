@@ -19,8 +19,6 @@ public class MonologueManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-        if (monologuePanel != null)
-            monologuePanel.SetActive(false);
     }
 
     /// <summary>

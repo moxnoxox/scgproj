@@ -250,6 +250,11 @@ public class GameManager : MonoBehaviour
     {
         hasMoved = true;
     }
+    // 호환성 래퍼: 외부에서 대문자 스타일로 호출할 수 있도록 함
+    public void OnPaperRead()
+    {
+        onPaperOpened();
+    }
     public void onPaperOpened()
     {
         paperOpened = true;

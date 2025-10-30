@@ -1,7 +1,7 @@
 {
     "roomName": "🎸",
     "participants": [
-    { "id": "Me", "nickname": "나", "profileImagePath": "my_profile" },
+    { "id": "Me", "nickname": "나", "profileImagePath": "dummy_profile" },
     { "id": "guitar", "nickname": "🎸", "profileImagePath": "guitar_profile" }
     ],
     "messages": [

@@ -1,61 +1,55 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq; // Required for .Last()
 
 public class BackInputManager : MonoBehaviour
 {
-    private static Stack<Action> backHandlers = new Stack<Action>();
+    // Using a List instead of a Stack makes unregistering more robust.
+    // It allows removing a handler even if it's not the last one added.
+    private static List<Action> backHandlers = new List<Action>();
     
-    // esc 키 입력 감지
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && backHandlers.Count > 0)
         {
-            backHandlers.Peek()?.Invoke(); 
-            // 가장 위에 있는 핸들러 실행
+            // Invoke the last handler in the list.
+            backHandlers.Last()?.Invoke(); 
         }
     }
     
-    // 하단바 버튼 뒤로가기 클릭
     public static void TriggerBack()
     {
         if (backHandlers.Count > 0)
         {
-            backHandlers.Peek()?.Invoke();
+            backHandlers.Last()?.Invoke();
         }
     }
 
-
-    // 핸들러 등록
     public static void Register(Action handler)
     {
         if (!backHandlers.Contains(handler))
-            backHandlers.Push(handler);
-        
-        Debug.Log($"[BackInput] Register: {handler.Method}, StackCount={backHandlers.Count}");
+        {
+            backHandlers.Add(handler);
+            Debug.Log($"[BackInput] Register: {handler.Method}, StackCount={backHandlers.Count}");
+        }
     }
 
-    // 핸들러 제거
+    // Unregistering from a List is safer because it removes the specific handler
+    // regardless of its position.
     public static void Unregister(Action handler)
     {
-        if (backHandlers.Count == 0)
-            return;
-
-        if (backHandlers.Peek() == handler)
-            backHandlers.Pop();
-        
-        Debug.Log($"[BackInput] Unregister: {handler.Method}, StackCount={backHandlers.Count}");
+        if (backHandlers.Remove(handler))
+        {
+            Debug.Log($"[BackInput] Unregister: {handler.Method}, StackCount={backHandlers.Count}");
+        }
     }
 
-    // 현재 핸들러가 있는지 확인
     public static bool HasHandler => backHandlers.Count > 0;
 
     public static void ClearAll()
     {
         backHandlers.Clear();
     }
-
-
 }
 

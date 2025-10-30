@@ -489,7 +489,7 @@ MonoBehaviour:
   canInput: 1
   h: 0
   playerPower: {fileID: 55871476}
-  key_info: {fileID: 52113456}
+  key_info: {fileID: 0}
   gameManager: {fileID: 295625446}
   canvas: {fileID: 112227816}
   movable: 1
@@ -1906,7 +1906,6 @@ MonoBehaviour:
   phoneOpenEnable: 0
   AfterQuest: 0
   canInput: 0
-  computerScript: {fileID: 625545910}
   choicePanel: {fileID: 662022735}
   choiceButtonPrefab: {fileID: 1446364494}
   hasObjectActivated: 0
@@ -2971,7 +2970,6 @@ MonoBehaviour:
   chatListPanel: {fileID: 1388161552}
   chatRoomPrefab: {fileID: 7723451654970528974, guid: 5154b4de1ce8b6f4089e2781cbbf1fac, type: 3}
   ChatAppPanel: {fileID: 411159830}
-  chatManager: {fileID: 0}
 --- !u!114 &411159832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2987,7 +2985,6 @@ MonoBehaviour:
   loader: {fileID: 92243980}
   targetRoomName: "\U0001F3B8"
   questJsonFile: guitar_afterquest
-  nextQuestJsonFile: guitar_afterquest2
   isChatDone: 0
 --- !u!1 &419135047
 GameObject:
@@ -5188,7 +5185,6 @@ MonoBehaviour:
   playerPower: {fileID: 0}
   keyInfo: {fileID: 52113458}
   home: {fileID: 1539368484}
-  isHomeClosed: 0
 --- !u!1 &631784416
 GameObject:
   m_ObjectHideFlags: 0
@@ -15157,7 +15153,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4953050438974111347, guid: 862e4006be6ce644888fe54d1e4fd5a2, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8752307174281439836, guid: 862e4006be6ce644888fe54d1e4fd5a2, type: 3}
       insertIndex: -1

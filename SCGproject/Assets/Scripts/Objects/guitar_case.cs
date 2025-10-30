@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
-public class guitar : MonoBehaviour
+public class guitar_case : MonoBehaviour
 {
     [Tooltip("플레이어가 근처일 때 Space 안내를 띄울지 여부")]
     public bool showSpaceHint = true;
@@ -10,7 +10,7 @@ public class guitar : MonoBehaviour
     // public key_info_ch2 keyInfoCh2; 
 
     private bool isPlayerNear = false;
-    private bool firstInteracted = false;
+    private bool firstInteracted = false; // 한 번만 상호작용하도록 체크
     private Collider2D col;
 
     void Awake()
@@ -55,8 +55,8 @@ public class guitar : MonoBehaviour
             // 플래그를 true로 설정해 중복 상호작용 방지
             firstInteracted = true;
             
-            // Chapter2Manager에 기타를 찾았다고 알림
-            Chapter2Manager.Instance?.OnGuitarBodyFound();
+            // Chapter2Manager에 기타 케이스를 찾았다고 알림
+            Chapter2Manager.Instance?.OnGuitarCaseFound();
 
             // (선택 사항) 상호작용 UI 숨기기
             // if (keyInfoCh2 != null)

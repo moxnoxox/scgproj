@@ -22,9 +22,9 @@ public class PlayerMove : MonoBehaviour
     private key_info keyInfo;
     public bool isHolding = false;
     public GameObject heldObject = null;
-    public GameObject pickupTarget = null; // 💡 근처의 들 수 있는 오브젝트
+    
+    private IInteractable interactionTarget = null;
 
-    // 현재 씬 이름 저장용 (필드 선언만, 초기화는 Awake에서)
     private string currentScene;
 
     void Awake()
@@ -35,15 +35,10 @@ public class PlayerMove : MonoBehaviour
             animator = GetComponent<Animator>();
         animator.SetBool("isWalking", false);
         animator.SetBool("isPhone", false);
-        if(currentScene == "Chapter1") keyInfo = key_info.GetComponent<key_info>();
-        else if(currentScene == "Chapter2") keyInfo = key_info.GetComponent<key_info>();
-        if(currentScene == "Chapter1") keyInfo.isBed = true;
-
-        // 여기서만 SceneManager 호출 (UnityException 방지)
+        
         currentScene = SceneManager.GetActiveScene().name;
 
-        if (key_info != null)
-        keyInfo = key_info.GetComponent<key_info>();
+        if (key_info != null)keyInfo = key_info.GetComponent<key_info>();
 
         if (currentScene == "Chapter1")
         {
@@ -61,6 +56,7 @@ public class PlayerMove : MonoBehaviour
         {
             animator.SetBool("isSleep", true);
             start = false;
+            if (keyInfo != null) keyInfo.isBed = true;
         }
     }
 
@@ -81,30 +77,39 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
-        // 좌우 이동 키를 뗄 때 속도 감소
         if (Input.GetButtonUp("Horizontal"))
         {
             rigid.linearVelocity = new Vector2(rigid.linearVelocity.normalized.x * 0.5f, rigid.linearVelocity.y);
         }
 
-        // 💡 Space 입력 처리 (PlayerMove만 담당)
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (isHolding)
             {
                 DropHeldObject();
             }
-            else if (pickupTarget != null)
+            else if (interactionTarget != null)
             {
-                // 근처 오브젝트의 TryLift 호출
-                var one = pickupTarget.GetComponent<TrashBag1Stack>();
-                var two = pickupTarget.GetComponent<TrashBag2Stack>();
-
-                if (one != null)
-                    one.TryLift(this);
-                else if (two != null)
-                    two.TryLift(this);
+                interactionTarget.Interact(this);
             }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        IInteractable interactable = other.GetComponent<IInteractable>();
+        if (interactable != null)
+        {
+            interactionTarget = interactable;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        IInteractable interactable = other.GetComponent<IInteractable>();
+        if (interactionTarget == interactable)
+        {
+            interactionTarget = null;
         }
     }
 
@@ -112,7 +117,7 @@ public class PlayerMove : MonoBehaviour
     {
         yield return new WaitForSeconds(1.0f);
         start = true;
-        animator.SetBool("isSleep", false); // 일어나기
+        animator.SetBool("isSleep", false);
         starting = false;
         if (keyInfo != null)
         {
@@ -132,7 +137,7 @@ public class PlayerMove : MonoBehaviour
         {
             h = 0;
         }
-        // S키로 시작
+        
         if (!start && !starting && animator.GetBool("isSleep") == false && currentScene == "Chapter1")
         {
             starting = true;
@@ -140,12 +145,10 @@ public class PlayerMove : MonoBehaviour
             StartCoroutine(StartWait());
         }
 
-        // 처음으로 h가 0이 아닌 순간 감지
         if (start && h != 0)
         {
             if (!hasMoved)
             {
-                // 현재 씬이 Chapter1이고, gameManager가 연결돼 있을 때만 호출
                 if (currentScene == "Chapter1" && gameManager != null)
                     gameManager.OnPlayerMoved();
 
@@ -157,10 +160,7 @@ public class PlayerMove : MonoBehaviour
             }
         }
 
-        // 파워가 없으면 침대로 이동
         bool autoMoveActive = false;
-
-        // 씬 이름으로 먼저 분기 → 해당 매니저만 접근
         if (currentScene == "Chapter1")
         {
             if (GameManager.Instance != null && GameManager.Instance.autoMove)
@@ -172,29 +172,25 @@ public class PlayerMove : MonoBehaviour
                 autoMoveActive = true;
         }
 
-        // 자동 이동 처리
         if (autoMoveActive && playerPower != null && playerPower.noPower)
         {
             if (sleepcount == 0)
                 StartCoroutine(clickIndicator());
 
-            // 이미 위에서 선언된 h 사용
             h = -transform.position.x;
             if (h > 0.1f) h = 1;
             else if (h < -0.1f) h = -1;
             else h = 0;
 
-            // 이동 적용
             rigid.linearVelocity = new Vector2(h * maxSpeed, rigid.linearVelocity.y);
         }
-        if (currentScene == "Chapter1") {
+        if (currentScene == "Chapter1" && keyInfo != null) {
             if (keyInfo.is_click && animator.GetBool("isPhone") == true)
             {
                 keyInfo.is_click = false;
             }
         }
 
-        // 잠든 상태면 파워 회복, 이동 불가
         if (animator.GetBool("isSleep"))
         {
             if (playerPower != null)
@@ -204,26 +200,19 @@ public class PlayerMove : MonoBehaviour
             sleepcount++;
         }
 
-        // 시작 전, 잠든 상태, 폰 사용 중엔 이동 불가
         if (!start || animator.GetBool("isSleep") || animator.GetBool("isPhone"))
             return;
 
-        // 이동
         rigid.linearVelocity = new Vector2(h * maxSpeed, rigid.linearVelocity.y);
 
-        // 방향 전환
         if (h > 0)
             spriteRenderer.flipX = true;
         else if (h < 0)
             spriteRenderer.flipX = false;
 
-        // 걷기 애니메이션
         animator.SetBool("isWalking", h != 0.0f);
-
-        // 들고 걷기 애니메이션
         animator.SetBool("isHolding", isHolding);
 
-        // 들고 있는 오브젝트가 있다면 따라오게 하기
         if (isHolding && heldObject != null)
         {
             Vector3 holdPos = transform.position + new Vector3(0.1f * (spriteRenderer.flipX ? 1 : -1), 0.001f, 0);
@@ -249,7 +238,6 @@ public class PlayerMove : MonoBehaviour
         StartCoroutine(clickIndicator());
     }
 
-    //쓰봉 들기
     public void DropHeldObject()
     {
         if (heldObject == null) return;
@@ -266,21 +254,16 @@ public class PlayerMove : MonoBehaviour
             rb.angularVelocity = 0f;
         }
 
-        // Collider 다시 켜기 (지연 실행)
         StartCoroutine(ReenableCollider(heldObject));
 
-        // 플레이어 앞에 놓기
         Vector3 dropPos = transform.position + new Vector3(spriteRenderer.flipX ? 0.6f : -0.6f, -0.25f, 0);
         heldObject.transform.position = dropPos;
         heldObject.transform.parent = null;
-
-        TrashBag1Stack.ResetHeldStatus();
-
+        
         isHolding = false;
         heldObject = null;
-        pickupTarget = null;
 
-        Debug.Log(" DropHeldObject 추가: 바닥에 내려놓음");
+        Debug.Log("DropHeldObject: Object dropped.");
     }
 
     private IEnumerator ReenableCollider(GameObject obj)

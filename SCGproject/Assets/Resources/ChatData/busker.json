@@ -1,0 +1,39 @@
+{
+  "roomName": "🎸",
+  "profileImagePath": "Profiles/guitar_profile",
+  "participants": [
+    { "id": "Me", "nickname": "나", "profileImagePath": "Profiles/dummy_profile" },
+    { "id": "guitar", "nickname": "🎸", "profileImagePath": "Profiles/guitar_profile" }
+  ],
+  "initialMessages": [
+    {
+      "type": "message",
+      "sender": "Me",
+      "content": "기타 어디에 있었는지 기억나?",
+      "timestamp": "오후 4:07",
+      "isRead": true,
+      "delayAfter": 1.5,
+      "format": "text"
+    },
+    {
+      "type": "message",
+      "sender": "guitar",
+      "content": "음… 나도 오래 돼서 정확히는 기억이 안 남",
+      "timestamp": "오후 4:07",
+      "isRead": false,
+      "delayAfter": 2.0,
+      "format": "text"
+    },
+    {
+      "type": "message",
+      "sender": "guitar",
+      "content": "그냥 <b>바닥</b>에 뒀었던 것 같은데?",
+      "timestamp": "오후 4:07",
+      "isRead": false,
+      "delayAfter": 0,
+      "format": "text"
+    }
+  ],
+  "messages": [],
+  "AfterQuestJson": ""
+}

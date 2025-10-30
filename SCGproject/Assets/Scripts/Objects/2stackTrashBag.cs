@@ -1,10 +1,9 @@
 using UnityEngine;
 
-public class TrashBag2Stack : MonoBehaviour
+public class TrashBag2Stack : MonoBehaviour, IInteractable
 {
     public GameObject topBag;
     public GameObject bottomBag;
-    private GameObject player;
     private bool isSeparated = false;
     private int originalOrder;
 
@@ -34,27 +33,8 @@ public class TrashBag2Stack : MonoBehaviour
         Physics2D.SyncTransforms();
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (isSeparated) return;
-        if (other.CompareTag("Player"))
-        {
-            player = other.gameObject;
-            var move = player.GetComponent<PlayerMove>();
-            if (move != null && !move.isHolding)
-                move.pickupTarget = this.gameObject;
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            var move = other.GetComponent<PlayerMove>();
-            if (move != null && move.pickupTarget == this.gameObject)
-                move.pickupTarget = null;
-        }
-    }
+    // Player interaction is handled via IInteractable.Interact.
+    // PlayerMove will detect this object via its own trigger and call Interact(player).
 
     public void TryLift(PlayerMove move)
     {
@@ -108,11 +88,17 @@ public class TrashBag2Stack : MonoBehaviour
             bagRenderer.sortingOrder = playerRenderer.sortingOrder + 1;
         }
 
-        move.pickupTarget = null;
+    // no pickupTarget field on PlayerMove in this codebase; interaction is done via IInteractable
         isSeparated = true;
         gameObject.SetActive(false);
 
         Debug.Log("2단 분리 완료 → topBag 들림 (앞으로 보이게 정렬)");
+    }
+
+    // IInteractable implementation so PlayerMove can call Interact(player)
+    public void Interact(PlayerMove player)
+    {
+        TryLift(player);
     }
 
     public void ResetSortingOrder()

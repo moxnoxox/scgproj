@@ -1,8 +1,8 @@
 {
   "roomName": "일공공 수학학원 원장님",
   "participants": [
-    { "id": "Me", "nickname": "나", "profileImagePath": "my_proffile"},
-    { "id": "math", "nickname": "원장", "profileImagePath": "dummmy_profile" }
+    { "id": "Me", "nickname": "나", "profileImagePath": "dummy_profile"},
+    { "id": "math", "nickname": "원장", "profileImagePath": "dummy_profile" }
   ],
   "initialMessages": [
     { "type": "dateDivider" },
