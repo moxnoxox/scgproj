@@ -17,6 +17,9 @@ public class computer : MonoBehaviour, IInteractable
     private bool isPlayerNear = false;
     private bool hasBeenInteracted = false;
 
+    private bool isPlayerNear = false;
+    private bool hasBeenInteracted = false;
+
     void Start()
     {
         if (home != null) home.enabled = false;
