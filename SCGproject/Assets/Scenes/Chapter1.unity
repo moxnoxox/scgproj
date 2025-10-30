@@ -2205,6 +2205,7 @@ MonoBehaviour:
   phoneOpenEnable: 0
   AfterQuest: 0
   canInput: 0
+  Paper: {fileID: 616580580}
   computerScript: {fileID: 625545910}
   choicePanel: {fileID: 662022735}
   choiceButtonPrefab: {fileID: 1446364494}
@@ -5230,6 +5231,7 @@ MonoBehaviour:
   keyInfo: {fileID: 52113458}
   inside: {fileID: 1548435676}
   insideText: {fileID: 419135049}
+  canInteractPaper: 0
 --- !u!212 &616580581
 SpriteRenderer:
   m_ObjectHideFlags: 0

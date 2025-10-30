@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public bool AfterQuest = false;
     public static GameManager Instance;
     public bool canInput;
+    public paper Paper;
 
     public computer computerScript;  
 
@@ -126,12 +127,15 @@ public class GameManager : MonoBehaviour
         }
         Debug.Log("변수까진 작동함");
         keyinfo.is_starting = false;
+        
         // 4. 종이쪼가리 발견
         scenarioState = ScenarioState.FindPaper;
         playermove.movable = false;
         yield return ShowMono("findPaper", 2f);
         yield return Showannouncement("objectGuide", 2f);
         papaermonologueDone = true;
+        Paper.canInteractPaper = true; 
+  
 
         while (!paperOpened)
         {
@@ -170,6 +174,7 @@ public class GameManager : MonoBehaviour
         {
             yield return null;
         }
+        yield return new WaitForSeconds(1f);
         yield return ShowMono("afterMonitor", 2f);
 
         // 8. 할 일 퀘스트 후, 침대 리턴

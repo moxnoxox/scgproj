@@ -71,39 +71,35 @@ public class computer : MonoBehaviour, IInteractable
         isHomeClosed = false;
         if (home != null) home.enabled = true;
 
-        // 첫 번째 긴 대사
-        MonologueManager.Instance.ShowMonologuesSequentially(new List<string>
+        // 첫 번째 긴 대사 (끝날 때까지 기다림)
+        yield return StartCoroutine(MonologueManager.Instance.ShowMonologueRoutine(new List<string>
         {
             "윽…화면이 왜 이렇게 더럽지.",
             "정리 안 한 지 이렇게 오래 됐었나?",
             "안 그래도 보기 싫은데, 이러면 더 보기 싫어지잖아…",
             "하…… 아냐. 회피 그만하고 빨리 끝내자."
-        }, 3f);
-
-        yield return new WaitForSeconds(12f); // 4문장 × 3초
+        }, 3f));
 
         // “자료 수정 중...” 표시
-        MonologueManager.Instance.ShowAnnouncement(new List<string>
+        yield return StartCoroutine(MonologueManager.Instance.ShowMonologueRoutine(new List<string>
         {
-            "자료 수정 중..."
-        }, 3f);
-
-        yield return new WaitForSeconds(3f);
+            "(자료 수정 중…)"
+        }, 5f));
 
         // 완료 멘트
-        MonologueManager.Instance.ShowMonologuesSequentially(new List<string>
+        yield return StartCoroutine(MonologueManager.Instance.ShowMonologueRoutine(new List<string>
         {
             "됐다… 겨우 다 했네.",
             "벌써 2시간이나 흘렀네.",
             "이제 침대에 눕고 싶어. 근데도 할 일이 남았다니…"
-        }, 3f);
-
-        yield return new WaitForSeconds(9f);
+        }, 3f));
 
         if (home != null) home.enabled = false;
         isHomeClosed = true;
         if (playerPower != null) playerPower.DecreasePower(10);
     }
+
+
 
     // ✅ 이후 짧은 멘트용 루틴
     private IEnumerator ShowHomeImage()
