@@ -37,6 +37,7 @@ public class key_info : MonoBehaviour
         if (isObject)
         {
             space.enabled = true;
+            GameManager.Instance.OnObjectActivated();
         }
         else
         {

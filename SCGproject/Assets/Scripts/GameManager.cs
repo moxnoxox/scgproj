@@ -119,10 +119,12 @@ public class GameManager : MonoBehaviour
         {
             yield return null;
         }
+        Debug.Log("움직이기 완료");
         while (hasObjectActivated == false)
         {
             yield return null;
         }
+        Debug.Log("변수까진 작동함");
         keyinfo.is_starting = false;
         // 4. 종이쪼가리 발견
         scenarioState = ScenarioState.FindPaper;
@@ -273,7 +275,6 @@ public class GameManager : MonoBehaviour
         if (!hasObjectActivated)
         {
             hasObjectActivated = true;
-            StartCoroutine(ShowMono("findPaper", 2f));
         }
     }
     public void onReplCount()

@@ -14,8 +14,6 @@ public class paper : MonoBehaviour, IInteractable
     public TextMeshProUGUI insideText;
 
     private bool isPlayerNear = false;
-    // 'canInteract'는 GameManager가 상호작용을 허용할 때 true가 됩니다.
-    private bool canInteract = false; 
     private bool hasBeenInteracted = false;
 
     void Start()
@@ -26,23 +24,19 @@ public class paper : MonoBehaviour, IInteractable
     }
     
     // GameManager가 특정 시점에 호출하여 상호작용을 활성화합니다.
-    public void EnableInteraction()
-    {
-        canInteract = true;
-        Debug.Log("Paper interaction has been enabled.");
-    }
 
     void Update()
     {
-        if (!canInteract || hasBeenInteracted || player == null) return;
+        if ( hasBeenInteracted || player == null) return;
 
         float xdiff = Mathf.Abs(this.transform.position.x - player.transform.position.x);
         bool currentlyNear = xdiff < 1f;
 
         if (currentlyNear != isPlayerNear)
         {
+            keyInfo.isObject = true;
             isPlayerNear = currentlyNear;
-            if(keyInfo != null) keyInfo.isObject = isPlayerNear;
+            if (keyInfo != null) keyInfo.isObject = isPlayerNear;
         }
     }
 
@@ -55,8 +49,6 @@ public class paper : MonoBehaviour, IInteractable
         // 거리 기반 근접 체크를 다시 한 번 수행(안전성)
         float xdiff = Mathf.Abs(this.transform.position.x - playerMove.transform.position.x);
         if (xdiff >= 1f) return;
-
-        if (!canInteract || hasBeenInteracted) return;
 
         Debug.Log("Player interacted with the paper.");
         hasBeenInteracted = true;
