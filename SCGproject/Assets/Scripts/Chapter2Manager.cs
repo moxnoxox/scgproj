@@ -574,8 +574,11 @@ public class Chapter2Manager : MonoBehaviour
         // 예: yield return new WaitUntil(() => FileSortGameManager.Instance.IsGameFinished());
 
         // --- 임시 코드: 즉시 완료 처리 ---
-        yield return new WaitForSeconds(30f); // 미니게임 시간을 가정
-        OnFileSortGameDone(); // 완료 처리 함수 호출
+        FileSortGameManager.Instance.ShowGameUI();
+        while(!fileSortGameDone)
+        {
+            yield return null;
+        }
         // --- 임시 코드 끝 ---
     }
 

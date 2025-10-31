@@ -265,12 +265,14 @@ public class FileSortGameManager : MonoBehaviour
             // 모든 파일 정리 완료
             ShowFeedback("PERFECT!", new Color(0.4f, 0.8f, 1f));
             Debug.Log("Perfect Clear!");
+            Chapter2Manager.Instance.OnFileSortGameDone();
         }
         else if (placedCorrectCount > 0)
         {
             // 일부 정리 성공
             ShowFeedback("DONE!", new Color(1f, 0.9f, 0.3f));
             Debug.Log("Partial Clear (Done)");
+            Chapter2Manager.Instance.OnFileSortGameDone();
         }
         else
         {

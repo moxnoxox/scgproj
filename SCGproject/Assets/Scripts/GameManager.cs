@@ -5,6 +5,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -244,7 +245,7 @@ public class GameManager : MonoBehaviour
         }
 
         scenarioState = ScenarioState.Done;
-        //SceneController.Loadsceneprosess(Chapter2);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Chapter2");
         // TODO: 챕터2로 전환, 화면 어두워짐 등 연출 필요
     }
 
