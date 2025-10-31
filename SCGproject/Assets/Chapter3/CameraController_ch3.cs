@@ -9,14 +9,14 @@ public class CameraControllerCh3 : MonoBehaviour
     public GameObject player;
     float __zPos = -10f;
     private float zoomOutSize = 5f; // 줌아웃 시 카메라 사이즈
-    private float normalSize = 3f;  // 기본 카메라 사이즈
+    private float normalSize = 3.8f;  // 기본 카메라 사이즈
     private float zoomSpeed = 1f;   // 줌아웃 속도
     private float moveSpeed = 1f;   // 카메라 이동 속도
 
     private float smoothTimer = 0f;
     private float smoothDuration = 2.0f; // 부드러운 이동 지속 시간
-    private float leftMaxX = -5.73f;
-    private float rightMaxX = 5.8f;
+    private float leftMaxX = -5.1f;
+    private float rightMaxX = 5.1f;
     private UnityEngine.Vector3 varPosition;
 
     private Camera cam;
@@ -24,7 +24,7 @@ public class CameraControllerCh3 : MonoBehaviour
     private void Awake()
     {
         cam = GetComponent<Camera>();
-        cam.orthographicSize = zoomOutSize;
+       // cam.orthographicSize = zoomOutSize;
     }
 
     void LateUpdate()
@@ -47,7 +47,7 @@ public class CameraControllerCh3 : MonoBehaviour
     {
         UnityEngine.Vector3 targetPosition = player.transform.position;
         targetPosition.z = __zPos;
-        targetPosition.y += 1.7f;
+        targetPosition.y += 2.0f;
         if (targetPosition.x < leftMaxX)
         {
             varPosition.x = targetPosition.x - leftMaxX;
