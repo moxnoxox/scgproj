@@ -36,6 +36,7 @@ public class Chapter2Manager : MonoBehaviour
     private bool fileSortGameDone = false; // 파일 정렬 미니게임 완료 여부
     private bool guitarBodyFound = false; // 기타 본체 발견 여부
     private bool guitarCaseFound = false; // 기타 케이스 발견 여부
+    private bool peakFound = false; // 피크 발견 여부
     private bool paperPuzzleDone = false; // 종이 퍼즐 미니게임 완료 여부
     private bool guitarPartsAllFound = false; // 모든 기타 부품 발견 여부 (챕터 종료 조건)
 
@@ -309,6 +310,7 @@ public class Chapter2Manager : MonoBehaviour
 
         // 챕터 3 전환
         Debug.Log("일러스트 종료, 챕터 3 로드 (연출 필요)");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Chapter3");
         // 예: illustrationManager?.Hide();
         // SceneManager.LoadScene("Chapter3"); // 실제 씬 이름으로 변경
     }
@@ -618,6 +620,14 @@ public class Chapter2Manager : MonoBehaviour
          CheckAllPartsFound();
     }
 
+    public void OnPeakFound() {
+         if (peakFound) return;
+         peakFound = true;
+         Debug.Log("피크 발견!");
+         // 모든 부품 찾기 완료 조건 체크
+         CheckAllPartsFound();
+    }
+
     // [추가] 다른 기타 부품 발견 시 호출될 함수 (예시)
     // public void OnGuitarStringsFound() { /* ... 플래그 설정, CheckAllPartsFound() 호출 ... */ }
     // public void OnGuitarTunerFound() { /* ... 플래그 설정, CheckAllPartsFound() 호출 ... */ }
@@ -661,7 +671,7 @@ public class Chapter2Manager : MonoBehaviour
     private void CheckAllPartsFound() {
          // 필요한 모든 부품의 발견 플래그 확인
          // 예: if (guitarBodyFound && guitarCaseFound && guitarStringsFound && guitarTunerFound)
-         if (guitarBodyFound && guitarCaseFound /* && 다른 부품 플래그들... */)
+         if (guitarBodyFound && guitarCaseFound && peakFound/* && 다른 부품 플래그들... */)
          {
             OnGuitarPartsAllFound(); // 모든 부품 찾음 처리 함수 호출
          }

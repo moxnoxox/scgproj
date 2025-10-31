@@ -283,7 +283,7 @@ public class FileSortGameManager : MonoBehaviour
         // ex) Chapter2Manager.Instance.OnFileSortGameDone();
 
         // 일정 시간 뒤 게임 닫기 (UI 연출용)
-     // StartCoroutine(CloseAfterDelay());
+        StartCoroutine(CloseGame());
     }
     
     void DisableAllDraggableItems()
@@ -297,6 +297,12 @@ public class FileSortGameManager : MonoBehaviour
                 cg.blocksRaycasts = false;
             }
         }
+    }
+    IEnumerator CloseGame()
+    {
+        yield return new WaitForSecondsRealtime(2f);
+        gameCanvasRoot.SetActive(false);
+        Time.timeScale = 1f;
     }
 
 }
