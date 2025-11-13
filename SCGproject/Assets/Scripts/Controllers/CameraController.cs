@@ -36,7 +36,7 @@ public class CameraController : MonoBehaviour
         {
             Smooth();
         }
-        else if (GameManager.Instance.AfterQuest)
+        else if (GameManager.Instance.BedDepressed)
         {
             ZoomIn();
         }

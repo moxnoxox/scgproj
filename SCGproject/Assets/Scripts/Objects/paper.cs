@@ -73,8 +73,7 @@ public class paper : MonoBehaviour, IInteractable
         yield return new WaitForSeconds(5f);
         inside.enabled = false;
         insideText.enabled = false;
-        
-        playerPower.DecreasePower(40);
+
         Destroy(this.gameObject);
     }
 }

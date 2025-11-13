@@ -17,13 +17,11 @@ public class GameManager : MonoBehaviour
     public UnityEngine.UI.Image notification;
     public bool autoMove = false;
     public bool phoneOpenEnable = false;
-    public bool AfterQuest = false;
+    public bool BedDepressed = false;
     public static GameManager Instance;
     public bool canInput;
     public paper Paper;
-
     public computer computerScript;  
-
 
     //선택지 
     public Transform choicePanel;
@@ -128,15 +126,15 @@ public class GameManager : MonoBehaviour
         }
         Debug.Log("변수까진 작동함");
         keyinfo.is_starting = false;
-        
+
         // 4. 종이쪼가리 발견
         scenarioState = ScenarioState.FindPaper;
         playermove.movable = false;
         yield return ShowMono("findPaper", 2f);
         yield return Showannouncement("objectGuide", 2f);
         papaermonologueDone = true;
-        Paper.canInteractPaper = true; 
-  
+        Paper.canInteractPaper = true;
+
 
         while (!paperOpened)
         {
@@ -146,23 +144,27 @@ public class GameManager : MonoBehaviour
         // 5. 종이쪼가리 확인 + 리액션
         scenarioState = ScenarioState.PaperReaction;
         yield return StartCoroutine(ShowMono("paperReaction", 2f));
-        //플레이어 침대 자동 리턴
-        playerPower.DecreasePower(10);
+        playerPower.DecreasePower(40);
+        yield return StartCoroutine(ShowMono("bedReturnAfterPaper", 2f));
+
+        // ★ 자동리턴 코루틴 실행
+        yield return StartCoroutine(playermove.AutoReturnToBed(true));
+        yield return new WaitUntil(() => playermove.animator.GetBool("isSleep"));
         yield return Showannouncement("bedGuide", 2f);
         playermove.canInput = false;
-        yield return new WaitForSeconds(1f);
+
         // 6. 침대에 누움 + 휴대폰 안내
         scenarioState = ScenarioState.BedRest;
         yield return ShowMono("bedRest", 2f);
-
         scenarioState = ScenarioState.PhoneGuide;
         yield return Showannouncement("phoneGuide", 2f);
+
         playermove.WakeUpExternal();
         playermove.movable = true;
         phoneOpenEnable = true;
         playermove.canInput = true;
         playermove.showClickIndicator();
-        autoMove = false;
+     
         // 7. 퀘스트 확인 후(침대에서 일어나기)
         scenarioState = ScenarioState.QuestReaction;
         yield return ShowMono("questReaction", 2f);
@@ -177,29 +179,27 @@ public class GameManager : MonoBehaviour
 
         // 8. 할 일 퀘스트 후, 침대 리턴
         //할일 퀘스트: 카톡 답하기, 노트북 확인, 거울 보기
-        while (!(replCount >= 2 && computerChecked && mirrorChecked))
-        {
-            yield return null;
-        }
+        while (!(replCount >= 2 && computerChecked && mirrorChecked)) yield return null;
+
         scenarioState = ScenarioState.MirrorScene;
         playermove.canInput = false;
         playermove.movable = false;
         phoneOpenEnable = false;
         yield return ShowMono("mirrorScene", 2f);
         playerPower.DecreasePower(100);
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
+        
         yield return ShowMono("afterQuest", 2f);
-        autoMove = true;
-        yield return new WaitForSeconds(5f);
-        playermove.SleepExternal();
-        AfterQuest = true;
-        autoMove = false;
         phoneOpenEnable = false;
         scenarioState = ScenarioState.AfterQuest;
-
+        
+        // ★ 거울 리턴 (대사 없이)
+        yield return StartCoroutine(playermove.AutoReturnToBed(true));
+        yield return new WaitUntil(() => playermove.animator.GetBool("isSleep"));
 
         // 9. 침대에 누운 후 문구
         scenarioState = ScenarioState.BedDepressed;
+        BedDepressed = true;
         yield return ShowMono("bedDepressed1", 2f);
         playermove.canInput = true;
         playermove.movable = true;
@@ -248,7 +248,7 @@ public class GameManager : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene("Chapter2");
         // TODO: 챕터2로 전환, 화면 어두워짐 등 연출 필요
     }
-
+     
     // 외부에서 호출: 플레이어가 이동하면 hasMoved = true
     public void OnPlayerMoved()
     {
@@ -402,8 +402,6 @@ public class GameManager : MonoBehaviour
         choicePanel.gameObject.SetActive(false);
     }
 
-
-
     void OnChoiceSelected(int index)
     {
         selectedIndex = index;
@@ -419,13 +417,6 @@ public class GameManager : MonoBehaviour
         return scenarioState.ToString();
     }
 
-    private IEnumerator StartAutoMoveAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        autoMove = true;
-    }
-
-
     // Mono.json 파싱용 클래스
     [System.Serializable]
     public class MonoDataWrapper
@@ -435,6 +426,7 @@ public class GameManager : MonoBehaviour
         public List<string> findPaper;
         public List<string> objectGuide;
         public List<string> paperReaction;
+        public List<string> bedReturnAfterPaper;
         public List<string> bedGuide;
         public List<string> bedRest;
         public List<string> phoneGuide;
@@ -457,6 +449,7 @@ public class GameManager : MonoBehaviour
             if (findPaper != null) dict["findPaper"] = findPaper;
             if (objectGuide != null) dict["objectGuide"] = objectGuide;
             if (paperReaction != null) dict["paperReaction"] = paperReaction;
+            if (bedReturnAfterPaper != null) dict["bedReturnAfterPaper"] = bedReturnAfterPaper;
             if (bedGuide != null) dict["bedGuide"] = bedGuide;
             if (bedRest != null) dict["bedRest"] = bedRest;
             if (phoneGuide != null) dict["phoneGuide"] = phoneGuide;

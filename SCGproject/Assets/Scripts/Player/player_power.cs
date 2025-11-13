@@ -10,6 +10,8 @@ public class player_power : MonoBehaviour
     public Image powerSlider;
     public PlayerMove playerMove;
     public bool noPower = false;
+    private bool triggeredOnce = false; // 자동리턴 중복 방지
+
     void Start()
     {
         currentPower = 10;
@@ -19,9 +21,22 @@ public class player_power : MonoBehaviour
     void Update()
     {
         noPower = currentPower <= 0;
-        if(noPower) GameManager.Instance.autoMove = true;
-        UpdatePowerUI();
 
+        if (GameManager.Instance != null)
+        {
+            string state = GameManager.Instance.GetCurrentScenarioState();
+            if (state == "PaperReaction" || state == "MirrorScene") return;
+        }
+
+        if (noPower && !triggeredOnce)
+        {
+            triggeredOnce = true;
+            if (playerMove != null && !playerMove.autoMoveActive)
+            {
+                Debug.Log("★ 파워0 자동리턴 호출");
+                playerMove.StartCoroutine(playerMove.AutoReturnToBed(false));
+            }
+        }
     }
 
     void UpdatePowerUI()
@@ -39,7 +54,7 @@ public class player_power : MonoBehaviour
     public void IncreasePower(int amount)
     {
         currentPower = Mathf.Min(currentPower + amount, maxPower);
+        if (currentPower > 0) triggeredOnce = false;
         UpdatePowerUI();
     }
 }
-

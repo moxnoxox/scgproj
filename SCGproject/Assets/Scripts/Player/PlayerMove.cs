@@ -23,11 +23,13 @@ public class PlayerMove : MonoBehaviour
     public bool isHolding = false;
     public GameObject heldObject = null;
     bool showedTiredDialogue = false;
-    
-    
+    private bool hasLiedDown = false;   
     private IInteractable interactionTarget = null;
-
     private string currentScene;
+    // 자동리턴 관련 
+    public bool autoMoveActive = false;
+    private bool isAutoReturnRunning = false;
+
 
     void Awake()
     {
@@ -76,7 +78,7 @@ public class PlayerMove : MonoBehaviour
         animator.SetBool("isWalking", false);      // 걷기 끄기
         animator.SetBool("isSleep", true);         // 수면 on
         rigid.linearVelocity = Vector2.zero;             // 완전 정지
-        if (GameManager.Instance) GameManager.Instance.autoMove = false; // 자동이동 차단
+        hasLiedDown = true;
     }
 
 
@@ -147,7 +149,7 @@ public class PlayerMove : MonoBehaviour
         {
             h = 0;
         }
-        
+
         if (!start && !starting && animator.GetBool("isSleep") == false && currentScene == "Chapter1")
         {
             starting = true;
@@ -169,54 +171,37 @@ public class PlayerMove : MonoBehaviour
                 startIndicatorCoroutine = StartCoroutine(DisableStartIndicator());
             }
         }
+      // ★ 클래스 필드 autoMoveActive를 그대로 사용하고,
+        //    Chapter2Manager의 autoMove가 켜져 있으면 함께 활성화
+        bool autoMoveNow = autoMoveActive 
+                           || (currentScene == "Chapter2" 
+                               && Chapter2Manager.Instance != null 
+                               && Chapter2Manager.Instance.autoMove);
 
-        bool autoMoveActive = false;
-        if (currentScene == "Chapter1")
+        if (autoMoveNow)
         {
-            if (GameManager.Instance != null && GameManager.Instance.autoMove)
-                autoMoveActive = true;
-        }
-        else if (currentScene == "Chapter2")
-        {
-            if (Chapter2Manager.Instance != null && Chapter2Manager.Instance.autoMove)
-                autoMoveActive = true;
-        }
+            canInput = false;
 
-        if (autoMoveActive && playerPower != null && playerPower.noPower)
-        {
             if (sleepcount == 0)
                 StartCoroutine(clickIndicator());
 
+            // 침대가 x=0 기준이라고 가정한 자동 이동
             h = -transform.position.x;
             if (h > 0.1f) h = 1;
             else if (h < -0.1f) h = -1;
             else h = 0;
+
             rigid.linearVelocity = new Vector2(h * maxSpeed, rigid.linearVelocity.y);
 
-            if (!showedTiredDialogue && MonologueManager.Instance != null)
+            // ✅ 도착 판정 범위 여유 + 눕기 지연
+            if (Mathf.Abs(transform.position.x) <= 0.2f && !hasLiedDown)
             {
-                List<string> lines = new List<string>
-                {
-                    "윽…… 또 가슴이 답답해. 왜 이러지…?",
-                    "일단… 잠깐만 쉬었다가 시작하자."
-                };
-                MonologueManager.Instance.ShowMonologuesSequentially(lines, 3f);
+                StartCoroutine(LieDownDelay());
             }
-            Debug.Log("플레이어 x위치: " + transform.position.x);
-
-
-             if (Mathf.Abs(transform.position.x) <= 0.08f)
-            {
-                rigid.linearVelocity = Vector2.zero; // 이동 멈춤
-                autoMoveActive = false;
-                if (GameManager.Instance) GameManager.Instance.autoMove = false;         // 자동 이동 종료
-                SleepExternal();                     // 눕기 실행
-                Debug.Log("침대 도착 → 눕기 실행");
-            }
-            
         }
-        
-        if (currentScene == "Chapter1" && keyInfo != null) {
+
+        if (currentScene == "Chapter1" && keyInfo != null)
+        {
             if (keyInfo.is_click && animator.GetBool("isPhone") == true)
             {
                 keyInfo.is_click = false;
@@ -250,6 +235,47 @@ public class PlayerMove : MonoBehaviour
             Vector3 holdPos = transform.position + new Vector3(0.1f * (spriteRenderer.flipX ? 1 : -1), 0.001f, 0);
             heldObject.transform.position = holdPos;
         }
+    }
+    public IEnumerator AutoReturnToBed(bool skipDialogue)
+    {
+        if (isAutoReturnRunning) yield break;
+        isAutoReturnRunning = true;
+        canInput = false;
+        hasLiedDown = false;
+
+        if (!skipDialogue)
+        {
+            List<string> beforeLines = new List<string> { "너무 피곤해… 눕고 싶어." };
+            MonologueManager.Instance.ShowMonologuesSequentially(beforeLines, 2f);
+            yield return new WaitForSecondsRealtime(beforeLines.Count * 2f + 0.5f);
+        }
+
+        autoMoveActive = true;
+        Debug.Log("★ 자동 리턴 시작");
+
+        yield return new WaitUntil(() => animator.GetBool("isSleep"));
+        autoMoveActive = false;
+
+        if (!skipDialogue)
+        {
+            List<string> afterLines = new List<string> { "편하다… 하루종일 침대에만 붙어 있고 싶어." };
+            MonologueManager.Instance.ShowMonologuesSequentially(afterLines, 2f);
+            yield return new WaitForSecondsRealtime(afterLines.Count * 2f + 0.5f);
+        }
+
+        isAutoReturnRunning = false;
+        canInput = true;
+        Debug.Log("★ 자동 리턴 종료");
+    }
+
+    private IEnumerator LieDownDelay()
+    {
+        if (hasLiedDown) yield break;
+        hasLiedDown = true;
+        rigid.linearVelocity = Vector2.zero;
+        yield return new WaitForSeconds(0.15f);
+        SleepExternal();
+        Debug.Log("침대 도착 → 눕기 실행(지연)");
     }
 
     IEnumerator DisableStartIndicator()
