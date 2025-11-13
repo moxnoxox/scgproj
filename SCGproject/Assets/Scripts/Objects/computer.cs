@@ -68,6 +68,8 @@ public class computer : MonoBehaviour, IInteractable
     // ✅ 최초 1회 긴 대사 루틴
     private IEnumerator FirstCheckRoutine()
     {
+        InputBlocker.Enable();
+        player.GetComponent<PlayerMove>().movable = false;
         isHomeClosed = false;
         if (home != null) home.enabled = true;
 
@@ -96,6 +98,8 @@ public class computer : MonoBehaviour, IInteractable
 
         if (home != null) home.enabled = false;
         isHomeClosed = true;
+        InputBlocker.Disable();  
+        player.GetComponent<PlayerMove>().movable = true;
         if (playerPower != null) playerPower.DecreasePower(10);
     }
 
@@ -104,6 +108,8 @@ public class computer : MonoBehaviour, IInteractable
     // ✅ 이후 짧은 멘트용 루틴
     private IEnumerator ShowHomeImage()
     {
+        InputBlocker.Enable();
+        player.GetComponent<PlayerMove>().movable = false;
         isHomeClosed = false;
         if (home != null) home.enabled = true;
 
@@ -113,6 +119,8 @@ public class computer : MonoBehaviour, IInteractable
 
         if (home != null) home.enabled = false;
         isHomeClosed = true;
+        InputBlocker.Disable();
+        player.GetComponent<PlayerMove>().movable = true;
         if (playerPower != null) playerPower.DecreasePower(10);
     }
 }
