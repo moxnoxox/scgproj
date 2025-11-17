@@ -1,0 +1,441 @@
+fileFormatVersion: 2
+guid: 2a80c61e7083fb44b9304717c2aec386
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6311917239078132570
+    second: IdleShoes_0
+  - first:
+      213: 3780550606664550413
+    second: IdleShoes_1
+  - first:
+      213: 3608175433719174471
+    second: IdleShoes_2
+  - first:
+      213: -7590655501453737414
+    second: IdleShoes_3
+  - first:
+      213: 4831035101690405166
+    second: IdleShoes_4
+  - first:
+      213: -7469165350039748553
+    second: IdleShoes_5
+  - first:
+      213: -7028997013160017356
+    second: IdleShoes_6
+  - first:
+      213: 2010038295806380840
+    second: IdleShoes_7
+  - first:
+      213: 1861099623620641247
+    second: IdleShoes_8
+  - first:
+      213: -8667254270567908103
+    second: IdleShoes_9
+  - first:
+      213: 3844668979578850957
+    second: IdleShoes_10
+  - first:
+      213: -4250428624128761213
+    second: IdleShoes_11
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: IdleShoes_0
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 0
+        width: 209
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a4651986b09768a0800000000000000
+      internalID: -6311917239078132570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IdleShoes_1
+      rect:
+        serializedVersion: 2
+        x: 658
+        y: 0
+        width: 209
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d08c0ad1fb6377430800000000000000
+      internalID: 3780550606664550413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IdleShoes_3
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 0
+        width: 209
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a324c77d90398a690800000000000000
+      internalID: -7590655501453737414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IdleShoes_5
+      rect:
+        serializedVersion: 2
+        x: 1682
+        y: 0
+        width: 209
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 730893effa1385890800000000000000
+      internalID: -7469165350039748553
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IdleShoes_7
+      rect:
+        serializedVersion: 2
+        x: 2194
+        y: 0
+        width: 209
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82b887e2e2715eb10800000000000000
+      internalID: 2010038295806380840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IdleShoes_9
+      rect:
+        serializedVersion: 2
+        x: 2706
+        y: 0
+        width: 209
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fcffc8792ab7b780800000000000000
+      internalID: -8667254270567908103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IdleShoes_11
+      rect:
+        serializedVersion: 2
+        x: 3218
+        y: 0
+        width: 209
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 38227a3afa17305c0800000000000000
+      internalID: -4250428624128761213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IdleShoes_13
+      rect:
+        serializedVersion: 2
+        x: 3730
+        y: 0
+        width: 209
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a177356653aeb284cbf5f16fdb496592
+      internalID: -1591419546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IdleShoes_14
+      rect:
+        serializedVersion: 2
+        x: 4242
+        y: 0
+        width: 209
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a0e58523159d6d4491c528c1924c9d7
+      internalID: -876910787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IdleShoes_16
+      rect:
+        serializedVersion: 2
+        x: 4754
+        y: 0
+        width: 209
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ffbcb72a8fd67048804f3a9431f3722
+      internalID: 622303323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IdleShoes_18
+      rect:
+        serializedVersion: 2
+        x: 5266
+        y: 0
+        width: 209
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02f53c96f4e2e6d49b601b3926e8ee69
+      internalID: 1992727600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IdleShoes_20
+      rect:
+        serializedVersion: 2
+        x: 5778
+        y: 0
+        width: 209
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eaf7c42a401e13a49a128d8d04f939db
+      internalID: -531241753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: ff3f093f2464c4d40b0a685816477ed4
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      IdleShoes_0: -6311917239078132570
+      IdleShoes_1: 3780550606664550413
+      IdleShoes_10: 3844668979578850957
+      IdleShoes_11: -4250428624128761213
+      IdleShoes_12: 316886494
+      IdleShoes_13: -1591419546
+      IdleShoes_14: -876910787
+      IdleShoes_15: -1473482849
+      IdleShoes_16: 622303323
+      IdleShoes_17: -1169408973
+      IdleShoes_18: 1992727600
+      IdleShoes_19: 1300122972
+      IdleShoes_2: 3608175433719174471
+      IdleShoes_20: -531241753
+      IdleShoes_21: 703189836
+      IdleShoes_3: -7590655501453737414
+      IdleShoes_4: 4831035101690405166
+      IdleShoes_5: -7469165350039748553
+      IdleShoes_6: -7028997013160017356
+      IdleShoes_7: 2010038295806380840
+      IdleShoes_8: 1861099623620641247
+      IdleShoes_9: -8667254270567908103
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

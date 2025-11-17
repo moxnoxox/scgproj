@@ -1,0 +1,455 @@
+fileFormatVersion: 2
+guid: 7391c5b11e83b914e89d3f6326c82310
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2952378771612392623
+    second: walkingShoes_0
+  - first:
+      213: -7775403616749127431
+    second: walkingShoes_1
+  - first:
+      213: 535823993461143530
+    second: walkingShoes_2
+  - first:
+      213: -4671960321303395551
+    second: walkingShoes_3
+  - first:
+      213: -4242423411589972017
+    second: walkingShoes_4
+  - first:
+      213: -7342076893418671028
+    second: walkingShoes_5
+  - first:
+      213: -2277669279481304376
+    second: walkingShoes_6
+  - first:
+      213: -9059656481340958222
+    second: walkingShoes_7
+  - first:
+      213: 619976735814085018
+    second: walkingShoes_8
+  - first:
+      213: -1357645815985717107
+    second: walkingShoes_9
+  - first:
+      213: -4531516471223844075
+    second: walkingShoes_10
+  - first:
+      213: 6162589030491410755
+    second: walkingShoes_11
+  - first:
+      213: -4570957817773148953
+    second: walkingShoes_12
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: walkingShoes_0
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 0
+        width: 205
+        height: 497
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 153a3ab462b0707d0800000000000000
+      internalID: -2952378771612392623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walkingShoes_1
+      rect:
+        serializedVersion: 2
+        x: 658
+        y: 0
+        width: 205
+        height: 502
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f8716e3b97381490800000000000000
+      internalID: -7775403616749127431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walkingShoes_2
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 0
+        width: 205
+        height: 503
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae7f1684511af6700800000000000000
+      internalID: 535823993461143530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walkingShoes_3
+      rect:
+        serializedVersion: 2
+        x: 1682
+        y: 0
+        width: 205
+        height: 502
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 123cdf347dcd92fb0800000000000000
+      internalID: -4671960321303395551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walkingShoes_4
+      rect:
+        serializedVersion: 2
+        x: 2194
+        y: 0
+        width: 205
+        height: 501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcff06d6262ef15c0800000000000000
+      internalID: -4242423411589972017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walkingShoes_5
+      rect:
+        serializedVersion: 2
+        x: 2707
+        y: 0
+        width: 205
+        height: 498
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c443d2627f3bb1a90800000000000000
+      internalID: -7342076893418671028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walkingShoes_6
+      rect:
+        serializedVersion: 2
+        x: 3218
+        y: 0
+        width: 205
+        height: 492
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ca62b0abd71460e0800000000000000
+      internalID: -2277669279481304376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walkingShoes_7
+      rect:
+        serializedVersion: 2
+        x: 3729
+        y: 0
+        width: 205
+        height: 491
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f95b9a2e62a54280800000000000000
+      internalID: -9059656481340958222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walkingShoes_8
+      rect:
+        serializedVersion: 2
+        x: 4242
+        y: 0
+        width: 205
+        height: 498
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9964337e899a9800800000000000000
+      internalID: 619976735814085018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walkingShoes_9
+      rect:
+        serializedVersion: 2
+        x: 4754
+        y: 0
+        width: 205
+        height: 499
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d80406fc25ca82de0800000000000000
+      internalID: -1357645815985717107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walkingShoes_10
+      rect:
+        serializedVersion: 2
+        x: 5266
+        y: 0
+        width: 205
+        height: 497
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5130fd647c1dc11c0800000000000000
+      internalID: -4531516471223844075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walkingShoes_11
+      rect:
+        serializedVersion: 2
+        x: 5777
+        y: 0
+        width: 205
+        height: 494
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 341d82b821ae58550800000000000000
+      internalID: 6162589030491410755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walkingShoes_12
+      rect:
+        serializedVersion: 2
+        x: 6289
+        y: 0
+        width: 205
+        height: 494
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e4365c2512b090c0800000000000000
+      internalID: -4570957817773148953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 6d1e94d5bc93fae46989a3f3017f9631
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      walkingShoes_0: -2952378771612392623
+      walkingShoes_1: -7775403616749127431
+      walkingShoes_10: -4531516471223844075
+      walkingShoes_11: 6162589030491410755
+      walkingShoes_12: -4570957817773148953
+      walkingShoes_2: 535823993461143530
+      walkingShoes_3: -4671960321303395551
+      walkingShoes_4: -4242423411589972017
+      walkingShoes_5: -7342076893418671028
+      walkingShoes_6: -2277669279481304376
+      walkingShoes_7: -9059656481340958222
+      walkingShoes_8: 619976735814085018
+      walkingShoes_9: -1357645815985717107
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
