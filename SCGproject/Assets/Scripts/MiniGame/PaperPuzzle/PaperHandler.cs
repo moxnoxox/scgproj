@@ -17,6 +17,7 @@ public class PaperHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
     public Transform[] correctPosition;
     public int pieceIndex; // 퍼즐 조각 인덱스 (0~8)
     public bool isCorrectPosition = false;
+    public bool isRotating = false;
     // index of the correctPosition this piece is currently snapped to (-1 = none)
     public int currentSnappedIndex = -1;
     // allowable angle (degrees) to consider rotation "matching"
@@ -85,7 +86,7 @@ public class PaperHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
     public void OnPointerClick(PointerEventData eventData)
     {
         if (!PaperpuzzleController.Instance.isPuzzleActive) return;
-        
+        if (isRotating) return;
         if (Time.time - lastClickTime < doubleClickThreshold)
         {
             // 더블클릭 감지시 회전
@@ -147,10 +148,11 @@ public class PaperHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
 
         transform.rotation = endRotation;
             // If this piece is currently snapped to a slot, re-evaluate correctness after rotation
-            if (currentSnappedIndex >= 0)
-            {
-                bool rotationMatch = Quaternion.Angle(transform.rotation, correctPosition[currentSnappedIndex].rotation) <= rotationMatchThreshold;
-                isCorrectPosition = (currentSnappedIndex == pieceIndex && rotationMatch);
-            }
+        if (currentSnappedIndex >= 0)
+        {
+            bool rotationMatch = Quaternion.Angle(transform.rotation, correctPosition[currentSnappedIndex].rotation) <= rotationMatchThreshold;
+            isCorrectPosition = (currentSnappedIndex == pieceIndex && rotationMatch);
+        }
+        isRotating = false;
     }
 }

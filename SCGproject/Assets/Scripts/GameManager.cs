@@ -190,8 +190,9 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(5f);
         yield return ShowMono("afterQuest", 2f);
         autoMove = true;
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(7f);
         playermove.SleepExternal();
+        yield return new WaitForSeconds(2f);
         AfterQuest = true;
         autoMove = false;
         phoneOpenEnable = false;
