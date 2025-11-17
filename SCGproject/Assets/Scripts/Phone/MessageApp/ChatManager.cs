@@ -206,7 +206,7 @@ public class ChatManager : MonoBehaviour
         if (!string.IsNullOrEmpty(choice.resultMessage))
         {
             string time = string.IsNullOrEmpty(choice.timestamp) ? gameClock.GetTimeString() : choice.timestamp;
-            AddMyMessage(choice.resultMessage, time);
+            AddMyMessage(choice.resultMessage, time, autoTime: false);
         }
 
         choicePanel.SetActive(false);
