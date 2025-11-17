@@ -166,7 +166,7 @@ public class GameManager_ch3 : MonoBehaviour
 
 
         // 4) 기타 전달
-        yield return StartCoroutine(ShowIllustration("guitar_fixed_illust"));
+        yield return StartCoroutine(ShowIllustration("guitarbag_rotated"));
         yield return Show("giveGuitar", 3f);
         // ===============선택지
         yield return ShowChoices(new List<string>
@@ -214,7 +214,7 @@ public class GameManager_ch3 : MonoBehaviour
 
 
         // 5) 기타 돌려줌
-        StartCoroutine(ShowIllustration("guitar_fixed_illust"));
+        StartCoroutine(ShowIllustration("guitarbag_rotated"));
         yield return Show("giveGuitar_3", 3f);
 
         // 6) 에너지 변동

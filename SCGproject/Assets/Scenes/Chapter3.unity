@@ -292,6 +292,7 @@ GameObject:
   - component: {fileID: 201378023}
   - component: {fileID: 201378022}
   - component: {fileID: 201378021}
+  - component: {fileID: 201378024}
   m_Layer: 0
   m_Name: npc_G
   m_TagString: Untagged
@@ -405,6 +406,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1403472859}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &201378024
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201378020}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 17862d58e147f6b4d95ebeba1faa7334, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!224 &293844722 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 873556989877258766, guid: 581b356d7939e5846a765e1244743906, type: 3}
@@ -788,6 +811,7 @@ GameObject:
   - component: {fileID: 876441646}
   - component: {fileID: 876441645}
   - component: {fileID: 876441648}
+  - component: {fileID: 876441649}
   m_Layer: 0
   m_Name: busker
   m_TagString: Untagged
@@ -1022,6 +1046,28 @@ MonoBehaviour:
   player: {fileID: 1317237226}
   triggerDistance: 2
   fadeDuration: 1
+--- !u!95 &876441649
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876441644}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9fee275cf0b8d3f448588f61a950ef7f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &919904777
 GameObject:
   m_ObjectHideFlags: 0
@@ -2630,6 +2676,7 @@ GameObject:
   - component: {fileID: 1782515284}
   - component: {fileID: 1782515283}
   - component: {fileID: 1782515282}
+  - component: {fileID: 1782515285}
   m_Layer: 0
   m_Name: npc_D
   m_TagString: Untagged
@@ -2735,6 +2782,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1403472859}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1782515285
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1782515281}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 66c50da3f0848984f8a86d9397291aaf, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1856085608
 GameObject:
   m_ObjectHideFlags: 0
@@ -2836,6 +2905,7 @@ GameObject:
   - component: {fileID: 1951678147}
   - component: {fileID: 1951678146}
   - component: {fileID: 1951678145}
+  - component: {fileID: 1951678148}
   m_Layer: 0
   m_Name: npc_M
   m_TagString: Untagged
@@ -2963,6 +3033,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1403472859}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1951678148
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1951678144}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7a725e6c773494d46980bfd70d418acd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1996692298
 GameObject:
   m_ObjectHideFlags: 0

@@ -102,6 +102,7 @@ public class GameManager : MonoBehaviour
         // 1. 기상
         scenarioState = ScenarioState.WakeUp;
         if (playermove != null) playermove.canInput = false;
+        InputBlocker.Enable();
         yield return new WaitForSeconds(2f);
         yield return ShowMono("wakeUp", 2f);
         if (playermove != null) playermove.canInput = true;
@@ -160,10 +161,10 @@ public class GameManager : MonoBehaviour
         scenarioState = ScenarioState.PhoneGuide;
         yield return Showannouncement("phoneGuide", 2f);
 
-        phoneOpenEnable = true;
         playermove.WakeUpExternal();
         playermove.movable = true;
         phoneOpenEnable = true;
+        InputBlocker.Disable();
         playermove.canInput = true;
         playermove.showClickIndicator();
      

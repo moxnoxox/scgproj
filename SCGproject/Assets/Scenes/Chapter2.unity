@@ -12271,6 +12271,7 @@ MonoBehaviour:
   movable: 1
   isHolding: 0
   heldObject: {fileID: 0}
+  autoMoveActive: 0
 --- !u!50 &1021047009
 Rigidbody2D:
   serializedVersion: 5
@@ -14712,12 +14713,13 @@ MonoBehaviour:
   popupPanel: {fileID: 372051401}
   largeImage: {fileID: 1011344063}
   testSprites:
-  - {fileID: 21300000, guid: 16db0de4929886a45a0fb49bf48a6b09, type: 3}
-  - {fileID: 21300000, guid: 16db0de4929886a45a0fb49bf48a6b09, type: 3}
-  - {fileID: 21300000, guid: 16db0de4929886a45a0fb49bf48a6b09, type: 3}
-  - {fileID: 21300000, guid: 16db0de4929886a45a0fb49bf48a6b09, type: 3}
-  - {fileID: 21300000, guid: 16db0de4929886a45a0fb49bf48a6b09, type: 3}
-  - {fileID: 21300000, guid: 16db0de4929886a45a0fb49bf48a6b09, type: 3}
+  - {fileID: 269700336145560861, guid: 627ec753645e5cd448551af29aa765d8, type: 3}
+  - {fileID: 4250870399213094290, guid: ae4502bc1b3c39d4181113d62536ee67, type: 3}
+  - {fileID: -8753086469627397224, guid: 273857f0dd961ba4cb6607872d87bf31, type: 3}
+  - {fileID: -454640186706352032, guid: 022dbadf6e71bcb4296bf399353bc8ce, type: 3}
+  - {fileID: -69532542721247574, guid: ddef8eedc4809c340ba183c20ea62128, type: 3}
+  - {fileID: -3733406754344266633, guid: be6ea0743af675445a6f7eeb4ba48376, type: 3}
+  - {fileID: -8344854828437376771, guid: df17fe3c36da33f4da49543876060f5f, type: 3}
   lockedStates: 
 --- !u!114 &1210069380
 MonoBehaviour:

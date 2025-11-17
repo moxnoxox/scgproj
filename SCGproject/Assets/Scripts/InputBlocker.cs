@@ -56,7 +56,6 @@ public class InputBlocker : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     private void Update()
     {
         if (!isBlocked) return;
-        Input.ResetInputAxes(); // 키보드, 마우스, 휠 등 입력 전부 무효화
     }
 
     public void OnPointerDown(PointerEventData e) { }
