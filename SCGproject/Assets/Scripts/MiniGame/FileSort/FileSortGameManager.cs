@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEngine.UI;
 
 public class FileSortGameManager : MonoBehaviour
 {
@@ -9,10 +11,13 @@ public class FileSortGameManager : MonoBehaviour
 
     [Header("UI 연결")]
     public GameObject gameCanvasRoot;    // FileSortGameCanvas
+    public GameObject tutorialPanel;
+    private TextMeshProUGUI tutorialText;
     public TextMeshProUGUI timerText;    // TimerText
     public RectTransform fileParent;     // DesktopArea
     public GameObject fileIconPrefab;    // FileIcon 프리팹
     public TextMeshProUGUI feedbackText; // 게임 클리어 문구
+    public Sprite[] thumbnailImages;
     Coroutine _feedbackRoutine;
 
 
@@ -37,15 +42,29 @@ public class FileSortGameManager : MonoBehaviour
     {
         Instance = this;
         if (gameCanvasRoot) gameCanvasRoot.SetActive(false);
+        tutorialText = tutorialPanel.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     public void ShowGameUI()
     {
         gameCanvasRoot.SetActive(true);
         Time.timeScale = 1f; // UI 게임은 보통 1 유지
+        StartCoroutine(StartCoroutine());
+    }
+    IEnumerator StartCoroutine()
+    {
+        yield return tutorialCoroutine();
         StartGame();
     }
-
+    IEnumerator tutorialCoroutine()
+    {
+        tutorialPanel.SetActive(true);
+        tutorialText.text = "제한시간 30초 안에 파일을 정리해 보세요!";
+        yield return new WaitForSeconds(2f);
+        tutorialText.text = "각 파일을 해당하는 폴더로 드래그 앤 드롭하세요.\n잘못된 폴더에 놓으면 시간 패널티가 있습니다.\n일부 파일은 휴지통에 넣어야 합니다.\n\n마우스 클릭 시 시작됩니다!";
+        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Mouse0));
+        tutorialPanel.SetActive(false);
+    }
     void StartGame()
     {
         // 기존 아이콘 제거
@@ -60,7 +79,6 @@ public class FileSortGameManager : MonoBehaviour
         // 모든 파일 생성
         foreach (var data in fileDatabase)
             CreateFileIcon(data);
-
         timer = 30f;
         gameActive = true;
         UpdateTimerView();
@@ -109,6 +127,27 @@ public class FileSortGameManager : MonoBehaviour
         item.SetFileData(data);   // 파일명/카테고리 세팅
         item.homeParent = fileParent; // 기본 부모는 DesktopArea
         item.rememberHomePosition = rect.anchoredPosition; // 초기 위치 저장
+        if (data.extension == "png" || data.extension == "jpg" || data.extension == "jpeg")
+        {
+            item.GetComponent<UnityEngine.UI.Image>().sprite = thumbnailImages[0];
+        }
+        else if (data.extension == "mp3" || data.extension == "wav")
+        {
+            item.GetComponent<UnityEngine.UI.Image>().sprite = thumbnailImages[1];
+        }
+        else if (data.extension == "docx")
+        {
+            item.GetComponent<UnityEngine.UI.Image>().sprite = thumbnailImages[2];
+        }
+        else if (data.extension == "pptx")
+        {
+            item.GetComponent<UnityEngine.UI.Image>().sprite = thumbnailImages[3];
+        }
+        else if (data.extension == "pdf")
+        {
+            item.GetComponent<UnityEngine.UI.Image>().sprite = thumbnailImages[4];
+        }
+        
     }
 
     void Update()

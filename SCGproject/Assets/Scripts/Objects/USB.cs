@@ -44,6 +44,19 @@ public class USB : MonoBehaviour
                 firstInteracted = true;
                 Chapter2Manager.Instance?.OnUSBInteracted(usbIndex);
                 Chapter2Manager.Instance?.PlayUSBFirstDialogue(usbIndex);
+                switch (usbIndex)
+                {
+                    case 1:
+                        usbUI.usb1Active();
+                        break;
+                    case 2:
+                        usbUI.usb2Active();
+                        break;
+                    case 3:
+                        usbUI.usb3Active();
+                        break;
+                }
+                Destroy(this.gameObject);
             }
             else
             {

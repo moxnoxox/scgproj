@@ -20,10 +20,12 @@ public class Chapter2Manager : MonoBehaviour
     // --- UI 참조 변수들 ---
     public Transform choicePanel; // 선택지 버튼들이 생성될 부모 Panel
     public GameObject choiceButtonPrefab; // 선택지 버튼 프리팹
+    public UnityEngine.UI.Image endingImage;
 
     // --- 시나리오 진행 관련 변수들 ---
     public bool autoMove; // 플레이어 자동 이동 활성화 여부
     public bool ch2_movable;
+    public bool ch2_canSleep;
     private Dictionary<string, List<string>> monoData; // Mono2.json 데이터 저장
     private ScenarioState scenarioState; // 현재 시나리오 단계
 
@@ -37,6 +39,7 @@ public class Chapter2Manager : MonoBehaviour
     private bool guitarBodyFound = false; // 기타 본체 발견 여부
     private bool guitarCaseFound = false; // 기타 케이스 발견 여부
     private bool peakFound = false; // 피크 발견 여부
+    private bool stringFound = false;
     private bool paperPuzzleDone = false; // 종이 퍼즐 미니게임 완료 여부
     private bool guitarPartsAllFound = false; // 모든 기타 부품 발견 여부 (챕터 종료 조건)
 
@@ -108,7 +111,8 @@ public class Chapter2Manager : MonoBehaviour
              return; // 필수 매니저 없으면 시작 중단
         }
 
-
+        if(endingImage != null)
+            endingImage.enabled = false; // 엔딩 이미지 숨기기
         // 메인 시나리오 코루틴 시작
         StartCoroutine(ScenarioFlow());
     }
@@ -139,12 +143,12 @@ public class Chapter2Manager : MonoBehaviour
 
     // --- 필수 매니저 찾기 함수 ---
     void FindEssentialManagers() {
-         if (playerMove == null) playerMove = FindObjectOfType<PlayerMove>();
+         if (playerMove == null) playerMove = FindFirstObjectByType<PlayerMove>();
          if (playerPower == null && playerMove != null) playerPower = playerMove.GetComponent<player_power>(); // PlayerMove에서 가져오기
-         if (questManager == null) questManager = FindObjectOfType<QuestManagerCh2>();
-         if (phoneController == null) phoneController = FindObjectOfType<PhonePanelController>();
-         if (chatAppManager == null) chatAppManager = FindObjectOfType<ChatAppManager>();
-         if (chatRoomLoader == null) chatRoomLoader = FindObjectOfType<ChatRoomLoader>();
+         if (questManager == null) questManager = FindFirstObjectByType<QuestManagerCh2>();
+         if (phoneController == null) phoneController = FindFirstObjectByType<PhonePanelController>();
+         if (chatAppManager == null) chatAppManager = FindFirstObjectByType<ChatAppManager>();
+         if (chatRoomLoader == null) chatRoomLoader = FindFirstObjectByType<ChatRoomLoader>();
 
          // 필수 매니저 누락 시 에러 로그 (playerPower, questManager는 없을 수도 있음)
          if (playerMove == null) Debug.LogError("PlayerMove 참조를 찾을 수 없습니다!");
@@ -160,6 +164,7 @@ public class Chapter2Manager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         // 1. 선형적인 시작 부분 (인트로)
         scenarioState = ScenarioState.StartContact;
+        ch2_canSleep = false;
         yield return ShowMono("ch2start", 2f); // "일단 찾겠다고는...", "막막하네"
 
         // 2. 카톡 자동 진행
@@ -170,6 +175,7 @@ public class Chapter2Manager : MonoBehaviour
 
         // 3. 줌아웃 및 독백
         yield return ShowMono("postChatMono", 2f); // "……무작정 바닥에서...", "쓰레기봉지 때문에..."
+        ch2_canSleep = true;
         Debug.Log("카메라 줌아웃 - 집 전체 클로즈업 (연출 필요)");
         // 예: cameraController?.ZoomOutToShowHouse();
         yield return new WaitForSeconds(2f); // 줌아웃 연출 대기 시간
@@ -297,6 +303,11 @@ public class Chapter2Manager : MonoBehaviour
         yield return ShowMono("ending_Tune", 2f); // "오랜만에...", "...쳐볼까?"
 
         Debug.Log("기타 치는 일러스트 표시 (연출 필요)");
+        if (endingImage != null)
+        {
+            endingImage.enabled = true;
+            // 일러스트 페이드인 연출 (필요 시 구현)
+        }
         // 예: illustrationManager?.Show("GuitarPlaying");
         yield return new WaitForSeconds(1f); // 일러스트 표시 시간
 
@@ -342,7 +353,7 @@ public class Chapter2Manager : MonoBehaviour
 
         // ChatManager 인스턴스 가져오기 (OpenChatRoomWithData 호출 후 생성됨)
         yield return null; // ChatManager 생성 대기
-        ChatManager currentChatManager = FindObjectOfType<ChatManager>(); // ChatAppManager가 관리하는 인스턴스 찾기
+        ChatManager currentChatManager = FindFirstObjectByType<ChatManager>(); // ChatAppManager가 관리하는 인스턴스 찾기
 
         if (currentChatManager != null)
         {
@@ -538,7 +549,6 @@ public class Chapter2Manager : MonoBehaviour
             questManager?.UpdateComputerQuest(); // 퀘스트 업데이트
 
             // 노트북을 이미 열어봤다면 바로 파일 정렬 게임 시작
-            if (laptopOpened) StartFileSortGame();
         }
     }
 
@@ -598,15 +608,23 @@ public class Chapter2Manager : MonoBehaviour
     }
 
     // 기타 본체 발견 시 호출 (별도 상호작용 스크립트 필요)
-    public void OnGuitarBodyFound() {
-         if (guitarBodyFound) return;
-         guitarBodyFound = true;
-         scenarioState = ScenarioState.GuitarBodyFound;
-         Debug.Log("기타 본체 발견! 퀘스트 추가: 줄, 피크, 케이스 찾기");
-         questManager?.CompleteGuitarQuest(); // '기타 찾기' 퀘스트 완료
-         questManager?.GuitarPartsFind();
-         // 모든 부품 찾기 완료 조건 체크
-         CheckAllPartsFound();
+    public void OnGuitarBodyFound()
+    {
+        if (guitarBodyFound) return;
+        guitarBodyFound = true;
+        scenarioState = ScenarioState.GuitarBodyFound;
+        StartCoroutine(GuitarBodyMonoCoroutine());
+        Debug.Log("기타 본체 발견! 퀘스트 추가: 줄, 피크, 케이스 찾기");
+        questManager?.CompleteGuitarQuest(); // '기타 찾기' 퀘스트 완료
+        questManager?.GuitarPartsFind();
+        // 모든 부품 찾기 완료 조건 체크
+        CheckAllPartsFound();
+    }
+    IEnumerator GuitarBodyMonoCoroutine()
+    {
+        yield return ShowMono("guitar_found", 2f);
+        yield return ShowChoices(new List<string> { "> 들어올린다.", ">힘껏 들어올린다." });
+        yield return ShowMono("guitar_found2", 2f);
     }
 
     // 기타 케이스 발견 시 호출 (guitar_case.cs)
@@ -620,12 +638,21 @@ public class Chapter2Manager : MonoBehaviour
          CheckAllPartsFound();
     }
 
-    public void OnPeakFound() {
-         if (peakFound) return;
-         peakFound = true;
-         Debug.Log("피크 발견!");
-         // 모든 부품 찾기 완료 조건 체크
-         CheckAllPartsFound();
+    public void OnPeakFound()
+    {
+        if (peakFound) return;
+        peakFound = true;
+        Debug.Log("피크 발견!");
+        // 모든 부품 찾기 완료 조건 체크
+        CheckAllPartsFound();
+    }
+    public void OnStringFound()
+    {
+        if (stringFound) return;
+        stringFound = true;
+        Debug.Log("기타 줄 발견!");
+        // 모든 부품 찾기 완료 조건 체크
+        CheckAllPartsFound();
     }
 
     // [추가] 다른 기타 부품 발견 시 호출될 함수 (예시)
@@ -637,7 +664,7 @@ public class Chapter2Manager : MonoBehaviour
          if (paperPuzzleDone) return; // 이미 완료했다면 시작 안 함
          ch2_movable = false;
          scenarioState = ScenarioState.PaperPuzzleStart;
-         Debug.Log("종이 퍼즐 미니게임 시작 (구현 필요)");
+         Debug.Log("종이 퍼즐 미니게임 시작");
          // 예: PaperpuzzleController.Instance.StartPuzzle(); // 실제 퍼즐 시작 호출
          StartCoroutine(WaitForPaperPuzzleLogic()); // 완료 대기 코루틴 시작
     }
@@ -664,14 +691,14 @@ public class Chapter2Manager : MonoBehaviour
          Debug.Log("종이 퍼즐 미니게임 완료! 갤러리 해금 + 에너지 +10");
          playerPower?.IncreasePower(10);
          // 갤러리 해금 로직 (GalleryManager 연동 필요)
-         // 예: FindObjectOfType<GalleryManager>()?.UnlockPhoto(photoIndexToUnlock);
+         // 예: FindFirstObjectByType<GalleryManager>()?.UnlockPhoto(photoIndexToUnlock);
     }
 
     // 모든 기타 부품 찾기 완료 조건 체크 함수
     private void CheckAllPartsFound() {
          // 필요한 모든 부품의 발견 플래그 확인
          // 예: if (guitarBodyFound && guitarCaseFound && guitarStringsFound && guitarTunerFound)
-         if (guitarBodyFound && guitarCaseFound && peakFound/* && 다른 부품 플래그들... */)
+         if (guitarBodyFound && guitarCaseFound && peakFound && stringFound/* && 다른 부품 플래그들... */)
          {
             OnGuitarPartsAllFound(); // 모든 부품 찾음 처리 함수 호출
          }
@@ -726,6 +753,8 @@ public class Chapter2Manager : MonoBehaviour
         public List<string> trashTutorial_Skip;
         public List<string> trashTutorial_End;
         public List<string> trashTutorial_ToFreeMove;
+        public List<string> guitar_found;
+        public List<string> guitar_found2;
 
         // 3. 자유 이동 중 상호작용
         public List<string> usb1_first;
@@ -759,6 +788,8 @@ public class Chapter2Manager : MonoBehaviour
             if (trashTutorial_Skip != null) dict.Add("trashTutorial_Skip", trashTutorial_Skip);
             if (trashTutorial_End != null) dict.Add("trashTutorial_End", trashTutorial_End);
             if (trashTutorial_ToFreeMove != null) dict.Add("trashTutorial_ToFreeMove", trashTutorial_ToFreeMove);
+            if (guitar_found != null) dict.Add("guitar_found", guitar_found);
+            if (guitar_found2 != null) dict.Add("guitar_found2", guitar_found2);
             if (usb1_first != null) dict.Add("usb1_first", usb1_first);
             if (usb2_first != null) dict.Add("usb2_first", usb2_first);
             if (usb3_first != null) dict.Add("usb3_first", usb3_first);

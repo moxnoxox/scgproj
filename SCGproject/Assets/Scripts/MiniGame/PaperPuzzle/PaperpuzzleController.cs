@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using TMPro;
 
 public class PaperpuzzleController : MonoBehaviour
 {
     public static PaperpuzzleController Instance;
     public GameObject[] pieces;
+    public GameObject tutorialPanel;
+    private TextMeshProUGUI tutorialText;
     public PaperHandler[] pieceHandlers;
     public bool isPuzzleActive;
     public CanvasGroup puzzlePanel;
@@ -26,6 +29,8 @@ public class PaperpuzzleController : MonoBehaviour
         {
             pieceHandlers[i] = pieces[i].GetComponent<PaperHandler>();
         }
+        tutorialText = tutorialPanel.GetComponentInChildren<TextMeshProUGUI>();
+        tutorialPanel.SetActive(false);
         puzzlePanel.alpha = 0;
         puzzlePanel.interactable = false;
         puzzlePanel.blocksRaycasts = false;
@@ -50,6 +55,7 @@ public class PaperpuzzleController : MonoBehaviour
             handler.isCorrectPosition = false;
             handler.currentSnappedIndex = -1;
         }
+        Chapter2Manager.Instance.ch2_movable = true;
     }
     public void OnResetButton()
     {
@@ -62,6 +68,15 @@ public class PaperpuzzleController : MonoBehaviour
         }
         isCompleted = false;
     }
+    IEnumerator tutorialRoutine()
+    {
+        tutorialPanel.SetActive(true);
+        tutorialText.text = "찢긴 종잇조각들이 흩어져 있습니다. 모양을 잘 보고 이어 붙여 보세요!";
+        yield return new WaitForSeconds(2f);
+        tutorialText.text = "조각을 드래그하여 맞는 위치에 놓으세요.\n조각을 더블클릭하면 회전할 수 있습니다.\n\n마우스 클릭 시 시작됩니다!";
+        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Mouse0));
+        tutorialPanel.SetActive(false);
+    }
 
     IEnumerator PuzzleRoutine()
     {
@@ -69,7 +84,7 @@ public class PaperpuzzleController : MonoBehaviour
         puzzlePanel.interactable = true;
         puzzlePanel.blocksRaycasts = true;
         puzzlePanel.alpha = 1;
-
+        yield return tutorialRoutine();
         // 1. 게임 안내 멘트 출력
 
         // 2. 게임 진행
