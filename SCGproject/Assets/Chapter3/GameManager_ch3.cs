@@ -252,9 +252,7 @@ public class GameManager_ch3 : MonoBehaviour
 
     }
     private IEnumerator PlayEndingSequence()
-    { 
-        yield return StartCoroutine(FadeOut(1.5f)); 
-        yield return StartCoroutine(FadeIn(1.5f));   
+    {   
         endingVideoPlayer.Prepare();
 
         while (!endingVideoPlayer.isPrepared)
