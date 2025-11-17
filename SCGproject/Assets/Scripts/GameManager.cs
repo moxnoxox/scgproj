@@ -89,6 +89,7 @@ public class GameManager : MonoBehaviour
     {
         playermove.canInput = false;
         playermove.movable = false;
+        phoneOpenEnable = false;
         while (gameStarted == false)
         {
             yield return null;
@@ -159,6 +160,7 @@ public class GameManager : MonoBehaviour
         scenarioState = ScenarioState.PhoneGuide;
         yield return Showannouncement("phoneGuide", 2f);
 
+        phoneOpenEnable = true;
         playermove.WakeUpExternal();
         playermove.movable = true;
         phoneOpenEnable = true;
