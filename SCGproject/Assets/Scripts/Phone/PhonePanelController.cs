@@ -122,4 +122,13 @@ public class PhonePanelController : MonoBehaviour
         phonePanel.anchoredPosition = target;
     }
 
+    private void OnDisable()
+    {
+        // 씬이 바뀌거나, 오브젝트가 비활성화될 때
+        // 혹시 스택에 남아 있을지 모르는 핸들러를 정리
+        BackInputManager.Unregister(ClosePhone);
+        isOpen = false;
+    }
+
+
 }

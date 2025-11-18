@@ -320,6 +320,7 @@ public class Chapter2Manager : MonoBehaviour
         yield return new WaitForSeconds(3f); // 여운
 
         // 챕터 3 전환
+        BackInputManager.ClearAll();
         Debug.Log("일러스트 종료, 챕터 3 로드 (연출 필요)");
         UnityEngine.SceneManagement.SceneManager.LoadScene("Chapter3");
         // 예: illustrationManager?.Hide();
