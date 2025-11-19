@@ -25,6 +25,8 @@ public class PlayerMove : MonoBehaviour
     bool showedTiredDialogue = false;
     private bool hasLiedDown = false;   
     private IInteractable interactionTarget = null;
+    // 주변의 IInteractable 목록을 유지해서 우선순위로 하나만 선택
+    private List<IInteractable> nearbyInteractables = new List<IInteractable>();
     private string currentScene;
     // 자동리턴 관련 
     public bool autoMoveActive = false;
@@ -112,17 +114,81 @@ public class PlayerMove : MonoBehaviour
         IInteractable interactable = other.GetComponent<IInteractable>();
         if (interactable != null)
         {
-            interactionTarget = interactable;
+            if (!nearbyInteractables.Contains(interactable))
+                nearbyInteractables.Add(interactable);
+            UpdateInteractionTarget();
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         IInteractable interactable = other.GetComponent<IInteractable>();
-        if (interactionTarget == interactable)
+        if (interactable != null)
         {
-            interactionTarget = null;
+            nearbyInteractables.Remove(interactable);
+            UpdateInteractionTarget();
         }
+    }
+
+    // 우선순위 규칙: 1) 태그에 'trash' 포함 또는 TrashBag 컴포넌트 보유 -> 우선
+    //                2) 태그에 'parts' 포함 -> 다음 우선
+    //                3) 없으면 목록의 첫 항목
+    private void UpdateInteractionTarget()
+    {
+        interactionTarget = null;
+        if (nearbyInteractables.Count == 0) return;
+
+        IInteractable preferred = null;
+
+        // 1) 태그에 'trashbag' 포함
+        foreach (var it in nearbyInteractables)
+        {
+            var comp = it as Component;
+            if (comp == null) continue;
+            string tag = comp.gameObject.tag != null ? comp.gameObject.tag.ToLower() : "untagged";
+            if (tag == "trashbag")
+            {
+                preferred = it;
+                break;
+            }
+        }
+
+        // 2) TrashBag 컴포넌트 보유 (Fallback)
+        if (preferred == null)
+        {
+            foreach (var it in nearbyInteractables)
+            {
+                var comp = it as Component;
+                if (comp == null) continue;
+                if (comp.GetComponent<TrashBag1Stack>() != null || comp.GetComponent<TrashBag2Stack>() != null)
+                {
+                    preferred = it;
+                    break;
+                }
+            }
+        }
+
+        // 3) 태그에 'parts' 포함
+        if (preferred == null)
+        {
+            foreach (var it in nearbyInteractables)
+            {
+                var comp = it as Component;
+                if (comp == null) continue;
+                string tag = comp.gameObject.tag != null ? comp.gameObject.tag.ToLower() : "untagged";
+                if (tag == "parts")
+                {
+                    preferred = it;
+                    break;
+                }
+            }
+        }
+
+        // 4) 없으면 첫 항목
+        if (preferred == null)
+            preferred = nearbyInteractables[0];
+
+        interactionTarget = preferred;
     }
 
     IEnumerator StartWait()

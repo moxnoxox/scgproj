@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class computer_ch2 : MonoBehaviour
+public class computer_ch2 : MonoBehaviour, IInteractable
 {
     public GameObject player;
     private float xdiff;
@@ -12,11 +12,17 @@ public class computer_ch2 : MonoBehaviour
     public Sprite computerOff;
     public player_power playerPower;
     public key_info_ch2 keyInfoCh2;
+    private Collider2D col;
+    private bool isFirstInteract = false;
+
+    public CanvasGroup canvasGroup;
 
     void Start()
     {
-        keyInfoCh2.isObject = false;
-        playerPower = player.GetComponent<player_power>();
+        if (keyInfoCh2 != null) keyInfoCh2.isObject = false;
+        if (player != null) playerPower = player.GetComponent<player_power>();
+        col = GetComponent<Collider2D>();
+        if (col != null) col.isTrigger = true;
     }
 
     // Update is called once per frame
@@ -26,16 +32,41 @@ public class computer_ch2 : MonoBehaviour
         if (xdiff < 1f)
         {
             spriteRenderer.sprite = computerOn;
-            keyInfoCh2.isObject = true;
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Chapter2Manager.Instance.OnLaptopOpened();
-            }
+            if (keyInfoCh2 != null) keyInfoCh2.isObject = true;
         }
         else if(xdiff < 1.1f)
         {
             spriteRenderer.sprite = computerOff;
-            keyInfoCh2.isObject = false;
+            if (keyInfoCh2 != null) keyInfoCh2.isObject = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!other.CompareTag("Player")) return;
+        if (keyInfoCh2 != null) keyInfoCh2.isObject = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (!other.CompareTag("Player")) return;
+        if (keyInfoCh2 != null) keyInfoCh2.isObject = false;
+    }
+
+    // PlayerMove에서 상호작용 호출 시 실행
+    public void Interact(PlayerMove playerMove)
+    {
+        if (playerMove == null) return;
+        float dist = Mathf.Abs(this.transform.position.x - playerMove.transform.position.x);
+        
+        if (!isFirstInteract)
+        {
+            Chapter2Manager.Instance?.OnLaptopOpened();
+            isFirstInteract = true;
+        }
+        else
+        {
+            ComputerController.Instance.StartComputer();
         }
     }
 }

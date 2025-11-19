@@ -49,9 +49,9 @@ public class FileSortGameManager : MonoBehaviour
     {
         gameCanvasRoot.SetActive(true);
         Time.timeScale = 1f; // UI 게임은 보통 1 유지
-        StartCoroutine(StartCoroutine());
+        StartCoroutine(StartingCoroutine());
     }
-    IEnumerator StartCoroutine()
+    IEnumerator StartingCoroutine()
     {
         yield return tutorialCoroutine();
         StartGame();

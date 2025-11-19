@@ -303,11 +303,7 @@ public class Chapter2Manager : MonoBehaviour
         yield return ShowMono("ending_Tune", 2f); // "오랜만에...", "...쳐볼까?"
 
         Debug.Log("기타 치는 일러스트 표시 (연출 필요)");
-        if (endingImage != null)
-        {
-            endingImage.enabled = true;
-            // 일러스트 페이드인 연출 (필요 시 구현)
-        }
+        yield return EndingImageFadeInCoroutine();
         // 예: illustrationManager?.Show("GuitarPlaying");
         yield return new WaitForSeconds(1f); // 일러스트 표시 시간
 
@@ -624,6 +620,7 @@ public class Chapter2Manager : MonoBehaviour
     {
         yield return ShowMono("guitar_found", 2f);
         yield return ShowChoices(new List<string> { "> 들어올린다.", ">힘껏 들어올린다." });
+        int choiceResult = GetChoiceResult();
         yield return ShowMono("guitar_found2", 2f);
     }
 
@@ -689,6 +686,8 @@ public class Chapter2Manager : MonoBehaviour
          paperPuzzleDone = true;
          scenarioState = ScenarioState.PaperPuzzleComplete;
          Debug.Log("종이 퍼즐 미니게임 완료! 갤러리 해금 + 에너지 +10");
+         ShowMono("paper_done", 2f);
+         PaperpuzzleController.Instance.ExittooltipOn();
          playerPower?.IncreasePower(10);
          // 갤러리 해금 로직 (GalleryManager 연동 필요)
          // 예: FindFirstObjectByType<GalleryManager>()?.UnlockPhoto(photoIndexToUnlock);
@@ -732,6 +731,50 @@ public class Chapter2Manager : MonoBehaviour
         );
     }
 
+    IEnumerator EndingImageFadeInCoroutine()
+    {
+        if (endingImage == null) yield break;
+
+        float duration = 2f; // 페이드인 지속 시간
+        float elapsed = 0f;
+        Color color = endingImage.color;
+        color.a = 0f;
+        endingImage.color = color;
+        endingImage.enabled = true;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            color.a = Mathf.Clamp01(elapsed / duration);
+            endingImage.color = color;
+            yield return null;
+        }
+
+        color.a = 1f;
+        endingImage.color = color;
+    }
+    IEnumerator EndingImageFadeOutCoroutine()
+    {
+        if (endingImage == null) yield break;
+
+        float duration = 2f; // 페이드인 지속 시간
+        float elapsed = 0f;
+        Color color = endingImage.color;
+        color.a = 1f;
+        endingImage.color = color;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            color.a = Mathf.Clamp01(elapsed / duration);
+            endingImage.color = color;
+            yield return null;
+        }
+
+        color.a = 0f;
+        endingImage.color = color;
+        endingImage.enabled = false;
+    }
 
     // --- JSON 데이터 래퍼 클래스 및 Enum 정의 ---
 
@@ -762,7 +805,7 @@ public class Chapter2Manager : MonoBehaviour
         public List<string> usb3_first;
         public List<string> laptop_open; // 파일 정렬 완료 후 독백 (선택적)
         public List<string> laptop_need_usb; // USB 없을 때 독백
-
+        public List<string> paper_done;
         // 4. 엔딩 시퀀스
         public List<string> ending_AllFound;
         public List<string> ending_Tune;
@@ -795,6 +838,7 @@ public class Chapter2Manager : MonoBehaviour
             if (usb3_first != null) dict.Add("usb3_first", usb3_first);
             if (laptop_open != null) dict.Add("laptop_open", laptop_open);
             if (laptop_need_usb != null) dict.Add("laptop_need_usb", laptop_need_usb);
+            if (paper_done != null) dict.Add("paper_done", paper_done);
             if (ending_AllFound != null) dict.Add("ending_AllFound", ending_AllFound);
             if (ending_Tune != null) dict.Add("ending_Tune", ending_Tune);
             if (ending_Play1 != null) dict.Add("ending_Play1", ending_Play1);
