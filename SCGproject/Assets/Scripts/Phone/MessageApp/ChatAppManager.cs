@@ -106,47 +106,32 @@ public class ChatAppManager : MonoBehaviour
 
     public void OpenChatRoomWithData(ChatRoom roomData)
     {
-        // 🔹 자동 대화 중엔 방 이동 불가
         if (chatManager != null && chatManager.IsAutoPlaying)
-        {
-            Debug.Log("⚠ 자동 대화 중엔 다른 방으로 이동할 수 없습니다.");
             return;
-        }
 
         chatListPanel.SetActive(false);
 
-        // 🔹 같은 방이면 새로 만들지 않고 이어서 사용
-        if (chatManager != null && chatManager.GetCurrentRoom() == roomData)
+        // 방 들어갈 때, 기존 패널은 바로 파괴
+        if (currentRoomPanel != null)
         {
-            Debug.Log("✅ 이미 같은 방이 열려 있음 — 새로 만들지 않음");
-            currentRoomPanel.SetActive(true);
-            chatManager.SetCurrentRoom(roomData); // 이어붙이기 포함
-            return;
+            Destroy(currentRoomPanel);
+            currentRoomPanel = null;
         }
 
-        // 🔹 다른 방일 때만 새로 생성
-        if (currentRoomPanel != null)
-            Destroy(currentRoomPanel);
-
+        // 새 패널 생성
         currentRoomPanel = Instantiate(chatRoomPrefab, ChatAppPanel);
         chatManager = currentRoomPanel.GetComponent<ChatManager>();
 
-        if (chatManager != null)
-            chatManager.SetCurrentRoom(roomData);
+        chatManager.SetCurrentRoom(roomData);
 
-        // ✅ 방 들어올 때 읽음 처리
+        // 읽음 처리
         foreach (var msg in roomData.messages)
-        {
-            if (msg.sender != "Me")
-                msg.isRead = true;
-        }
+            if (msg.sender != "Me") msg.isRead = true;
 
-        // ✅ 버튼 배지 갱신
         FindObjectOfType<ChatRoomButtonManager>()?.UpdateUnreadDots();
-
-        currentRoomPanel.SetActive(true);
         BackInputManager.Register(OnBackPressedFromRoom);
     }
+
 
     public void BackToList()
     {

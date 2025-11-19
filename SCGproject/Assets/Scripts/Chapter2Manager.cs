@@ -55,8 +55,6 @@ public class Chapter2Manager : MonoBehaviour
     // --- 외부 매니저 참조 ---
     public PhonePanelController phoneController;
     public ChatAppManager chatAppManager;
-    public ChatRoomLoader chatRoomLoader;
-    public string buskerChatRoomName = "busker"; // Resources/ChatData/ 안의 JSON 파일 이름과 일치해야 함
     // public CameraController cameraController; // 필요 시 주석 해제 및 연결
     // public IllustrationManager illustrationManager; // 필요 시 주석 해제 및 연결
 
@@ -105,7 +103,7 @@ public class Chapter2Manager : MonoBehaviour
 
         // 필수 매니저 참조 확인 및 가져오기
         FindEssentialManagers();
-        if (playerMove == null || phoneController == null || chatAppManager == null || chatRoomLoader == null)
+        if (playerMove == null || phoneController == null || chatAppManager == null )
         {
              Debug.LogError("필수 매니저 중 하나 이상을 찾거나 연결할 수 없습니다. 챕터 진행을 중단합니다.");
              return; // 필수 매니저 없으면 시작 중단
@@ -148,13 +146,11 @@ public class Chapter2Manager : MonoBehaviour
          if (questManager == null) questManager = FindFirstObjectByType<QuestManagerCh2>();
          if (phoneController == null) phoneController = FindFirstObjectByType<PhonePanelController>();
          if (chatAppManager == null) chatAppManager = FindFirstObjectByType<ChatAppManager>();
-         if (chatRoomLoader == null) chatRoomLoader = FindFirstObjectByType<ChatRoomLoader>();
 
          // 필수 매니저 누락 시 에러 로그 (playerPower, questManager는 없을 수도 있음)
          if (playerMove == null) Debug.LogError("PlayerMove 참조를 찾을 수 없습니다!");
          if (phoneController == null) Debug.LogError("PhonePanelController 참조를 찾을 수 없습니다!");
          if (chatAppManager == null) Debug.LogError("ChatAppManager 참조를 찾을 수 없습니다!");
-         if (chatRoomLoader == null) Debug.LogError("ChatRoomLoader 참조를 찾을 수 없습니다!");
     }
 
 
@@ -170,7 +166,7 @@ public class Chapter2Manager : MonoBehaviour
         // 2. 카톡 자동 진행
         scenarioState = ScenarioState.ShowPhoto;
         Debug.Log("1. 카톡 자동 열림 시작");
-        yield return AutoPlayBuskerChat(); // 카톡 자동 재생 코루틴 호출
+        // 버스커 카톡 넣기 ???????
         playerPower?.IncreasePower(10); // 에너지 증가는 카톡 후
 
         // 3. 줌아웃 및 독백
@@ -325,63 +321,6 @@ public class Chapter2Manager : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene("Chapter3");
         // 예: illustrationManager?.Hide();
         // SceneManager.LoadScene("Chapter3"); // 실제 씬 이름으로 변경
-    }
-
-    // --- 카톡 자동 재생 코루틴 ---
-    IEnumerator AutoPlayBuskerChat()
-    {
-        // 버스커 채팅방 데이터 찾기
-        ChatRoom buskerRoom = chatRoomLoader?.loadedRooms.Find(room => room.roomName == buskerChatRoomName);
-
-        if (buskerRoom == null)
-        {
-            Debug.LogError($"'{buskerChatRoomName}' 채팅방 데이터를 찾을 수 없습니다!");
-            yield break; // 진행 불가
-        }
-
-        // 입력 차단
-        InputBlocker.Enable();
-
-        // 폰 열기
-        if (phoneController != null && !phoneController.IsOpen)
-        {
-            phoneController.TogglePhone();
-            yield return new WaitForSeconds(phoneController.duration);
-        }
-
-        // 채팅방 열기 (ChatManager.SetCurrentRoom 내부에서 자동 재생 시작됨)
-        chatAppManager?.OpenChatRoomWithData(buskerRoom);
-
-        // ChatManager 인스턴스 가져오기 (OpenChatRoomWithData 호출 후 생성됨)
-        yield return null; // ChatManager 생성 대기
-        ChatManager currentChatManager = FindFirstObjectByType<ChatManager>(); // ChatAppManager가 관리하는 인스턴스 찾기
-
-        if (currentChatManager != null)
-        {
-            // 자동 대화 시작 및 종료 대기
-            Debug.Log("자동 대화 시작 대기...");
-            yield return new WaitUntil(() => currentChatManager.IsAutoPlaying); // 시작 확인
-            Debug.Log("자동 대화 진행 중...");
-            yield return new WaitUntil(() => !currentChatManager.IsAutoPlaying); // 종료 확인
-            Debug.Log("자동 대화 종료됨.");
-        }
-        else
-        {
-            Debug.LogWarning("ChatManager 인스턴스를 찾을 수 없어 정확한 대기 불가. 임시 시간 대기.");
-            float totalDelay = CalculateTotalDelay(buskerRoom.initialMessages); // JSON 기반 시간 계산
-            yield return new WaitForSeconds(totalDelay + 1.0f); // 약간의 버퍼 추가
-        }
-
-        // 폰 닫기
-        if (phoneController != null && phoneController.IsOpen)
-        {
-            phoneController.ClosePhone();
-            yield return new WaitForSeconds(phoneController.duration);
-        }
-
-        // 입력 재개
-        InputBlocker.Disable();
-        Debug.Log("카톡 자동 열림 종료");
     }
 
      // [추가] 초기 메시지의 총 지연 시간 계산 (ChatManager 확인 실패 시 대체)

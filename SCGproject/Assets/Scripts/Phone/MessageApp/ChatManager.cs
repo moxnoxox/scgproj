@@ -52,6 +52,8 @@ public class ChatManager : MonoBehaviour
     private GameObject Player;
     private player_power playerPower;
 
+    private static HashSet<string> loadedQuestKeys = new HashSet<string>();
+
     private void Awake()
     {
         if (gameClock == null)
@@ -142,23 +144,46 @@ public class ChatManager : MonoBehaviour
                 pendingChoices = msg.choices;
         }
 
-        // AfterQuestJson 이어붙이기
+        // AfterQuestJson 이어붙이기    
         if (!string.IsNullOrEmpty(currentRoom.AfterQuestJson))
         {
-            TextAsset jsonFile = Resources.Load<TextAsset>($"ChatData/{currentRoom.AfterQuestJson}");
-            if (jsonFile != null)
+            string key = currentRoom.roomName + "|" + currentRoom.AfterQuestJson;
+
+            // 이미 로드한 JSON이면 스킵
+            if (loadedQuestKeys.Contains(key))
             {
-                ChatRoom questData = JsonUtility.FromJson<ChatRoom>(jsonFile.text);
-
-                int beforeCount = currentRoom.messages.Count;
-                currentRoom.messages.AddRange(questData.messages);
-
-                var newMessages = currentRoom.messages.Skip(beforeCount).ToList();
-                StartCoroutine(PlayAutoMessages(newMessages));
-
-                Debug.Log($"✅ AfterQuest 이어붙임 ({beforeCount} → {currentRoom.messages.Count})");
-                currentRoom.AfterQuestJson = null;
+                Debug.Log($"⚠ {key} 는 이미 한번 붙여져 있어서 스킵함.");
             }
+            else
+            {
+                string path = $"ChatData/{currentRoom.AfterQuestJson}";
+                TextAsset jsonFile = Resources.Load<TextAsset>(path);
+
+                if (jsonFile != null)
+                {
+                    ChatRoom questData = JsonUtility.FromJson<ChatRoom>(jsonFile.text);
+
+                    if (questData != null && questData.messages != null)
+                    {
+                        int before = currentRoom.messages.Count;
+
+                        currentRoom.messages.AddRange(questData.messages);
+                        var newMsgs = currentRoom.messages.Skip(before).ToList();
+                        StartCoroutine(PlayAutoMessages(newMsgs, alreadySaved: true));
+
+                        Debug.Log($"📥 {currentRoom.AfterQuestJson} 이어붙임 ({before}→{currentRoom.messages.Count})");
+
+                        loadedQuestKeys.Add(key);
+                    }
+                }
+                else
+                {
+                    Debug.LogError($"❌ AfterQuestJson 로드 실패: {path}");
+                }
+            }
+
+            // 다음엔 붙지 않도록 비워둠
+            currentRoom.AfterQuestJson = null;
         }
 
         autoScrollAllowed = true;
@@ -401,7 +426,7 @@ public class ChatManager : MonoBehaviour
     }
 
     // ===== 자동 대화 (InputBlocker 기반) =====
-    public IEnumerator PlayAutoMessages(List<Message> autoMessages)
+    public IEnumerator PlayAutoMessages(List<Message> autoMessages, bool alreadySaved = false)
     {
         isAutoPlaying = true;
 
@@ -415,13 +440,21 @@ public class ChatManager : MonoBehaviour
             if (msg.type == "message")
             {
                 if (msg.sender == "Me")
-                    AddMyMessage(msg.content, msg.timestamp, false, true);
+                    AddMyMessage(msg.content, msg.timestamp, autoTime: false, save: !alreadySaved);
                 else
                 {
                     User senderUser = currentRoom.participants.Find(u => u.id == msg.sender);
                     string senderName = senderUser != null ? senderUser.nickname : msg.sender;
                     Sprite senderProfile = senderUser != null ? senderUser.profileImage : null;
-                    AddOtherMessage(senderName, senderProfile, msg.content, msg.timestamp, false, true, "text");
+
+                    AddOtherMessage(
+                        senderName,
+                        senderProfile,
+                        msg.content,
+                        msg.timestamp,
+                        autoTime: false,
+                        save: !alreadySaved,
+                        format: "text");
                 }
             }
             else if (msg.type == "image")
@@ -429,10 +462,20 @@ public class ChatManager : MonoBehaviour
                 User senderUser = currentRoom.participants.Find(u => u.id == msg.sender);
                 string senderName = senderUser != null ? senderUser.nickname : msg.sender;
                 Sprite senderProfile = senderUser != null ? senderUser.profileImage : null;
-                AddOtherMessage(senderName, senderProfile, msg.content, msg.timestamp, false, true, "image");
+
+                AddOtherMessage(
+                    senderName,
+                    senderProfile,
+                    msg.content,
+                    msg.timestamp,
+                    autoTime: false,
+                    save: !alreadySaved,
+                    format: "image");
             }
             else if (msg.type == "dateDivider")
-                AddDateDivider(true);
+            {
+                AddDateDivider(save: !alreadySaved);
+            }
 
             StartCoroutine(ScrollToBottomNextFrame());
         }
@@ -445,73 +488,6 @@ public class ChatManager : MonoBehaviour
             FinalChatTrigger.Instance.isChatDone = true;
             Debug.Log("FinalChatTrigger: 🎸방 자동 대화 완료 신호 보냄");
         }
-        
-        // 🔹 2) 다음 자동대화가 있으면 자동으로 이어붙이기
-        /*if (currentRoom != null && !string.IsNullOrEmpty(currentRoom.AfterQuestJsonNext))
-        {
-            Debug.Log($"📨 다음 자동대화 {currentRoom.AfterQuestJsonNext} 로 이어집니다.");
-
-            string nextJson = currentRoom.AfterQuestJsonNext;
-            currentRoom.AfterQuestJsonNext = null;
-
-            ChatRoomLoader loader = FindObjectOfType<ChatRoomLoader>();
-
-            // 🔹 비활성화된 오브젝트까지 포함해서 찾기
-            if (loader == null)
-            {
-                loader = Resources.FindObjectsOfTypeAll<ChatRoomLoader>()
-                    .FirstOrDefault(l => l.name.Contains("ChatRoomLoader"));
-                if (loader != null)
-                    Debug.Log("🔍 비활성화된 ChatRoomLoader를 Resources.FindObjectsOfTypeAll()로 찾음");
-            }
-
-
-            if (loader == null)
-            {
-                Debug.LogError("❌ ChatRoomLoader를 찾을 수 없습니다. 씬에 ChatRoomLoader 오브젝트가 존재하는지 확인하세요.");
-                yield break;
-            }
-
-            if (currentRoom == null)
-            {
-                Debug.LogError("❌ currentRoom이 null 상태입니다. 자동대화 이어붙이기 중단.");
-                yield break;
-            }
-
-            int beforeCount = currentRoom.messages != null ? currentRoom.messages.Count : -1;
-            currentRoom.AfterQuestJson = nextJson;
-
-            try
-            {
-                loader.LoadOtherJson(currentRoom);
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError($"❌ LoadOtherJson 실행 중 예외 발생: {e.Message}\n{e.StackTrace}");
-                yield break;
-            }
-
-            if (currentRoom.messages == null)
-            {
-                Debug.LogError("❌ currentRoom.messages가 null입니다.");
-                yield break;
-            }
-
-            int afterCount = currentRoom.messages.Count;
-            Debug.Log($"✅ LoadOtherJson 완료: 메시지 {afterCount - beforeCount}개 추가됨");
-
-            yield return null;
-
-            var newlyAdded = currentRoom.messages.Skip(beforeCount).ToList();
-            Debug.Log($"🎬 새 메시지 {newlyAdded.Count}개 재생 예정");
-
-            if (newlyAdded.Count > 0)
-                yield return StartCoroutine(PlayAutoMessages(newlyAdded));
-            else
-                Debug.LogWarning("⚠ 새로 추가된 메시지가 없습니다. 자동대화 종료");
-        }
-        */
-
     }
 
     // ===== 유틸 =====

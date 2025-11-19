@@ -16,7 +16,7 @@ public class ChatRoomLoader : MonoBehaviour
 
     public void LoadAllChatRooms()
     {
-        loadedRooms.Clear();
+        PhoneDataManager.Instance.chatRooms.Clear();
 
         foreach (string fileName in chatJsonFiles)
         {
@@ -57,42 +57,10 @@ public class ChatRoomLoader : MonoBehaviour
                 }
             }
 
-            loadedRooms.Add(room);
+            PhoneDataManager.Instance.chatRooms.Add(room);
         }
 
         Debug.Log($"📌 최종 로드된 채팅방 수: {loadedRooms.Count}");
-    }
-    public void LoadOtherJson(ChatRoom targetRoom)
-    {
-        if (string.IsNullOrEmpty(targetRoom.AfterQuestJson))
-        {
-            Debug.LogWarning($"⚠ {targetRoom.roomName} 방의 AfterQuestJson이 비어 있어서 로드하지 않음.");
-            return;
-        }
-
-        string path = $"ChatData/{targetRoom.AfterQuestJson}";
-        TextAsset jsonFile = Resources.Load<TextAsset>(path);
-        if (jsonFile == null)
-        {
-            Debug.LogError($"❌ {path}.json 을 찾을 수 없습니다!");
-            return;
-        }
-
-        ChatRoom tempRoom = JsonUtility.FromJson<ChatRoom>(jsonFile.text);
-        if (tempRoom == null || tempRoom.messages == null)
-        {
-            Debug.LogError($"❌ {targetRoom.AfterQuestJson} 파싱 실패");
-            return;
-        }
-
-        int added = 0;
-        foreach (var msg in tempRoom.messages)
-        {
-            targetRoom.messages.Add(msg);
-            added++;
-        }
-
-        Debug.Log($"📩 {targetRoom.roomName} 방에 {targetRoom.AfterQuestJson}.json 메시지 {added}개 추가 완료");
     }
 
 }
