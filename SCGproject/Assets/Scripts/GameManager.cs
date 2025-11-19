@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
         if (playermove != null) playermove.canInput = false;
         InputBlocker.Enable();
         yield return new WaitForSeconds(2f);
-        yield return ShowMono("wakeUp", 0.2f);
+        yield return ShowMono("wakeUp", 2f);
         if (playermove != null) playermove.canInput = true;
         Debug.Log("기상 완료");
         playermove.movable = true;
@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
         if (keyinfo != null) keyinfo.is_starting = true;
         scenarioState = ScenarioState.MoveGuide;
         hasMoved = false;
-        yield return Showannouncement("moveGuide", 0.2f);
+        yield return Showannouncement("moveGuide", 2f);
         Debug.Log("움직이기 안내 완료");
 
         // 3. 플레이어가 이동할 때까지 대기
@@ -132,8 +132,8 @@ public class GameManager : MonoBehaviour
         // 4. 종이쪼가리 발견
         scenarioState = ScenarioState.FindPaper;
         playermove.movable = false;
-        yield return ShowMono("findPaper", 0.2f);
-        yield return Showannouncement("objectGuide", 0.2f);
+        yield return ShowMono("findPaper", 2f);
+        yield return Showannouncement("objectGuide", 2f);
         papaermonologueDone = true;
         Paper.canInteractPaper = true;
 
@@ -145,21 +145,21 @@ public class GameManager : MonoBehaviour
 
         // 5. 종이쪼가리 확인 + 리액션
         scenarioState = ScenarioState.PaperReaction;
-        yield return StartCoroutine(ShowMono("paperReaction", 0.2f));
+        yield return StartCoroutine(ShowMono("paperReaction", 2f));
         playerPower.DecreasePower(40);
-        yield return StartCoroutine(ShowMono("bedReturnAfterPaper", 0.2f));
+        yield return StartCoroutine(ShowMono("bedReturnAfterPaper", 2f));
 
         // ★ 자동리턴 코루틴 실행
         yield return StartCoroutine(playermove.AutoReturnToBed(true));
         yield return new WaitUntil(() => playermove.animator.GetBool("isSleep"));
-        yield return Showannouncement("bedGuide", 0.2f);
+        yield return Showannouncement("bedGuide", 2f);
         playermove.canInput = false;
 
         // 6. 침대에 누움 + 휴대폰 안내
         scenarioState = ScenarioState.BedRest;
-        yield return ShowMono("bedRest", 0.2f);
+        yield return ShowMono("bedRest", 2f);
         scenarioState = ScenarioState.PhoneGuide;
-        yield return Showannouncement("phoneGuide", 0.2f);
+        yield return Showannouncement("phoneGuide", 2f);
 
         playermove.WakeUpExternal();
         playermove.movable = true;
@@ -170,7 +170,7 @@ public class GameManager : MonoBehaviour
      
         // 7. 퀘스트 확인 후(침대에서 일어나기)
         scenarioState = ScenarioState.QuestReaction;
-        yield return ShowMono("questReaction", 0.2f);
+        yield return ShowMono("questReaction", 2f);
 
         //7.5 .. 카톡 + 노트북 확인 완료 시 
         while (!(replCount >= 2 && computerChecked && computerScript.isHomeClosed))
@@ -178,7 +178,7 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
         yield return new WaitForSeconds(1f);
-        yield return ShowMono("afterMonitor", 0.2f);
+        yield return ShowMono("afterMonitor", 2f);
 
         // 8. 할 일 퀘스트 후, 침대 리턴
         //할일 퀘스트: 카톡 답하기, 노트북 확인, 거울 보기
@@ -188,11 +188,11 @@ public class GameManager : MonoBehaviour
         playermove.canInput = false;
         playermove.movable = false;
         phoneOpenEnable = false;
-        yield return ShowMono("mirrorScene", 0.2f);
+        yield return ShowMono("mirrorScene", 2f);
         playerPower.DecreasePower(100);
         yield return new WaitForSeconds(3f);
         
-        yield return ShowMono("afterQuest", 0.2f);
+        yield return ShowMono("afterQuest", 2f);
         phoneOpenEnable = false;
         scenarioState = ScenarioState.AfterQuest;
         
@@ -203,7 +203,7 @@ public class GameManager : MonoBehaviour
         // 9. 침대에 누운 후 문구
         scenarioState = ScenarioState.BedDepressed;
         BedDepressed = true;
-        yield return ShowMono("bedDepressed1", 0.2f);
+        yield return ShowMono("bedDepressed1", 2f);
         playermove.canInput = true;
         playermove.movable = true;
         phoneOpenEnable = true;
@@ -212,19 +212,19 @@ public class GameManager : MonoBehaviour
         notification.enabled = true;
         yield return new WaitForSeconds(2f);
         notification.enabled = false;
-        yield return ShowMono("bedDepressed2", 0.2f);
+        yield return ShowMono("bedDepressed2", 2f);
         notification.enabled = true;
         yield return new WaitForSeconds(2f);
         notification.enabled = false;
-        yield return ShowMono("bedDepressed3", 0.2f);
+        yield return ShowMono("bedDepressed3", 2f);
         notification.enabled = true;
         yield return new WaitForSeconds(1f);
         notification.enabled = false;
-        yield return ShowMono("bedDepressed4", 0.2f);
+        yield return ShowMono("bedDepressed4", 2f);
 
         FinalChatTrigger.Instance.StartFinalChat();
         yield return new WaitUntil(() => FinalChatTrigger.Instance.isChatDone);
-        yield return ShowMono("afterMessage", 0.2f);
+        yield return ShowMono("afterMessage", 2f);
 
         ChatRoom currentRoom = ChatAppManager.Instance.chatManager.GetCurrentRoom();
         if (currentRoom != null)

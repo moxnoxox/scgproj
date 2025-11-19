@@ -156,7 +156,7 @@ public class GameManager_ch3 : MonoBehaviour
             yield return monologueManager.ShowDialogueLines(new List<DialogueLine>
             {
                 new DialogueLine { speaker = "[해랑]", text = "어디 있었어?" },
-                new DialogueLine { speaker = "[인영]", text = "솔직히 말하면… 너 또 도망갈까봐 \n스토커마냥 풀숲에 숨어있으려고 했는데" },
+                new DialogueLine { speaker = "[인영]", text = "솔직히 말하면… 너 또 도망갈까봐 \n풀숲에 숨어있으려고 했는데" },
                 new DialogueLine { speaker = "[인영]", text = "그래도 네가 도망갈 것 같아서, \n그냥 건물 뒤 벤치에 누워 있었어." },
                 new DialogueLine { speaker = "[해랑]", text = "그건 그거대로 무서운데…" },
             }, 3f);
@@ -184,7 +184,7 @@ public class GameManager_ch3 : MonoBehaviour
             // ‘지금까지 있었던 일을 말한다.’ 선택 시
             yield return monologueManager.ShowDialogueLines(new List<DialogueLine>
             {
-                new DialogueLine{ speaker="[해랑]", text="요새 일이 너무 바빠서 도저히 내 시간이 안 나더라고. 처음엔 \n일을 하면 할수록 내 능력을 인정받는 것 같아서 뿌듯했는데…" },
+                new DialogueLine{ speaker="[해랑]", text="요새 일이 너무 바빠서 도저히 내 시간이 안 나더라고." },
                 new DialogueLine{ speaker="[해랑]", text="난 워커홀릭은 안 될 사람인가봐. 특히 내 주변 사람을 \n챙길 여유도 없다는 게 너무 힘들더라고." },
                 new DialogueLine{ speaker="[해랑]", text="너도 포함해서……" },
             }, 3f);
@@ -194,7 +194,7 @@ public class GameManager_ch3 : MonoBehaviour
             // ‘오늘 있었던 일을 말한다.’ 선택 시
             yield return monologueManager.ShowDialogueLines(new List<DialogueLine>
             {
-                new DialogueLine{ speaker="[해랑]", text="사실… 지금까지 다 회피한다고 집 청소도 안 하고 살았거든? \n그러다 너 기타 찾는다고 오랜만에 집 청소를 했더니" },
+                new DialogueLine{ speaker="[해랑]", text="기타 찾는다고 오랜만에 집 청소를 했더니" },
                 new DialogueLine{ speaker="[해랑]", text="옛날 물건들도 찾고, 기타도 고치고… \n신기한 일들이 많았어." },
                 new DialogueLine{ speaker="[해랑]", text="그냥, 요즘 내가 뭘 좋아하는지도 잊고 살았는데… \n다시 찾으니 기쁘더라." },
             }, 3f);
@@ -204,9 +204,9 @@ public class GameManager_ch3 : MonoBehaviour
             // ‘앞으로의 일을 말한다.’ 선택 시
             yield return monologueManager.ShowDialogueLines(new List<DialogueLine>
             {
-                new DialogueLine{ speaker="[해랑]", text="꿈도 목표도 잊고 살았는데… 오늘 계획했던 일 \n하나하나 해결해 나가니까 재밌긴 하더라고." },
-                new DialogueLine{ speaker="[해랑]", text="앞으로 사소한 일이라도 다시 계획해 보려고 해.\n원동력이 생기는 느낌…?" },
-                new DialogueLine{ speaker="[해랑]", text="물론, 네가 말한 것처럼 \n이제 밖으로도 나가보고……" },
+                new DialogueLine{ speaker="[해랑]", text="꿈도 목표도 잊고 살았는데… 오늘 계획했던 일 \n하나하나 해결해 나가니까 좋더라." },
+                new DialogueLine{ speaker="[해랑]", text="이제 사소한 일부터 천천히 해보려고." },
+                new DialogueLine{ speaker="[해랑]", text="물론 네가 말한 것처럼 \n이제 밖으로도 나가보고……" },
             }, 3f);
         }
         // ==================선택지 끝
@@ -343,11 +343,11 @@ public class GameManager_ch3 : MonoBehaviour
                 new DialogueLine{ speaker="[???]", text="! 누구…… 해랑이, 인영이?" },
                 new DialogueLine{ speaker="[인영]", text="엥, 민주야?? 여기서 다 만나네!\n너 아직도 여기서 연습해?" },
                 new DialogueLine{ speaker="[민주]", text="너희 맞지? 오랜만이다! \n그럼~ 고등학교 때 맨날 너네랑 여기만 들락날락거리니까,"}, 
-                new DialogueLine{ speaker="[민주]", text ="대학교도 졸업학기인데 아직도 못 벗어나고 있다…\n지금은 곧 동아리 공연이라서 연습하는 중!"},
-                new DialogueLine{ speaker="[해랑]", text ="너 밴드 동아리 들어갔어? 난 바쁠 것 같아서 한동안 놓고\n지냈어. 그래도……다시 하고 싶어져서 한번 시작해 보려고."},
-                new DialogueLine{ speaker="[민주]", text ="좋다! 넌 잘 치니까 또 금방 늘 거야. \n아, 나 아직 그것도 있다? 우리 맨 처음 연습곡 악보!"},
+                new DialogueLine{ speaker="[민주]", text ="대학교도 막학기인데 아직도 못 벗어나고 있다…\n지금은 곧 동아리 공연이라서 연습하는 중!"},
+                new DialogueLine{ speaker="[해랑]", text ="난 바쁠 것 같아서 한동안 놓고 지냈어.\n그래도……다시 시작해 보려고."},
+                new DialogueLine{ speaker="[민주]", text ="좋다! 넌 잘 치니까 금방 늘 거야. \n나 아직 그것도 있다? 우리 맨 처음 연습곡 악보!"},
                 new DialogueLine{ speaker="[인영]", text ="진짜? 악보만 있으면 당장도 칠 수 있지.\n여기 악기도 많은데 쳐 볼래?"},
-                new DialogueLine{ speaker="[해랑]", text ="그래. 지금은……하루종일 기타만 쳐도 좋을 것 같아."}
+                new DialogueLine{ speaker="[해랑]", text ="그래, 좋아!"}
             }, 3f);
 
         // USB3 조건
@@ -386,10 +386,8 @@ public class GameManager_ch3 : MonoBehaviour
         yield return monologueManager.ShowDialogueLines(
             new List<DialogueLine>{
                 new DialogueLine{ speaker="[인영]", text="여기쯤이었나? 맞지?" },
-                new DialogueLine{ speaker="[해랑]", text="응. 하나도 안 변했네… \n버스킹 자리 때문에 다른 밴드랑 싸우지 않았어?" },
-                new DialogueLine{ speaker="[인영]", text="맞다! 그래도 잘 해결돼서 다행이었어." },
-                new DialogueLine{ speaker="[해랑]", text="그러게. 그때도 사람 많고 날씨 좋았는데… \n여기 오니까 다 기억난다." },
-                new DialogueLine{ speaker="[인영]", text="그렇네. 아무리 생각해도, 바닷가에서 하는 건 \n진짜 탁월한 선택이었어." },
+                new DialogueLine{ speaker="[해랑]", text="응. 그때도 사람 많고 날씨 좋았는데…" },
+                new DialogueLine{ speaker="[인영]", text="그렇네. 바닷가에서 한 게 진짜 좋았어." },
                 new DialogueLine{ speaker="[해랑]", text="응. 멍 때리기 좋아……\n잡생각도 없어지는 것 같고. 종종 와야겠어." },
                 new DialogueLine{ speaker="[인영]", text="뭐야, 혼자만 오려고? 나도 꼭 불러줘야 해!"},
                 new DialogueLine{ speaker="[해랑]", text="하하, 당연하지. 된다면… 같이 버스킹했던 애들도 다 불러볼까?" },
@@ -428,8 +426,7 @@ public class GameManager_ch3 : MonoBehaviour
         yield return monologueManager.ShowDialogueLines(
             new List<DialogueLine>{
                 new DialogueLine{ speaker="[해랑]", text="진짜 괜찮겠어?" },
-                new DialogueLine{ speaker="[인영]", text="괜찮다니까~ 기타 치면서 기다릴게!" },
-                new DialogueLine{ speaker="[인영]", text="난 집 갔다 생각하고 편하게 다녀오셔." },
+                new DialogueLine{ speaker="[인영]", text="괜찮다니까~ 편하게 다녀오셔." },
                 new DialogueLine{ speaker="[해랑]", text="…그래. 고마워." }
             }, 3f);
 
@@ -440,18 +437,14 @@ public class GameManager_ch3 : MonoBehaviour
         yield return monologueManager.ShowDialogueLines(
             new List<DialogueLine>{
                 new DialogueLine{ speaker="[상담사]", text="안녕하세요, 해랑 씨. 처음 상담 오신 거죠?" },
-                new DialogueLine{ speaker="[상담사]", text="오기까지 쉽지 않았을 텐데, 잘 오셨어요." },
                 new DialogueLine{ speaker="[해랑]", text="네… 사실 요새 거의 집에서만 지냈거든요.\n밖에 나오는 것 자체가 오랜만이에요." },
-                new DialogueLine{ speaker="[상담사]", text="원래 시작하는 걸 가장 어려워 하세요. \n해랑 씨는 이미 좋은 단계에 있으신 거예요." },
-                new DialogueLine{ speaker="[해랑]", text="친구가 손을 잡고 끌다시피 해서요……\n혼자였으면 못 왔을 거예요" },
                 new DialogueLine{ speaker="[해랑]", text="그래도……아직은 좀 자신감이 없는 것 같아요.\n솔직히 여기 온 것도 반쯤 충동적이었어서…" },
-                new DialogueLine{ speaker="[상담사]", text="그런 불안은 당연해요. 자연스러운 현상이죠. \n더 안 보면 그만인 사람이다, 생각하고 편히 말씀해 주세요." },
-                new DialogueLine{ speaker="[해랑]", text="……저, 오늘 정말 많은 일이 있었거든요.\n사실 어제까지도 업무라고 하면 되게 많았고……" },
-                new DialogueLine{ speaker="[해랑]", text="그래서…묵혀둔 말이 정말 많아요." },
-                new DialogueLine{ speaker="[상담사]", text="그래요, 해랑 씨. 시간은 얼마든지 있으니 \n서두르지 않아도 괜찮아요" },
-                new DialogueLine{ speaker="[상담사]", text="천천히, 마음 가는대로 언제든지 들려주세요." },
+                new DialogueLine{ speaker="[상담사]", text="그런 불안은 당연해요. 자연스러운 현상이죠." },
+                new DialogueLine{ speaker="[해랑]", text="……오늘 정말 많은 일이 있었어요.\n사실 어제까지 할 일도 되게 많았고……" },
+                new DialogueLine{ speaker="[상담사]", text="시간은 얼마든지 있으니 서두르지 않아도 괜찮아요" },
+                new DialogueLine{ speaker="[상담사]", text="천천히, 마음 가는대로 편하게 말씀해 주세요." },
                 new DialogueLine{ speaker="[해랑]", text="감사해요. 음…그러니까……" },
-                new DialogueLine{ speaker="[해랑]", text="제가 되게 옛날에 좋아했던 기타를 \n오랜만에 발견했었는데요…" }
+                new DialogueLine{ speaker="[해랑]", text="제가 되게 옛날에 좋아했던 기타를 \n오랜만에 발견했는데요…" }
             }, 3f);
     }
 
@@ -464,7 +457,7 @@ public class GameManager_ch3 : MonoBehaviour
 
         // 문구 넣기
         endingLine1.text = "THX FOR PLAYING!";
-        endingLine2.text = "모두의 마음속 짐이 쌓여지지 않기를,";
+        endingLine2.text = "모두의 마음속 짐이 쌓이지 않기를,";
         endingLine3.text = "한결 가벼워진 걸음으로 세상을 바라볼 수 있기를 바랍니다";
 
         // 1) 첫 줄 페이드인
