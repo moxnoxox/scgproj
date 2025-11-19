@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 81fa90d99471f404fa0b27feeaf7db1f
+guid: fac8f6d7554cc49c9a7defdab8a46939
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1986636914909277485
-    second: trashcan_0
+      213: -429228527594496662
+    second: pc_m.player_happybirthday_default_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: trashcan_0
+      name: pc_m.player_happybirthday_default_0
       rect:
         serializedVersion: 2
-        x: 10
-        y: 0
-        width: 180
-        height: 217
+        x: 3
+        y: 4
+        width: 444
+        height: 626
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3d29725604c0e64e0800000000000000
-      internalID: -1986636914909277485
+      spriteID: a6d1445ade21b0af0800000000000000
+      internalID: -429228527594496662
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      trashcan_0: -1986636914909277485
+      pc_m.player_happybirthday_default_0: -429228527594496662
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

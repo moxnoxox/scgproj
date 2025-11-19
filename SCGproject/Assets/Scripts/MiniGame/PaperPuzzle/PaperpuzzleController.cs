@@ -13,6 +13,8 @@ public class PaperpuzzleController : MonoBehaviour
     public PaperHandler[] pieceHandlers;
     public bool isPuzzleActive;
     public CanvasGroup puzzlePanel;
+    public UnityEngine.UI.Image completeImage;
+    public TextMeshProUGUI completeText;
     public bool isCompleted;
     void Start()
     {
@@ -34,6 +36,8 @@ public class PaperpuzzleController : MonoBehaviour
         puzzlePanel.alpha = 0;
         puzzlePanel.interactable = false;
         puzzlePanel.blocksRaycasts = false;
+        completeImage.gameObject.SetActive(false);
+        completeText.gameObject.SetActive(false);
         //디버그용
         //StartPuzzle();
     }
@@ -103,13 +107,23 @@ public class PaperpuzzleController : MonoBehaviour
             }
             yield return null;
         }
-        // 퍼즐 완료 처리
+        completeImage.gameObject.SetActive(true);
+        Chapter2Manager.Instance.OnPaperPuzzleDone();
+        
+        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Mouse0));
+        Ending();
+    }
+
+    void Ending()
+    {
         isPuzzleActive = false;
         puzzlePanel.interactable = false;
         puzzlePanel.blocksRaycasts = false;
         puzzlePanel.alpha = 0;
-        Chapter2Manager.Instance.OnPaperPuzzleDone();
         Chapter2Manager.Instance.ch2_movable = true;
-        yield return null;
+    }
+    public void ExittooltipOn()
+    {
+        completeText.gameObject.SetActive(true);
     }
 }
