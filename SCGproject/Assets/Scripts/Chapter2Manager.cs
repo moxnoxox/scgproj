@@ -612,7 +612,7 @@ public class Chapter2Manager : MonoBehaviour
     {
         Debug.Log("종이 퍼즐 게임 진행 중... (완료 대기 - 실제 구현 필요)");
         // 예: yield return new WaitUntil(() => PaperpuzzleController.Instance.isCompleted);
-        yield return ShowMono("paper_puzzle", 2f);
+        yield return ShowMono("guitar_case_found", 2f);
         PaperpuzzleController.Instance.StartPuzzle();
         while(!paperPuzzleDone)
         {
@@ -626,7 +626,12 @@ public class Chapter2Manager : MonoBehaviour
          paperPuzzleDone = true;
          scenarioState = ScenarioState.PaperPuzzleComplete;
          Debug.Log("종이 퍼즐 미니게임 완료! 갤러리 해금 + 에너지 +10");
+         Vector3 targetPosition = MonologueManager.Instance.monologuePanel.transform.position;
+         targetPosition.y -= 40;
+         MonologueManager.Instance.monologuePanel.transform.position = targetPosition;
          yield return ShowMono("paper_done", 2f);
+         targetPosition.y += 40;
+         MonologueManager.Instance.monologuePanel.transform.position = targetPosition;
          PaperpuzzleController.Instance.ExittooltipOn();
          playerPower?.IncreasePower(10);
          // 갤러리 해금 로직 (GalleryManager 연동 필요)
@@ -645,15 +650,27 @@ public class Chapter2Manager : MonoBehaviour
 
     public void OnMusicInteract1()
     {
-
+        StartCoroutine(Music1());
+    }
+    IEnumerator Music1() 
+    {
+        yield return ShowMono("music1", 2f);
     }
     public void OnMusicInteract2()
     {
-
+        StartCoroutine(Music2());
+    }
+    IEnumerator Music2() 
+    {
+        yield return ShowMono("music2", 2f);
     }
     public void OnMusicInteract3()
     {
-
+        StartCoroutine(Music3());
+    }
+    IEnumerator Music3() 
+    {
+        yield return ShowMono("music3", 2f);
     }
 
 
@@ -763,6 +780,9 @@ public class Chapter2Manager : MonoBehaviour
         public List<string> guitar_peak_found;
         public List<string> guitar_peak_found2;
         public List<string> paper_done;
+        public List<string> music1;
+        public List<string> music2;
+        public List<string> music3;
         // 4. 엔딩 시퀀스
         public List<string> ending_AllFound;
         public List<string> ending_Tune;
@@ -795,7 +815,14 @@ public class Chapter2Manager : MonoBehaviour
             if (usb3_first != null) dict.Add("usb3_first", usb3_first);
             if (laptop_open != null) dict.Add("laptop_open", laptop_open);
             if (laptop_need_usb != null) dict.Add("laptop_need_usb", laptop_need_usb);
+            if (guitar_case_found != null) dict.Add("guitar_case_found", guitar_case_found);
+            if (guitar_case_found2 != null) dict.Add("guitar_case_found2", guitar_case_found2);
+            if (guitar_peak_found != null) dict.Add("guitar_peak_found", guitar_peak_found);
+            if (guitar_peak_found2 != null) dict.Add("guitar_peak_found2", guitar_peak_found2);
             if (paper_done != null) dict.Add("paper_done", paper_done);
+            if (music1 != null) dict.Add("music1", music1);
+            if (music2 != null) dict.Add("music2", music2);
+            if (music3 != null) dict.Add("music3", music3);
             if (ending_AllFound != null) dict.Add("ending_AllFound", ending_AllFound);
             if (ending_Tune != null) dict.Add("ending_Tune", ending_Tune);
             if (ending_Play1 != null) dict.Add("ending_Play1", ending_Play1);
