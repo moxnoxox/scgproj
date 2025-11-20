@@ -249,9 +249,9 @@ public class GameManager : MonoBehaviour
 
         scenarioState = ScenarioState.Done;
         BackInputManager.ClearAll();
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Chapter1");
+        //UnityEngine.SceneManagement.SceneManager.LoadScene("Chapter1");
         // TODO: 챕터2로 전환, 화면 어두워짐 등 연출 필요
-        //SceneController.Loadscene("Chapter2");
+        SceneController.Loadscene("Chapter2");
     }
      
     // 외부에서 호출: 플레이어가 이동하면 hasMoved = true
