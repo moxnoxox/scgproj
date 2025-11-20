@@ -39,6 +39,9 @@ public class GameManager_ch3 : MonoBehaviour
     public TextMeshProUGUI endingLine2;
     public TextMeshProUGUI endingLine3;
 
+    [SerializeField] private string creditsSceneName = "Ending";
+    private bool isPaused;
+
 
     private void Awake()
     {
@@ -253,52 +256,46 @@ public class GameManager_ch3 : MonoBehaviour
     }
     private IEnumerator PlayEndingSequence()
     {   
-        endingVideoPlayer.Prepare();
+         // 0) 챕터3 정지 + 페이드아웃
+        SetPaused(true);
+        yield return StartCoroutine(FadeOut(1f));
 
-        while (!endingVideoPlayer.isPrepared)
+        // 1) 엔딩 크레딧 씬 additive 로드
+        var loadOp = SceneManager.LoadSceneAsync(creditsSceneName, LoadSceneMode.Additive);
+        yield return loadOp;
+
+        // 활성 씬 넘기기 (입력/카메라 포커스)
+        var creditScene = SceneManager.GetSceneByName(creditsSceneName);
+        SceneManager.SetActiveScene(creditScene);
+
+        // 2) 크레딧 매니저 재생 후 완료 대기
+        var endingManager = FindObjectOfType<EndingManager>();
+        if (endingManager != null)
         {
-            Debug.Log("Preparing...");
-            yield return null;
-        }
-
-        Debug.Log("Prepared True! Playing now.");
-
-        // 1) 엔딩 영상 재생
-        if (endingVideoView != null)
-            endingVideoView.SetActive(true);   // 영상 표시 UI 활성화
-            Debug.Log("ui 활성화 완료");
-
-        if (endingVideoPlayer != null)
-        {
-            Debug.Log("VideoPlayer Ready? " + endingVideoPlayer.isPrepared);
-            endingVideoPlayer.Play();
-
-            // 영상 재생 끝날 때까지 대기
-            while (endingVideoPlayer.isPlaying){
-                Debug.Log("Video frame: " + endingVideoPlayer.frame);
-                yield return null;
-            }
-
-            Debug.Log("영상 재생 완료");
+            endingManager.Play();
+            yield return new WaitUntil(() => endingManager.IsFinished);
         }
         else
         {
-            // 영상이 없으면 그냥 3초 대기
-            yield return new WaitForSeconds(3f);
-            Debug.Log("영상이 존재하지 않음");
+            Debug.LogWarning("EndingManager not found; fallback wait");
+            yield return new WaitForSeconds(10f);
         }
 
-        yield return StartCoroutine(FadeOut(1.5f));  
-        // 영상 끝났으면 RawImage 끄기
-        if (endingVideoView != null)
-            endingVideoView.SetActive(false);
+        // 3) 크레딧 씬 언로드
+        var unloadOp = SceneManager.UnloadSceneAsync(creditsSceneName);
+        yield return unloadOp;
 
+        // 4) 챕터3 활성화 복귀 + 페이드인/재개
         // backgroundImage를 검정으로 만들기 
         backgroundImage.gameObject.SetActive(true);
         backgroundImage.sprite = Resources.Load<Sprite>("Illustrations/black"); 
         backgroundImage.color = Color.black;
         yield return new WaitForSeconds(2f);
-        yield return StartCoroutine(FadeIn(1.0f));
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName("Chapter3"));
+        yield return StartCoroutine(FadeIn(1f));
+        SetPaused(false);
+
+        
 
         // 3) 엔딩 분기 불러오기
         int endingIndex = PlayerPrefs.GetInt("ch3_choiceResult", 0);
@@ -480,6 +477,15 @@ public class GameManager_ch3 : MonoBehaviour
         endingLine3.gameObject.SetActive(false);
     }
 
+    private void SetPaused(bool pause)
+    {
+        isPaused = pause;
+        if (playerMove != null) {
+            playerMove.movable = !pause;
+            playerMove.canInput = !pause;
+        }
+        // 필요하면 챕터3 UI/BGM 페이드 아웃/인 추가
+    }
 
 
     // 편의 함수: 키로 대사 출력
