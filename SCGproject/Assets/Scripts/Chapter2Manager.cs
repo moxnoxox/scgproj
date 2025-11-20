@@ -314,7 +314,7 @@ public class Chapter2Manager : MonoBehaviour
         // 챕터 3 전환
         BackInputManager.ClearAll();
         Debug.Log("일러스트 종료, 챕터 3 로드 (연출 필요)");
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Chapter3");
+        SceneController.Loadscene("Chapter3");
         // 예: illustrationManager?.Hide();
         // SceneManager.LoadScene("Chapter3"); // 실제 씬 이름으로 변경
     }
@@ -612,7 +612,7 @@ public class Chapter2Manager : MonoBehaviour
     {
         Debug.Log("종이 퍼즐 게임 진행 중... (완료 대기 - 실제 구현 필요)");
         // 예: yield return new WaitUntil(() => PaperpuzzleController.Instance.isCompleted);
-        
+        yield return ShowMono("paper_puzzle", 2f);
         PaperpuzzleController.Instance.StartPuzzle();
         while(!paperPuzzleDone)
         {
@@ -621,12 +621,12 @@ public class Chapter2Manager : MonoBehaviour
     }
 
     // 종이 퍼즐 게임 완료 시 호출될 함수 (퍼즐 컨트롤러가 호출)
-    public void OnPaperPuzzleDone() {
-         if (paperPuzzleDone) return; // 중복 방지
+    public IEnumerator OnPaperPuzzleDone() {
+         if (paperPuzzleDone) yield break; // 중복 방지
          paperPuzzleDone = true;
          scenarioState = ScenarioState.PaperPuzzleComplete;
          Debug.Log("종이 퍼즐 미니게임 완료! 갤러리 해금 + 에너지 +10");
-         ShowMono("paper_done", 2f);
+         yield return ShowMono("paper_done", 2f);
          PaperpuzzleController.Instance.ExittooltipOn();
          playerPower?.IncreasePower(10);
          // 갤러리 해금 로직 (GalleryManager 연동 필요)
@@ -641,6 +641,19 @@ public class Chapter2Manager : MonoBehaviour
          {
             OnGuitarPartsAllFound(); // 모든 부품 찾음 처리 함수 호출
          }
+    }
+
+    public void OnMusicInteract1()
+    {
+
+    }
+    public void OnMusicInteract2()
+    {
+
+    }
+    public void OnMusicInteract3()
+    {
+
     }
 
 
@@ -745,6 +758,10 @@ public class Chapter2Manager : MonoBehaviour
         public List<string> usb3_first;
         public List<string> laptop_open; // 파일 정렬 완료 후 독백 (선택적)
         public List<string> laptop_need_usb; // USB 없을 때 독백
+        public List<string> guitar_case_found;
+        public List<string> guitar_case_found2;
+        public List<string> guitar_peak_found;
+        public List<string> guitar_peak_found2;
         public List<string> paper_done;
         // 4. 엔딩 시퀀스
         public List<string> ending_AllFound;

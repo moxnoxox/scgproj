@@ -11,6 +11,9 @@ public class usbUI : MonoBehaviour
     private static bool usb3_state = false;
     void Start()
     {
+        usb1_state = false;
+        usb2_state = false;
+        usb3_state = false;
         usb1.enabled = false;
         usb2.enabled = false;
         usb3.enabled = false;
@@ -33,5 +36,17 @@ public class usbUI : MonoBehaviour
     public static void usb3Active()
     {
         usb3_state = true;
+    }
+    public static bool isUsb1Active()
+    {
+        return usb1_state;
+    }
+    public static bool isUsb2Active()
+    {
+        return usb2_state;
+    }
+    public static bool isUsb3Active()
+    {
+        return usb3_state;
     }
 }

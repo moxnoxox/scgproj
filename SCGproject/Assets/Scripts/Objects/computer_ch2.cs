@@ -13,7 +13,7 @@ public class computer_ch2 : MonoBehaviour, IInteractable
     public player_power playerPower;
     public key_info_ch2 keyInfoCh2;
     private Collider2D col;
-    private bool isFirstInteract = false;
+    public bool isFirstInteract = false;
 
     public CanvasGroup canvasGroup;
 
@@ -58,15 +58,17 @@ public class computer_ch2 : MonoBehaviour, IInteractable
     {
         if (playerMove == null) return;
         float dist = Mathf.Abs(this.transform.position.x - playerMove.transform.position.x);
-        
-        if (!isFirstInteract)
+        if(dist < 1f)
         {
-            Chapter2Manager.Instance?.OnLaptopOpened();
-            isFirstInteract = true;
-        }
-        else
-        {
-            ComputerController.Instance.StartComputer();
+            if (!isFirstInteract)
+            {
+                Chapter2Manager.Instance?.OnLaptopOpened();
+                isFirstInteract = true;
+            }
+            else
+            {
+                ComputerController.Instance.StartComputer();
+            }
         }
     }
 }

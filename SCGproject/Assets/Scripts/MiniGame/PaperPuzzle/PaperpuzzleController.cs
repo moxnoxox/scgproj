@@ -108,7 +108,11 @@ public class PaperpuzzleController : MonoBehaviour
             yield return null;
         }
         completeImage.gameObject.SetActive(true);
-        Chapter2Manager.Instance.OnPaperPuzzleDone();
+        foreach (var piece in pieces)
+        {
+            piece.SetActive(false);
+        }
+        yield return Chapter2Manager.Instance.OnPaperPuzzleDone();
         
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Mouse0));
         Ending();

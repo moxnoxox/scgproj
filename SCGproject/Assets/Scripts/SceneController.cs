@@ -8,7 +8,7 @@ using System;
 
 public class SceneController : MonoBehaviour
 {
-    [SerializeField] Slider loadingbar;
+    [SerializeField] TextMeshProUGUI loadingText;
     static string nextscene;
     public static void Loadscene(string scenename)
     {
@@ -29,16 +29,16 @@ public class SceneController : MonoBehaviour
         while(!op.isDone)
         {
             yield return null;
-            if(loadingbar.value < 0.9f)
+            if(op.progress < 0.9f)
             {
-                loadingbar.value = op.progress;
+                loadingText.text = ((int)(op.progress*100)).ToString()+"%";
             }
-            else if(loadingbar.value < 1)
+            else if(op.progress < 1)
             {
                 timer += Time.deltaTime;
-                loadingbar.value = Mathf.Lerp(0.9f, 1f, timer / remainloadtime);
+                loadingText.text = ((int) Mathf.Lerp(90f, 100f, timer / remainloadtime)).ToString()+"%";
             }
-            else
+            if(timer >= remainloadtime)
             {
                 op.allowSceneActivation = true;
                 yield break;
