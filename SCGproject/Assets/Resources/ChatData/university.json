@@ -10,11 +10,11 @@
   "initialMessages": [
     { "type": "dateDivider" },
     
-    { "type": "message", "sender": "A", "content": "얘들아 나 합격했다!!!😭😭😭", "timestamp": "오후 1:00", "isRead": false },
+    { "type": "message", "sender": "A", "content": "얘들아 나 합격했다!!!ㅠㅠㅠ", "timestamp": "오후 1:00", "isRead": false },
     { "type": "message", "sender": "A", "content": "회사 정규직 최종 합격했어!!", "timestamp": "오후 1:00", "isRead": false },
     { "type": "message", "sender": "B", "content": "미쳤다!! 대박!!!", "timestamp": "오후 1:02", "isRead": false },
     { "type": "message", "sender": "C", "content": "진짜 축하해!!! 너 잠도 못 자고 준비한 거 다 아는데..ㅠㅠ", "timestamp": "오후 1:02", "isRead": false },
-    { "type": "message", "sender": "D", "content": "이야아아아아!!!!!!🎉🎉🎉 너 될 줄 알았어!!", "timestamp": "오후 1:10", "isRead": false },
+    { "type": "message", "sender": "D", "content": "이야아아아아!!!!!! 너 될 줄 알았어!!", "timestamp": "오후 1:10", "isRead": false },
     { "type": "message", "sender": "A", "content": "고마워 얘들아 ㅠㅠ 다들 응원해 준 덕분이야...", "timestamp": "오후 1:10", "isRead": false },
    
     { "type": "dateDivider" },

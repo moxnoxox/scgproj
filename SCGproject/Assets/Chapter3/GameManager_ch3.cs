@@ -226,6 +226,7 @@ public class GameManager_ch3 : MonoBehaviour
 
         // 7) 소리치는 대사(흔들림) → 후속 대사
         yield return Show("shout", 2f, shake:true);
+        NPC_FadeIn.NpcFlip();
         yield return Show("afterShout", 3f);
 
         // 8) 암전 → 배경 전환
@@ -290,7 +291,7 @@ public class GameManager_ch3 : MonoBehaviour
         backgroundImage.gameObject.SetActive(true);
         backgroundImage.sprite = Resources.Load<Sprite>("Illustrations/black"); 
         backgroundImage.color = Color.black;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.5f);
         SceneManager.SetActiveScene(SceneManager.GetSceneByName("Chapter3"));
         yield return StartCoroutine(FadeIn(1f));
         SetPaused(false);
@@ -314,7 +315,17 @@ public class GameManager_ch3 : MonoBehaviour
         backgroundImage.color = Color.black;
         yield return StartCoroutine(ShowFinalThanks());
 
-        // 5) 타이틀 씬으로 돌아가기
+        // 5) 초기화 후 타이틀 씬으로 돌아가기
+        PlayerPrefs.DeleteAll();
+        BackInputManager.ClearAll();
+        ChatManager.ResetStatics();     // 앞서 추가한 정적 초기화 메서드
+        InputBlocker.Cleanup();         // 앞서 추가한 정리 메서드
+
+        if (ChatAppManager.Instance != null) Destroy(ChatAppManager.Instance.gameObject);
+        if (PhoneDataManager.Instance != null) Destroy(PhoneDataManager.Instance.gameObject);
+        if (RestartMenuController.Instance != null) Destroy(RestartMenuController.Instance.gameObject);
+        if (GameManager_ch3.Instance != null) Destroy(GameManager_ch3.Instance.gameObject);
+
         SceneManager.LoadScene("Chapter1");
     }
 

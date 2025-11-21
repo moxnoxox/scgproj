@@ -18,6 +18,7 @@ public class computer : MonoBehaviour, IInteractable
     private bool hasBeenInteracted = false;
     private bool firstChecked = false;  // ✅ 최초 1회 긴 대사 플래그
 
+
     void Start()
     {
         if (home != null) home.enabled = false;
@@ -46,7 +47,7 @@ public class computer : MonoBehaviour, IInteractable
     public void Interact(PlayerMove player)
     {
         if (!isPlayerNear) return;
-
+        if(!GameManager.Instance.spacable) return;
         hasBeenInteracted = true;
         if (keyInfo != null)
             keyInfo.isObject = false;
@@ -70,7 +71,9 @@ public class computer : MonoBehaviour, IInteractable
     {
         InputBlocker.Enable();
         player.GetComponent<PlayerMove>().movable = false;
+        player.GetComponent<PlayerMove>().canInput = false;
         isHomeClosed = false;
+        GameManager.Instance.spacable = false;
         if (home != null) home.enabled = true;
 
         // 첫 번째 긴 대사 (끝날 때까지 기다림)
@@ -100,6 +103,8 @@ public class computer : MonoBehaviour, IInteractable
         isHomeClosed = true;
         InputBlocker.Disable();  
         player.GetComponent<PlayerMove>().movable = true;
+        player.GetComponent<PlayerMove>().canInput = true;
+        GameManager.Instance.spacable = true;
         if (playerPower != null) playerPower.DecreasePower(10);
     }
 
@@ -110,8 +115,10 @@ public class computer : MonoBehaviour, IInteractable
     {
         InputBlocker.Enable();
         player.GetComponent<PlayerMove>().movable = false;
+        player.GetComponent<PlayerMove>().canInput = false;
         isHomeClosed = false;
         if (home != null) home.enabled = true;
+        GameManager.Instance.spacable = false;
 
         MonologueManager.Instance.ShowMonologuesSequentially(new List<string>{"파일 정리하기 너무 귀찮아..."}, 3f);
 
@@ -121,6 +128,8 @@ public class computer : MonoBehaviour, IInteractable
         isHomeClosed = true;
         InputBlocker.Disable();
         player.GetComponent<PlayerMove>().movable = true;
+        player.GetComponent<PlayerMove>().canInput = true;
+        GameManager.Instance.spacable = true;
         if (playerPower != null) playerPower.DecreasePower(10);
     }
 }

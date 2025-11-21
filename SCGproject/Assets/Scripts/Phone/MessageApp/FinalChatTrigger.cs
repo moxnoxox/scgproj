@@ -4,7 +4,7 @@ using System.Collections.Generic;   // ← 리스트 쓸 거면 같이 넣어두
 public class FinalChatTrigger : MonoBehaviour
 {
     public ChatRoomLoader loader;   
-    public string targetRoomName = "🎸";
+    public string targetRoomName = "<sprite name=emoji_guitar>";
     public string questJsonFile = "guitar_afterquest"; // 예: Resources/ChatData/guitar_afterquest.json
     public string nextQuestJsonFile = "guitar_afterquest2";
     public static FinalChatTrigger Instance;
@@ -23,14 +23,17 @@ public class FinalChatTrigger : MonoBehaviour
        isChatDone = false;
 
         // PhoneDataManager에서 지속된 ChatRoom 가져오기
-        ChatRoom targetRoom = PhoneDataManager.Instance.chatRooms
-            .Find(r => r.roomName == targetRoomName);
+        ChatRoom targetRoom = PhoneDataManager.Instance.chatRooms.Find(r => r.roomName == targetRoomName);
 
         if (targetRoom == null)
         {
-            Debug.LogError($"❌ FinalChatTrigger: '{targetRoomName}' 채팅방을 찾지 못했습니다.");
+            Debug.LogError($"FinalChatTrigger: '{targetRoomName}' 채팅방을 찾지 못했습니다.");
             return;
         }
+
+        // 아직 한 번도 열린 적이 없다면 초기 대화 복사
+        if (targetRoom.messages.Count == 0 && targetRoom.initialMessages.Count > 0)
+            targetRoom.messages.AddRange(targetRoom.initialMessages);
 
         // ----- 여기부터는 기존 로직 그대로 -----
         Message divider = new Message("dateDivider");

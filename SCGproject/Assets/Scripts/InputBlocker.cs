@@ -5,7 +5,7 @@ using UnityEngine.UI;  // 🔹 이 줄 추가!
 public class InputBlocker : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IScrollHandler
 {
     private static GameObject blocker;
-    private static bool isBlocked = false;
+    public static bool isBlocked = false;
 
     public static void Enable()
     {
@@ -57,6 +57,17 @@ public class InputBlocker : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     {
         if (!isBlocked) return;
     }
+
+    public static void Cleanup()
+    {
+        Disable();
+        if (blocker != null)
+        {
+            Object.Destroy(blocker);
+            blocker = null;
+        }
+    }
+
 
     public void OnPointerDown(PointerEventData e) { }
     public void OnPointerUp(PointerEventData e) { }

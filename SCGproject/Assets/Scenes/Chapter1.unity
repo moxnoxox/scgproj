@@ -2457,6 +2457,7 @@ MonoBehaviour:
   phoneOpenEnable: 0
   BedDepressed: 0
   canInput: 0
+  spacable: 1
   Paper: {fileID: 616580580}
   computerScript: {fileID: 625545910}
   choicePanel: {fileID: 662022735}
@@ -3537,7 +3538,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loader: {fileID: 92243980}
-  targetRoomName: "\U0001F3B8"
+  targetRoomName: <sprite name=emoji_guitar>
   questJsonFile: guitar_afterquest
   nextQuestJsonFile: guitar_afterquest2
   isChatDone: 0

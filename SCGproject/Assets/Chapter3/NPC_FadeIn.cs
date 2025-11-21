@@ -3,12 +3,19 @@ using UnityEngine;
 
 public class NPC_FadeIn : MonoBehaviour
 {
+    public static NPC_FadeIn Instance;
     public Transform player;        // 플레이어 Transform 참조
     public float triggerDistance = 3f; // 감지 거리
     public float fadeDuration = 2f; // 페이드인 속도
 
     private SpriteRenderer sr;
     private bool hasFadedIn = false;
+    public static bool flip;
+
+    void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
@@ -16,6 +23,7 @@ public class NPC_FadeIn : MonoBehaviour
         Color c = sr.color;
         c.a = 0f;              // 완전 투명으로 시작
         sr.color = c;
+        flip = false;
     }
 
     void Update()
@@ -46,5 +54,14 @@ public class NPC_FadeIn : MonoBehaviour
 
         c.a = 1f;
         sr.color = c;
+        sr.flipX = flip;
+    }
+
+    public static void NpcFlip()
+    {
+        flip = !flip;
+
+        if (Instance != null && Instance.sr != null)
+            Instance.sr.flipX = flip;
     }
 }

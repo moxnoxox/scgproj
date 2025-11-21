@@ -43,6 +43,17 @@ public class PhonePanelController : MonoBehaviour
             SceneNum = 2;
             enabled = true;//추후 조정
         }
+
+        if (handleButton != null)
+        {
+            var nav = handleButton.navigation;
+            nav.mode = Navigation.Mode.None;
+            handleButton.navigation = nav;
+        }
+
+        // 시작 시 포커스 비우기
+        if (EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(null);
     }
 
     void Update()
@@ -79,8 +90,9 @@ public class PhonePanelController : MonoBehaviour
             dimPanel.SetActive(true);
 
         // esc 핸들러 등록
+        if (EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(null);
         BackInputManager.Register(ClosePhone);
-        EventSystem.current.SetSelectedGameObject(null);
     }
 
     // 폰 닫기
@@ -89,14 +101,12 @@ public class PhonePanelController : MonoBehaviour
         if (!isOpen) return;
         MoveTo(hiddenPos);
         isOpen = false;
+        dimPanel?.SetActive(false);
 
-        // 배경 어둡게 한 효과 해제
-        if (dimPanel != null)
-            dimPanel.SetActive(false);
-
-        // esc 핸들러 제거
+        // 포커스 비우기
+        if (EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(null);
         BackInputManager.Unregister(ClosePhone);
-        EventSystem.current.SetSelectedGameObject(null);
     }
     
     private void MoveTo(Vector2 target)
