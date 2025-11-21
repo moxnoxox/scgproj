@@ -67,9 +67,9 @@ TextureImporter:
   swizzle: 50462976
   cookieLightType: 0
   platformSettings:
-  - serializedVersion: 3
+  - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 16384
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -80,7 +80,7 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
+  - serializedVersion: 4
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -93,7 +93,7 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
+  - serializedVersion: 4
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -113,13 +113,14 @@ TextureImporter:
       name: holding_0
       rect:
         serializedVersion: 2
-        x: 145
+        x: 146
         y: 0
         width: 209
         height: 512
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -134,13 +135,14 @@ TextureImporter:
       name: holding_1
       rect:
         serializedVersion: 2
-        x: 694
+        x: 698
         y: 0
         width: 209
         height: 512
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -155,13 +157,14 @@ TextureImporter:
       name: holding_2
       rect:
         serializedVersion: 2
-        x: 1247
+        x: 1250
         y: 0
-        width: 210
+        width: 209
         height: 512
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -176,13 +179,14 @@ TextureImporter:
       name: holding_3
       rect:
         serializedVersion: 2
-        x: 1800
+        x: 1802
         y: 0
         width: 209
         height: 512
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -197,13 +201,14 @@ TextureImporter:
       name: holding_5
       rect:
         serializedVersion: 2
-        x: 2904
+        x: 2906
         y: 0
         width: 209
         height: 512
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -218,13 +223,14 @@ TextureImporter:
       name: holding_6
       rect:
         serializedVersion: 2
-        x: 3455
+        x: 3458
         y: 0
-        width: 210
+        width: 209
         height: 512
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -239,13 +245,14 @@ TextureImporter:
       name: holding_7
       rect:
         serializedVersion: 2
-        x: 4006
+        x: 4010
         y: 0
-        width: 211
+        width: 209
         height: 512
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -260,13 +267,14 @@ TextureImporter:
       name: holding_8
       rect:
         serializedVersion: 2
-        x: 4559
+        x: 4562
         y: 0
-        width: 212
+        width: 209
         height: 512
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -281,13 +289,14 @@ TextureImporter:
       name: holding_9
       rect:
         serializedVersion: 2
-        x: 5112
+        x: 5114
         y: 0
-        width: 210
+        width: 209
         height: 512
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -302,13 +311,14 @@ TextureImporter:
       name: holding_10
       rect:
         serializedVersion: 2
-        x: 5664
+        x: 5666
         y: 0
         width: 209
         height: 512
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -323,13 +333,14 @@ TextureImporter:
       name: holding_11
       rect:
         serializedVersion: 2
-        x: 6214
+        x: 6218
         y: 0
         width: 209
         height: 512
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -344,13 +355,14 @@ TextureImporter:
       name: holding_12
       rect:
         serializedVersion: 2
-        x: 6765
+        x: 6770
         y: 0
-        width: 212
+        width: 209
         height: 512
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -365,13 +377,14 @@ TextureImporter:
       name: holding_4
       rect:
         serializedVersion: 2
-        x: 2351
+        x: 2354
         y: 0
-        width: 211
+        width: 209
         height: 512
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -383,6 +396,7 @@ TextureImporter:
       edges: []
       weights: []
     outline: []
+    customData: 
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
@@ -392,6 +406,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
     nameFileIdTable:
       holding_0: -1959876657
       holding_1: 1437939530
