@@ -1,8 +1,8 @@
 {
-    "roomName": "🎸",
+    "roomName": "<sprite name=emoji_guitar>",
     "participants": [
     { "id": "Me", "nickname": "나", "profileImagePath": "my_profile" },
-    { "id": "guitar", "nickname": "🎸", "profileImagePath": "guitar_profile" }
+    { "id": "guitar", "nickname": "<sprite name=emoji_guitar>", "profileImagePath": "guitar_profile" }
     ],
     "messages": [
     { "type": "message", "sender": "Me", "content": "그래", "timestamp": "오후 6:08", "isRead": false},

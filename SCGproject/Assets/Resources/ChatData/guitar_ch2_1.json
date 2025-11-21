@@ -1,9 +1,9 @@
 {
-  "roomName": "🎸",
+  "roomName": "<sprite name=emoji_guitar>",
   "profileImagePath": "Profiles/guitar_profile",
   "participants": [
     { "id": "Me", "nickname": "나", "profileImagePath": "Profiles/dummy_profile" },
-    { "id": "guitar", "nickname": "🎸", "profileImagePath": "Profiles/guitar_profile" }
+    { "id": "guitar", "nickname": "<sprite name=emoji_guitar>", "profileImagePath": "Profiles/guitar_profile" }
   ],
   "initialMessages": [
     {

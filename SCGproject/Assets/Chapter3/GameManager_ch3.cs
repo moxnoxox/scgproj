@@ -290,7 +290,7 @@ public class GameManager_ch3 : MonoBehaviour
         backgroundImage.gameObject.SetActive(true);
         backgroundImage.sprite = Resources.Load<Sprite>("Illustrations/black"); 
         backgroundImage.color = Color.black;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.5f);
         SceneManager.SetActiveScene(SceneManager.GetSceneByName("Chapter3"));
         yield return StartCoroutine(FadeIn(1f));
         SetPaused(false);
