@@ -259,33 +259,24 @@ public class FileSortGameManager : MonoBehaviour
     IEnumerator CoShowFeedback(string text, Color color)
     {
         feedbackText.text = text;
-        feedbackText.color = new Color(color.r, color.g, color.b, 0f); // 알파 0으로 시작
-        float t = 0f;
 
-        // 페이드 인
-        while (t < 0.2f)
-        {
-            t += Time.unscaledDeltaTime;
-            float a = Mathf.Lerp(0, 1, t / 0.2f);
-            feedbackText.color = new Color(color.r, color.g, color.b, a);
-            yield return null;
-        }
-
-        // 유지
+        // 바로 알파 1로 올리고 유지
+        feedbackText.color = new Color(color.r, color.g, color.b, 1f);
         yield return new WaitForSecondsRealtime(0.8f);
 
-        // 페이드 아웃
-        t = 0f;
+        // 페이드 아웃만 수행
+        float t = 0f;
         while (t < 0.3f)
         {
             t += Time.unscaledDeltaTime;
-            float a = Mathf.Lerp(1, 0, t / 0.3f);
+            float a = Mathf.Lerp(1f, 0f, t / 0.3f);
             feedbackText.color = new Color(color.r, color.g, color.b, a);
             yield return null;
         }
-
+        feedbackText.color = new Color(color.r, color.g, color.b, 0f);
         _feedbackRoutine = null;
     }
+
 
     void EndGame(bool ignored)
     {

@@ -8,6 +8,7 @@ public class RestartMenuController : MonoBehaviour
 
     public CanvasGroup menu;
     private bool isOpen = false;
+    private bool wasInputBlocked = false; // ESC 메뉴를 열기 직전 차단 상태였는지 기록
 
     private void Awake()
     {
@@ -45,6 +46,10 @@ public class RestartMenuController : MonoBehaviour
 
     private void OpenMenu()
     {
+        wasInputBlocked = InputBlocker.isBlocked; // 현재 차단 상태 기억
+        if (wasInputBlocked)
+            InputBlocker.Disable();  
+
         isOpen = true;
         SetMenuVisible(true);
         Time.timeScale = 0f;
@@ -56,6 +61,12 @@ public class RestartMenuController : MonoBehaviour
         isOpen = false;
         SetMenuVisible(false);
         Time.timeScale = 1f;
+
+         if (wasInputBlocked)
+        {
+            InputBlocker.Enable(); // 원래 차단돼 있었으면 복구
+            wasInputBlocked = false;
+        }
     }
 
     private void SetMenuVisible(bool visible)
@@ -67,11 +78,24 @@ public class RestartMenuController : MonoBehaviour
         menu.blocksRaycasts = visible;
     }
 
-    public void OnClickRestart()
+   public void OnClickRestart()
     {
         Time.timeScale = 1f;
         SetMenuVisible(false);
         isOpen = false;
+
+        // 진행 데이터/정적 핸들러 초기화
+        PlayerPrefs.DeleteAll();
+        BackInputManager.ClearAll();
+        ChatManager.ResetStatics();
+        InputBlocker.Cleanup();
+
+        // DontDestroyOnLoad 싱글턴 정리
+        if (ChatAppManager.Instance != null) Destroy(ChatAppManager.Instance.gameObject);
+        if (PhoneDataManager.Instance != null) Destroy(PhoneDataManager.Instance.gameObject);
+        if (RestartMenuController.Instance != null && RestartMenuController.Instance != this)
+            Destroy(RestartMenuController.Instance.gameObject);
+        if (GameManager_ch3.Instance != null) Destroy(GameManager_ch3.Instance.gameObject);
 
         SceneManager.LoadScene("Chapter1");
     }

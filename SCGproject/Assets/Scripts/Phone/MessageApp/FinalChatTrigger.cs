@@ -4,7 +4,7 @@ using System.Collections.Generic;   // ← 리스트 쓸 거면 같이 넣어두
 public class FinalChatTrigger : MonoBehaviour
 {
     public ChatRoomLoader loader;   
-    public string targetRoomName = "🎸";
+    public string targetRoomName = "<sprite name=emoji_guitar>";
     public string questJsonFile = "guitar_afterquest"; // 예: Resources/ChatData/guitar_afterquest.json
     public string nextQuestJsonFile = "guitar_afterquest2";
     public static FinalChatTrigger Instance;

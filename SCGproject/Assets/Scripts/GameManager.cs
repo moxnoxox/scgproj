@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     public bool BedDepressed = false;
     public static GameManager Instance;
     public bool canInput;
+    public bool spacable = true;
     public paper Paper;
     public computer computerScript;  
 
@@ -203,9 +204,8 @@ public class GameManager : MonoBehaviour
         // 9. 침대에 누운 후 문구
         scenarioState = ScenarioState.BedDepressed;
         BedDepressed = true;
+        playermove.canInput = false;
         yield return ShowMono("bedDepressed1", 2f);
-        playermove.canInput = true;
-        playermove.movable = true;
         // 10. 버스커 연락 (카톡 메시지 연출)
         scenarioState = ScenarioState.BuskerContact;
         notification.enabled = true;
@@ -218,9 +218,9 @@ public class GameManager : MonoBehaviour
         yield return ShowMono("bedDepressed3", 2f);
         notification.enabled = true;
         yield return new WaitForSeconds(1f);
-        phoneOpenEnable = true;
         notification.enabled = false;
         yield return ShowMono("bedDepressed4", 2f);
+        phoneOpenEnable = true;
 
         FinalChatTrigger.Instance.StartFinalChat();
         yield return new WaitUntil(() => FinalChatTrigger.Instance.isChatDone);

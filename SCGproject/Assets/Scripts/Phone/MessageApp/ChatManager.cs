@@ -53,6 +53,10 @@ public class ChatManager : MonoBehaviour
     private player_power playerPower;
 
     private static HashSet<string> loadedQuestKeys = new HashSet<string>();
+    public static void ResetStatics()
+    {
+        loadedQuestKeys.Clear();
+    }
 
     private void Awake()
     {
@@ -483,10 +487,10 @@ public class ChatManager : MonoBehaviour
         InputBlocker.Disable(); // 입력 복구
         isAutoPlaying = false;
 
-        if (currentRoom != null && currentRoom.roomName == "🎸" && FinalChatTrigger.Instance != null)
+        if (currentRoom != null && currentRoom.roomName == "<sprite name=emoji_guitar>" && FinalChatTrigger.Instance != null)
         {
             FinalChatTrigger.Instance.isChatDone = true;
-            Debug.Log("FinalChatTrigger: 🎸방 자동 대화 완료 신호 보냄");
+            Debug.Log("FinalChatTrigger: <sprite name=emoji_guitar>방 자동 대화 완료 신호 보냄");
         }
     }
 
