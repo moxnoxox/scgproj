@@ -37,7 +37,7 @@ public class Chapter2Manager : MonoBehaviour
     private bool laptopOpened = false; // 노트북 열람 여부
     private bool fileSortGameDone = false; // 파일 정렬 미니게임 완료 여부
     private bool guitarBodyFound = false; // 기타 본체 발견 여부
-    private bool guitarCaseFound = false; // 기타 케이스 발견 여부
+    public bool guitarCaseFound = false; // 기타 케이스 발견 여부
     private bool peakFound = false; // 피크 발견 여부
     private bool stringFound = false;
     private bool paperPuzzleDone = false; // 종이 퍼즐 미니게임 완료 여부
@@ -567,7 +567,6 @@ public class Chapter2Manager : MonoBehaviour
     // 기타 케이스 발견 시 호출 (guitar_case.cs)
     public void OnGuitarCaseFound() {
          if (guitarCaseFound) return;
-         guitarCaseFound = true;
          scenarioState = ScenarioState.GuitarCaseFound;
          Debug.Log("기타 케이스 찾음 → 종이 퍼즐 미니게임 시작");
          StartPaperPuzzleGame(); // 퍼즐 게임 시작 함수 호출

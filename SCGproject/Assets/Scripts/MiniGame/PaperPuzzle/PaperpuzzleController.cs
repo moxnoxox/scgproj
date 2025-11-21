@@ -125,6 +125,7 @@ public class PaperpuzzleController : MonoBehaviour
         puzzlePanel.blocksRaycasts = false;
         puzzlePanel.alpha = 0;
         Chapter2Manager.Instance.ch2_movable = true;
+        Chapter2Manager.Instance.guitarCaseFound = true;
     }
     public void ExittooltipOn()
     {
