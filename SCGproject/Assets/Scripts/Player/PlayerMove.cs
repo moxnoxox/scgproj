@@ -368,7 +368,7 @@ public class PlayerMove : MonoBehaviour
 
         if (animator != null)
             animator.SetTrigger("hold_end");
-
+        SoundManagerCh2.Instance.PlayPlasticBag();
         Rigidbody2D rb = heldObject.GetComponent<Rigidbody2D>();
         if (rb != null)
         {

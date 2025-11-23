@@ -16,7 +16,7 @@ public class TrashBag1Stack : MonoBehaviour, IInteractable
     public void TryLift(PlayerMove move)
     {
         if (move == null || move.isHolding) return;
-
+        SoundManagerCh2.Instance.PlayPlasticBag();
         move.isHolding = true;
         move.heldObject = gameObject;
 

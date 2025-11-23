@@ -21,11 +21,13 @@ public class Chapter2Manager : MonoBehaviour
     public Transform choicePanel; // 선택지 버튼들이 생성될 부모 Panel
     public GameObject choiceButtonPrefab; // 선택지 버튼 프리팹
     public UnityEngine.UI.Image endingImage;
+    public UnityEngine.UI.Image monologueDimPanel;
 
     // --- 시나리오 진행 관련 변수들 ---
     public bool autoMove; // 플레이어 자동 이동 활성화 여부
     public bool ch2_movable;
     public bool ch2_canSleep;
+    public bool musicable = true;
     private Dictionary<string, List<string>> monoData; // Mono2.json 데이터 저장
     private ScenarioState scenarioState; // 현재 시나리오 단계
 
@@ -37,7 +39,7 @@ public class Chapter2Manager : MonoBehaviour
     private bool laptopOpened = false; // 노트북 열람 여부
     private bool fileSortGameDone = false; // 파일 정렬 미니게임 완료 여부
     private bool guitarBodyFound = false; // 기타 본체 발견 여부
-    private bool guitarCaseFound = false; // 기타 케이스 발견 여부
+    public bool guitarCaseFound = false; // 기타 케이스 발견 여부
     private bool peakFound = false; // 피크 발견 여부
     private bool stringFound = false;
     private bool paperPuzzleDone = false; // 종이 퍼즐 미니게임 완료 여부
@@ -113,6 +115,8 @@ public class Chapter2Manager : MonoBehaviour
             endingImage.enabled = false; // 엔딩 이미지 숨기기
         // 메인 시나리오 코루틴 시작
         StartCoroutine(ScenarioFlow());
+        monologueDimPanel = MonologueManager.Instance.monologuePanel.GetComponentInChildren<Image>();
+        monologueDimPanel.enabled = false;
     }
 
     // --- Monologue 데이터 로드 함수 ---
@@ -302,7 +306,7 @@ public class Chapter2Manager : MonoBehaviour
         yield return EndingImageFadeInCoroutine();
         // 예: illustrationManager?.Show("GuitarPlaying");
         yield return new WaitForSeconds(1f); // 일러스트 표시 시간
-
+        monologueDimPanel.enabled = true;
         yield return ShowMono("ending_Play1", 2f);
         yield return ShowMono("ending_Play2", 2f);
         yield return ShowMono("ending_Play3", 2f);
@@ -548,11 +552,13 @@ public class Chapter2Manager : MonoBehaviour
     {
         if (guitarBodyFound) return;
         guitarBodyFound = true;
+        ch2_movable = false;
         scenarioState = ScenarioState.GuitarBodyFound;
         StartCoroutine(GuitarBodyMonoCoroutine());
         Debug.Log("기타 본체 발견! 퀘스트 추가: 줄, 피크, 케이스 찾기");
         questManager?.CompleteGuitarQuest(); // '기타 찾기' 퀘스트 완료
         questManager?.GuitarPartsFind();
+        ch2_movable = true;
         // 모든 부품 찾기 완료 조건 체크
         CheckAllPartsFound();
     }
@@ -567,7 +573,6 @@ public class Chapter2Manager : MonoBehaviour
     // 기타 케이스 발견 시 호출 (guitar_case.cs)
     public void OnGuitarCaseFound() {
          if (guitarCaseFound) return;
-         guitarCaseFound = true;
          scenarioState = ScenarioState.GuitarCaseFound;
          Debug.Log("기타 케이스 찾음 → 종이 퍼즐 미니게임 시작");
          StartPaperPuzzleGame(); // 퍼즐 게임 시작 함수 호출
@@ -639,7 +644,7 @@ public class Chapter2Manager : MonoBehaviour
     }
 
     // 모든 기타 부품 찾기 완료 조건 체크 함수
-    private void CheckAllPartsFound() {
+    public void CheckAllPartsFound() {
          // 필요한 모든 부품의 발견 플래그 확인
          // 예: if (guitarBodyFound && guitarCaseFound && guitarStringsFound && guitarTunerFound)
          if (guitarBodyFound && guitarCaseFound && peakFound && stringFound/* && 다른 부품 플래그들... */)
@@ -654,7 +659,9 @@ public class Chapter2Manager : MonoBehaviour
     }
     IEnumerator Music1() 
     {
+        musicable = false;
         yield return ShowMono("music1", 2f);
+        musicable = true;
     }
     public void OnMusicInteract2()
     {
@@ -662,7 +669,9 @@ public class Chapter2Manager : MonoBehaviour
     }
     IEnumerator Music2() 
     {
+        musicable = false;
         yield return ShowMono("music2", 2f);
+        musicable = true;
     }
     public void OnMusicInteract3()
     {
@@ -670,7 +679,9 @@ public class Chapter2Manager : MonoBehaviour
     }
     IEnumerator Music3() 
     {
+        musicable = false;
         yield return ShowMono("music3", 2f);
+        musicable = true;
     }
 
 

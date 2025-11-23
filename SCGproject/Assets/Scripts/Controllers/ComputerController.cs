@@ -7,6 +7,7 @@ public class ComputerController : MonoBehaviour
     public GameObject music1;
     public GameObject music2;
     public GameObject music3;
+    private Vector3 targetPosition;
     void Awake()
     {
         Instance = this;
@@ -24,18 +25,24 @@ public class ComputerController : MonoBehaviour
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
         canvasGroup.interactable = true;
+        targetPosition = MonologueManager.Instance.monologuePanel.transform.position;
+        targetPosition.y -= 40;
+        MonologueManager.Instance.monologuePanel.transform.position = targetPosition;
     }
 
     public void OnClickMusic1()
     {
+        if(!Chapter2Manager.Instance.musicable) return;
         Chapter2Manager.Instance.OnMusicInteract1();
     }
     public void OnclickMusic2()
     {
+        if(!Chapter2Manager.Instance.musicable) return;
         Chapter2Manager.Instance.OnMusicInteract2();
     }
     public void OnclickMusic3()
     {
+        if(!Chapter2Manager.Instance.musicable) return;
         Chapter2Manager.Instance.OnMusicInteract3();
     }
     public void OnClickExit()
@@ -44,6 +51,8 @@ public class ComputerController : MonoBehaviour
         canvasGroup.alpha = 0f;
         canvasGroup.blocksRaycasts = false;
         canvasGroup.interactable = false;
+        targetPosition.y += 40;
+        MonologueManager.Instance.monologuePanel.transform.position = targetPosition;
     }
     void Update()
     {

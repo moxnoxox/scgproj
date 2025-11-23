@@ -57,7 +57,7 @@ public class peak : MonoBehaviour
 
             // Chapter2Manager에 피크를 찾았다고 알림
             Chapter2Manager.Instance?.OnPeakFound();
-
+            Destroy(this);
             // (선택 사항) 상호작용 UI 숨기기
             // if (keyInfoCh2 != null)
             // {

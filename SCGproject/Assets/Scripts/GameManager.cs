@@ -209,14 +209,17 @@ public class GameManager : MonoBehaviour
         // 10. 버스커 연락 (카톡 메시지 연출)
         scenarioState = ScenarioState.BuskerContact;
         notification.enabled = true;
+        SoundManager.Instance.PlayBellRing();
         yield return new WaitForSeconds(2f);
         notification.enabled = false;
         yield return ShowMono("bedDepressed2", 2f);
         notification.enabled = true;
+        SoundManager.Instance.PlayBellRing();
         yield return new WaitForSeconds(2f);
         notification.enabled = false;
         yield return ShowMono("bedDepressed3", 2f);
         notification.enabled = true;
+        SoundManager.Instance.PlayBellRing();
         yield return new WaitForSeconds(1f);
         notification.enabled = false;
         yield return ShowMono("bedDepressed4", 2f);
