@@ -39,7 +39,7 @@ public class TrashBag2Stack : MonoBehaviour, IInteractable
     public void TryLift(PlayerMove move)
     {
         if (move == null || move.isHolding || isSeparated) return;
-
+        SoundManagerCh2.Instance.PlayPlasticBag();
         topBag.transform.parent = null;
         bottomBag.transform.parent = null;
 

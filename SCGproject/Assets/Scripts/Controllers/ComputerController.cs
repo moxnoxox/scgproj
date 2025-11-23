@@ -32,14 +32,17 @@ public class ComputerController : MonoBehaviour
 
     public void OnClickMusic1()
     {
+        if(!Chapter2Manager.Instance.musicable) return;
         Chapter2Manager.Instance.OnMusicInteract1();
     }
     public void OnclickMusic2()
     {
+        if(!Chapter2Manager.Instance.musicable) return;
         Chapter2Manager.Instance.OnMusicInteract2();
     }
     public void OnclickMusic3()
     {
+        if(!Chapter2Manager.Instance.musicable) return;
         Chapter2Manager.Instance.OnMusicInteract3();
     }
     public void OnClickExit()
