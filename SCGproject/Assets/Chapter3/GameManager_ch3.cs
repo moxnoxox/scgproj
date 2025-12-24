@@ -103,6 +103,7 @@ public class GameManager_ch3 : MonoBehaviour
     private IEnumerator ScenarioFlow()
     {
         // 초기 상태
+        SoundManagerCh3.Instance.PlayCh3Bgm();
         playerMove.movable = false;
         playerMove.canInput = false;
         if (illustrationImage) illustrationImage.gameObject.SetActive(false);
