@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -131,7 +131,7 @@ public class GameManager_ch3 : MonoBehaviour
         playerMove.canInput = false;
 
         // 3) 만남 대사 + 일러스트 + 대사
-        StartCoroutine(ShowIllustration("meetguitar"));
+        StartCoroutine(ShowIllustration("meetguitar", true));
         yield return Show("meet_1", 4.5f);
         yield return Show("meet_2", 3f);
         // ================선택지
@@ -513,25 +513,68 @@ public class GameManager_ch3 : MonoBehaviour
     // =========================
     // 일러스트 & 페이드
     // =========================
-    private IEnumerator ShowIllustration(string illustName)
+    private IEnumerator ShowIllustration(string illustName, bool fillScreen = false)
     {
         if (illustrationImage == null) yield break;
 
         Sprite sprite = Resources.Load<Sprite>($"Illustrations/{illustName}");
         if (sprite == null)
         {
-            Debug.LogWarning($"일러스트 {illustName}을(를) 찾을 수 없음");
+            Debug.LogWarning($"Illustration {illustName} not found");
             yield break;
         }
 
         illustrationImage.sprite = sprite;
-        illustrationImage.SetNativeSize();                      // 원본 크기로 맞추기
-        illustrationImage.rectTransform.anchoredPosition = Vector2.zero; // 중앙 정렬
+
+        var rt = illustrationImage.rectTransform;
+        Vector2 originalAnchorMin = rt.anchorMin;
+        Vector2 originalAnchorMax = rt.anchorMax;
+        Vector2 originalOffsetMin = rt.offsetMin;
+        Vector2 originalOffsetMax = rt.offsetMax;
+        Vector2 originalAnchoredPos = rt.anchoredPosition;
+        Vector2 originalSizeDelta = rt.sizeDelta;
+
+        AspectRatioFitter fitter = null;
+        bool addedFitter = false;
+        AspectRatioFitter.AspectMode prevAspectMode = AspectRatioFitter.AspectMode.None;
+        float prevAspectRatio = 1f;
+        bool prevFitterEnabled = false;
+
+        if (fillScreen)
+        {
+            fitter = illustrationImage.GetComponent<AspectRatioFitter>();
+            if (fitter == null)
+            {
+                fitter = illustrationImage.gameObject.AddComponent<AspectRatioFitter>();
+                addedFitter = true;
+            }
+            else
+            {
+                prevAspectMode = fitter.aspectMode;
+                prevAspectRatio = fitter.aspectRatio;
+                prevFitterEnabled = fitter.enabled;
+            }
+
+            rt.anchorMin = Vector2.zero;
+            rt.anchorMax = Vector2.one;
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
+            rt.anchoredPosition = Vector2.zero;
+
+            fitter.enabled = true;
+            fitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent; // 화면 덮도록 확대, 비율 유지
+            fitter.aspectRatio = sprite.rect.width / sprite.rect.height;
+        }
+        else
+        {
+            illustrationImage.SetNativeSize(); // 기존 동작 유지
+            rt.anchoredPosition = Vector2.zero;
+        }
+
         illustrationImage.color = new Color(1, 1, 1, 0);
         illustrationImage.gameObject.SetActive(true);
 
-        // 🔹 페이드인
-        float t = 0f;
+        float t = 0f; // fade in
         while (t < 1f)
         {
             t += Time.deltaTime;
@@ -539,11 +582,9 @@ public class GameManager_ch3 : MonoBehaviour
             yield return null;
         }
 
-        // 🔹 3초 유지
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(3f); // hold
 
-        // 🔹 페이드아웃
-        t = 0f;
+        t = 0f; // fade out
         while (t < 1f)
         {
             t += Time.deltaTime;
@@ -552,10 +593,29 @@ public class GameManager_ch3 : MonoBehaviour
             yield return null;
         }
 
-        // 🔹 비활성화
         illustrationImage.gameObject.SetActive(false);
-    }
 
+        if (fillScreen)
+        {
+            rt.anchorMin = originalAnchorMin;
+            rt.anchorMax = originalAnchorMax;
+            rt.offsetMin = originalOffsetMin;
+            rt.offsetMax = originalOffsetMax;
+            rt.anchoredPosition = originalAnchoredPos;
+            rt.sizeDelta = originalSizeDelta;
+
+            if (addedFitter)
+            {
+                Destroy(fitter);
+            }
+            else if (fitter != null)
+            {
+                fitter.aspectMode = prevAspectMode;
+                fitter.aspectRatio = prevAspectRatio;
+                fitter.enabled = prevFitterEnabled;
+            }
+        }
+    }
 
     private void SetBackgroundToIllustration(string illustName)
     {
@@ -566,16 +626,34 @@ public class GameManager_ch3 : MonoBehaviour
 
         backgroundImage.sprite = sprite;
         backgroundImage.color = Color.white;
-        backgroundImage.SetNativeSize();
-        backgroundImage.rectTransform.anchoredPosition = Vector2.zero;
-        backgroundImage.gameObject.SetActive(true);
 
+        var rt = backgroundImage.rectTransform;
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+        rt.anchoredPosition = Vector2.zero;
+
+        var fitter = backgroundImage.GetComponent<AspectRatioFitter>();
+        if (fitter == null) fitter = backgroundImage.gameObject.AddComponent<AspectRatioFitter>();
+        fitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent; // 화면을 덮도록 확대(잘림 허용)
+        fitter.aspectRatio = sprite.rect.width / sprite.rect.height;
+
+        backgroundImage.gameObject.SetActive(true);
         if (illustrationImage) illustrationImage.gameObject.SetActive(false);
     }
 
     private IEnumerator FadeOut(float duration)
     {
         if (fadeImage == null) yield break;
+
+        var rt = fadeImage.rectTransform;
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+        rt.anchoredPosition = Vector2.zero;
+
         float t = 0f;
         while (t < duration)
         {
@@ -588,6 +666,14 @@ public class GameManager_ch3 : MonoBehaviour
     private IEnumerator FadeIn(float duration)
     {
         if (fadeImage == null) yield break;
+
+        var rt = fadeImage.rectTransform;
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+        rt.anchoredPosition = Vector2.zero;
+
         float t = 0f;
         while (t < duration)
         {
@@ -596,6 +682,7 @@ public class GameManager_ch3 : MonoBehaviour
             yield return null;
         }
     }
+
 
     private IEnumerator FadeInText(TextMeshProUGUI tmp, float duration)
     {
