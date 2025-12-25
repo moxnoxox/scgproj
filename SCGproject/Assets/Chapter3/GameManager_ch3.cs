@@ -263,6 +263,7 @@ public class GameManager_ch3 : MonoBehaviour
         SetPaused(true);
         yield return StartCoroutine(FadeOut(1f));
         SoundManagerCh3.Instance.PlayBusLeave();
+        SoundManagerCh3.Instance.PlayCookieBgm();
 
         // 1) 엔딩 크레딧 씬 additive 로드
         var loadOp = SceneManager.LoadSceneAsync(creditsSceneName, LoadSceneMode.Additive);
@@ -294,9 +295,9 @@ public class GameManager_ch3 : MonoBehaviour
         backgroundImage.gameObject.SetActive(true);
         backgroundImage.sprite = Resources.Load<Sprite>("Illustrations/black"); 
         backgroundImage.color = Color.black;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
         SceneManager.SetActiveScene(SceneManager.GetSceneByName("Chapter3"));
-        yield return StartCoroutine(FadeIn(1f));
+        yield return StartCoroutine(FadeIn(0.5f));
         SetPaused(false);
 
         

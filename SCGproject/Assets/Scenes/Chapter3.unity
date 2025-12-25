@@ -1523,7 +1523,7 @@ MonoBehaviour:
   bgmSource: {fileID: 932697588}
   sfxSource: {fileID: 932697587}
   ch3Bgm: {fileID: 8300000, guid: 302e67fa2dbe4844fbb89b4c9760ed7c, type: 3}
-  cookieBgm: {fileID: 0}
+  cookieBgm: {fileID: 8300000, guid: a1d8eba423d51b748af2d51349d3c841, type: 3}
   busRide: {fileID: 8300000, guid: e43deb8f69378054e97b8554cfa6c81e, type: 3}
   busLeave: {fileID: 8300000, guid: 10181582347813e4bbbe8a7ad8159113, type: 3}
 --- !u!1 &966287328
