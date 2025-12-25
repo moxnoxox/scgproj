@@ -18,6 +18,9 @@ public class ChatRoomButtonManager : MonoBehaviour
 
     private List<ChatRoom> loadedRooms;
 
+    private Dictionary<string, Sprite> roomSpriteMap = new Dictionary<string, Sprite>();
+
+
     private void Start()
     {
         // ✔ 챕터1, 챕터2, 챕터3 어디서든 동일하게 데이터 가져오기
@@ -28,6 +31,11 @@ public class ChatRoomButtonManager : MonoBehaviour
             Debug.LogError("ChatRoomButtonManager: PhoneDataManager에 chatRooms가 없습니다.");
             return;
         }
+
+        CacheRoomSprites();   
+        RefreshRoomList();
+
+        /*
 
         // 실제 방 버튼 연결
         for (int i = 0; i < roomButtons.Count; i++)
@@ -62,13 +70,39 @@ public class ChatRoomButtonManager : MonoBehaviour
                 );
             });
         }
+        */
 
         // 초기 갱신
         UpdateUnreadDots();
     }
 
+    private void OnEnable()
+    {
+        CacheRoomSprites();  
+        RefreshRoomList();
+    }
+
+    private void CacheRoomSprites()
+    {
+        roomSpriteMap = PhoneDataManager.Instance.roomSpriteMap;
+        if (roomSpriteMap == null) {
+            roomSpriteMap = new Dictionary<string, Sprite>();
+            PhoneDataManager.Instance.roomSpriteMap = roomSpriteMap;
+        }
+
+        var rooms = PhoneDataManager.Instance.chatRooms;
+        for (int i = 0; i < roomButtons.Count && i < rooms.Count; i++)
+        {
+            var img = roomButtons[i].GetComponent<Image>();
+            if (img != null && img.sprite != null && !roomSpriteMap.ContainsKey(rooms[i].roomName))
+                roomSpriteMap[rooms[i].roomName] = img.sprite; // 처음 씬에서만 채워짐
+        }
+    }
+
+
     public void UpdateUnreadDots()
     {
+        loadedRooms = PhoneDataManager.Instance.chatRooms;
         if (loadedRooms == null || unreadDots == null) return;
 
         for (int i = 0; i < loadedRooms.Count && i < unreadDots.Count; i++)
@@ -82,39 +116,59 @@ public class ChatRoomButtonManager : MonoBehaviour
         }
     }
 
-   /* public void UpdateUnreadDots()
-{
-    if (loadedRooms == null || unreadDots == null) return;
-
-    for (int i = 0; i < unreadDots.Count; i++)
+    public void RefreshRoomList()
     {
-        if (i >= loadedRooms.Count)
+        loadedRooms = PhoneDataManager.Instance.chatRooms;
+
+        for (int i = 0; i < roomButtons.Count; i++)
         {
-            unreadDots[i].SetActive(false);
-            continue;
+            var btn = roomButtons[i];
+            btn.onClick.RemoveAllListeners();
+
+            // 방 개수보다 버튼이 많다면 버튼/미읽음 숨기기
+            if (i >= loadedRooms.Count)
+            {
+                btn.gameObject.SetActive(false);
+                if (i < unreadDots.Count) unreadDots[i].SetActive(false);
+                continue;
+            }
+
+            btn.gameObject.SetActive(true);
+            ChatRoom room = loadedRooms[i];
+
+            // 버튼 이미지 교체 
+            var img = btn.GetComponent<Image>();
+            if (img != null && roomSpriteMap != null &&
+                roomSpriteMap.TryGetValue(room.roomName, out var sprite) && sprite != null)
+            {
+                img.sprite = sprite;
+            }
+
+            // 클릭 시 해당 방 열고 읽음 처리
+            btn.onClick.AddListener(() =>
+            {
+                chatAppManager.OpenChatRoomWithData(room);
+                foreach (var msg in room.messages)
+                    if (msg.sender != "Me") msg.isRead = true;
+                UpdateUnreadDots();
+            });
         }
 
-        var room = loadedRooms[i];
-        if (room == null || room.messages == null)
+        UpdateUnreadDots();
+
+        // 필요하면 dummyButtons에 대한 onClick도 여기서 설정
+        foreach (var dummy in dummyButtons)
         {
-            unreadDots[i].SetActive(false);
-            continue;
+            dummy.onClick.RemoveAllListeners();
+            dummy.onClick.AddListener(() =>
+            {
+                MonologueManager.Instance.ShowMonologuesSequentially(
+                    new List<string> { "여긴 별 볼일 없어..." },
+                    3f
+                );
+            });
         }
-
-        int unread = 0;
-
-        foreach (var msg in room.messages)
-        {
-            // Me가 보낸 메시지는 제외
-            if (msg.sender == "Me") continue;
-
-            // 자동챗이든 이미지든 텍스트든 type 상관없이 unread 처리
-            if (!msg.isRead)
-                unread++;
-        }
-
-        unreadDots[i].SetActive(unread > 0);
     }
-} */
+
 
 }

@@ -53,11 +53,12 @@ public class FinalChatTrigger : MonoBehaviour
         targetRoom.messages.Add(msg2);
         targetRoom.messages.Add(msg3);
 
+        PhoneDataManager.Instance.MoveRoomToTop(targetRoom);
+        var mgr = FindObjectOfType<ChatRoomButtonManager>(true); // 비활성 포함
+        mgr?.RefreshRoomList(); // 안에서 UpdateUnreadDots 호출
+
         var manager = ChatAppManager.Instance?.GetComponentInChildren<ChatRoomButtonManager>(true);
         manager?.UpdateUnreadDots();
-
-        // 알림 띄우기 추가해야함@@
-        // PhoneUIManager.Instance.ShowNotification(targetRoom.roomName, msg1.content);
 
         targetRoom.AfterQuestJson = questJsonFile;
         targetRoom.AfterQuestJsonNext = nextQuestJsonFile;

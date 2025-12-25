@@ -73,8 +73,15 @@ public class ChatAppManager : MonoBehaviour
                     : item.reply.timestamp;
 
                 Message newMsg = new Message(item.reply.sender, item.reply.content, recordTime);
+                if (chatManager != null && chatManager.GetCurrentRoom() == item.room) newMsg.isRead = true;
                 item.room.messages.Add(newMsg);
 
+                var btnMgr = FindObjectOfType<ChatRoomButtonManager>(true);
+                PhoneDataManager.Instance.MoveRoomToTop(item.room);
+                btnMgr?.RefreshRoomList();
+
+                PhoneDataManager.Instance.MoveRoomToTop(item.room);
+                FindObjectOfType<ChatRoomButtonManager>()?.RefreshRoomList();
                 FindObjectOfType<ChatRoomButtonManager>()?.UpdateUnreadDots();
 
                 scheduledReplies.RemoveAt(i);

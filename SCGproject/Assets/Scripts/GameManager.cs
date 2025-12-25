@@ -189,6 +189,7 @@ public class GameManager : MonoBehaviour
         playermove.canInput = false;
         playermove.movable = false;
         phoneOpenEnable = false;
+        InputBlocker.Enable();
         yield return ShowMono("mirrorScene", 2f);
         playerPower.DecreasePower(100);
         yield return new WaitForSeconds(3f);
@@ -224,6 +225,7 @@ public class GameManager : MonoBehaviour
         notification.enabled = false;
         yield return ShowMono("bedDepressed4", 2f);
         phoneOpenEnable = true;
+        InputBlocker.Disable();
 
         FinalChatTrigger.Instance.StartFinalChat();
         yield return new WaitUntil(() => FinalChatTrigger.Instance.isChatDone);

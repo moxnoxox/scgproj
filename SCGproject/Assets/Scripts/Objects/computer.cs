@@ -95,7 +95,7 @@ public class computer : MonoBehaviour, IInteractable
         yield return StartCoroutine(MonologueManager.Instance.ShowMonologueRoutine(new List<string>
         {
             "됐다… 겨우 다 했네.",
-            "벌써 2시간이나 흘렀네.",
+            "생각보다 오래 걸렸네.",
             "이제 침대에 눕고 싶어. 근데도 할 일이 남았다니…"
         }, 3f));
 
