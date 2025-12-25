@@ -1524,8 +1524,8 @@ MonoBehaviour:
   sfxSource: {fileID: 932697587}
   ch3Bgm: {fileID: 8300000, guid: 302e67fa2dbe4844fbb89b4c9760ed7c, type: 3}
   cookieBgm: {fileID: 0}
-  busRide: {fileID: 0}
-  busLeave: {fileID: 0}
+  busRide: {fileID: 8300000, guid: 9b3c7989c1b08444ca8753a4a6b95fa4, type: 3}
+  busLeave: {fileID: 8300000, guid: 3f62140fc6d04c74381ef21f4c998044, type: 3}
 --- !u!1 &966287328
 GameObject:
   m_ObjectHideFlags: 0

@@ -232,6 +232,7 @@ public class GameManager_ch3 : MonoBehaviour
 
         // 8) 암전 → 배경 전환
         yield return StartCoroutine(FadeOut(1.5f));
+        SoundManagerCh3.Instance.PlayBusRide();
         yield return new WaitForSeconds(1.5f);
         SetBackgroundToIllustration("End");
         yield return StartCoroutine(FadeIn(1.5f));
@@ -261,6 +262,7 @@ public class GameManager_ch3 : MonoBehaviour
          // 0) 챕터3 정지 + 페이드아웃
         SetPaused(true);
         yield return StartCoroutine(FadeOut(1f));
+        SoundManagerCh3.Instance.PlayBusLeave();
 
         // 1) 엔딩 크레딧 씬 additive 로드
         var loadOp = SceneManager.LoadSceneAsync(creditsSceneName, LoadSceneMode.Additive);
