@@ -51,6 +51,10 @@ public class PhonePanelController : MonoBehaviour
             handleButton.navigation = nav;
         }
 
+        var dimButton = dimPanel ? dimPanel.GetComponent<Button>() : null;
+        if (dimButton != null)
+            dimButton.onClick.AddListener(OnDimPanelClick);
+
         // 시작 시 포커스 비우기
         if (EventSystem.current != null)
             EventSystem.current.SetSelectedGameObject(null);
@@ -99,6 +103,11 @@ public class PhonePanelController : MonoBehaviour
     public void ClosePhone()
     {
         if (!isOpen) return;
+
+        // 열려 있는 앱이 있으면 먼저 닫아서 홈 화면으로
+        if (AppManager.Instance != null && AppManager.Instance.IsAppOpen)
+            AppManager.Instance.CloseCurrentApp();
+
         MoveTo(hiddenPos);
         isOpen = false;
         dimPanel?.SetActive(false);
@@ -108,7 +117,13 @@ public class PhonePanelController : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(null);
         BackInputManager.Unregister(ClosePhone);
     }
-    
+
+    public void OnDimPanelClick()
+    {
+        if (isOpen)
+            ClosePhone();
+    }
+        
     private void MoveTo(Vector2 target)
     {
         if (moveCoroutine != null)

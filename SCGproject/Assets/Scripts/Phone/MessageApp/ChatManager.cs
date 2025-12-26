@@ -192,7 +192,7 @@ public class ChatManager : MonoBehaviour
 
         autoScrollAllowed = true;
         StartCoroutine(ScrollToBottomNextFrame());
-        StartCoroutine(DisableAutoScrollNextFrame());
+ 
     }
 
     // ===== 선택지 =====
@@ -479,6 +479,13 @@ public class ChatManager : MonoBehaviour
             else if (msg.type == "dateDivider")
             {
                 AddDateDivider(save: !alreadySaved);
+            }
+
+            if (!alreadySaved && currentRoom != null) // 방에 새로 저장한 경우만
+            {
+                PhoneDataManager.Instance.MoveRoomToTop(currentRoom);
+                var btnMgr = FindObjectOfType<ChatRoomButtonManager>(true); // 비활성 포함 검색
+                btnMgr?.RefreshRoomList(); // 안에서 UpdateUnreadDots 실행
             }
 
             StartCoroutine(ScrollToBottomNextFrame());
