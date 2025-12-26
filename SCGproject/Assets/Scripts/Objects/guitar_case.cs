@@ -61,7 +61,7 @@ public class guitar_case : MonoBehaviour, IInteractable
 
         // Chapter2Manager에 기타 케이스를 찾았다고 알림
         Chapter2Manager.Instance?.OnGuitarCaseFound();
-
+        partsUI.instance.OnCaseUIEnable();
         // 상호작용 UI 숨기기
         // if (keyInfoCh2 != null)
         //     keyInfoCh2.isObject = false;

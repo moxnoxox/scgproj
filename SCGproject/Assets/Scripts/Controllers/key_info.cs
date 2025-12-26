@@ -26,7 +26,7 @@ public class key_info : MonoBehaviour
 
     void Update()
     {
-        if (isBed)
+        if (isBed && !is_starting)
         {
             S.enabled = true;
         }

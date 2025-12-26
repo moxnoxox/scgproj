@@ -57,7 +57,8 @@ public class String : MonoBehaviour
             
             // Chapter2Manager에 기타를 찾았다고 알림
             Chapter2Manager.Instance?.OnStringFound();
-
+            partsUI.instance.OnStringUIEnable();
+            Destroy(gameObject);
             // (선택 사항) 상호작용 UI 숨기기
             // if (keyInfoCh2 != null)
             // {

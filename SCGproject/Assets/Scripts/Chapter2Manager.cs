@@ -203,6 +203,8 @@ public class Chapter2Manager : MonoBehaviour
 
         // 밀기 실패 및 쓰레기통 찾기 독백
         yield return ShowMono("trashTutorial_Fail", 2f);
+        //player을 x = 2 지점으로 자동이동
+        yield return StartCoroutine(AutoMovePlayer(2.0f));
         yield return ShowMono("trashTutorial_FindCan", 2f);
         yield return new WaitForSeconds(2f);
 
@@ -631,11 +633,13 @@ public class Chapter2Manager : MonoBehaviour
          paperPuzzleDone = true;
          scenarioState = ScenarioState.PaperPuzzleComplete;
          Debug.Log("종이 퍼즐 미니게임 완료! 갤러리 해금 + 에너지 +10");
+         Debug.Log("종이 퍼즐 미니게임 완료! 갤러리 해금 + 에너지 +10");
          Vector3 targetPosition = MonologueManager.Instance.monologuePanel.transform.position;
-         targetPosition.y -= 40;
+         float yOffset = Screen.height * 0.1f;
+         targetPosition.y -= yOffset;
          MonologueManager.Instance.monologuePanel.transform.position = targetPosition;
          yield return ShowMono("paper_done", 2f);
-         targetPosition.y += 40;
+         targetPosition.y += yOffset;
          MonologueManager.Instance.monologuePanel.transform.position = targetPosition;
          PaperpuzzleController.Instance.ExittooltipOn();
          playerPower?.IncreasePower(10);
@@ -755,6 +759,30 @@ public class Chapter2Manager : MonoBehaviour
         color.a = 0f;
         endingImage.color = color;
         endingImage.enabled = false;
+    }
+
+    IEnumerator AutoMovePlayer(float targetX)
+    {
+        ch2_movable = false;
+        SpriteRenderer sr = playerMove.GetComponent<SpriteRenderer>();
+
+        if (playerMove != null)
+        {
+            while (Mathf.Abs(playerMove.transform.position.x - targetX) > 0.1f)
+            {
+                float direction = Mathf.Sign(targetX - playerMove.transform.position.x);
+                playerMove.transform.position += new Vector3(direction * playerMove.maxSpeed * Time.deltaTime, 0, 0);
+
+                if (sr != null)
+                {
+                    sr.flipX = direction > 0;
+                }
+                playerMove.animator.SetBool("isWalking", true);
+                yield return null;
+            }
+            playerMove.animator.SetBool("isWalking", false);
+            ch2_movable = true;
+        }
     }
 
     // --- JSON 데이터 래퍼 클래스 및 Enum 정의 ---

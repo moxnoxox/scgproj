@@ -18,8 +18,8 @@ public class CameraControllerCh2 : MonoBehaviour
 
 
     private UnityEngine.Vector3 varPosition;
-    private float leftMaxX = -5.73f;
-    private float rightMaxX = 5.8f;
+    public float minXBound = -15.1f;
+    public float maxXBound = 15.1f;
 
     private Camera cam;
 
@@ -50,15 +50,22 @@ public class CameraControllerCh2 : MonoBehaviour
         UnityEngine.Vector3 targetPosition = player.transform.position;
         targetPosition.z = __zPos;
         targetPosition.y += 1.7f;
-        if (targetPosition.x < leftMaxX)
+
+        float camHeight = cam.orthographicSize;
+        float camWidth = camHeight * cam.aspect;
+
+        float minX = minXBound + camWidth;
+        float maxX = maxXBound - camWidth;
+
+        if (targetPosition.x < minX)
         {
-            varPosition.x = targetPosition.x - leftMaxX;
-            targetPosition.x = leftMaxX;
+            varPosition.x = targetPosition.x - minX;
+            targetPosition.x = minX;
         }
-        else if (targetPosition.x > rightMaxX)
+        else if (targetPosition.x > maxX)
         {
-            varPosition.x = targetPosition.x - rightMaxX;
-            targetPosition.x = rightMaxX;
+            varPosition.x = targetPosition.x - maxX;
+            targetPosition.x = maxX;
         }
         else
         {

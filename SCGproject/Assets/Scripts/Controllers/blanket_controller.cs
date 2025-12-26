@@ -9,14 +9,30 @@ public class blanket_controller : MonoBehaviour
     public GameObject player;
     public Animator player_anim;
     public PlayerMove playermove;
+    public key_info keyinfo;
+    public key_info_ch2 keyinfo_ch2;
     void Start()
     {
         playermove = player.GetComponent<PlayerMove>();
+        keyinfo = FindFirstObjectByType<key_info>();
+        keyinfo_ch2 = FindFirstObjectByType<key_info_ch2>();
     }
     void Update()
     {
         if (playermove.canInput == false) return;
         float xdiff = Mathf.Abs(this.transform.position.x - player.transform.position.x - 1.4f);
+        
+        bool canInteract = (xdiff < 0.5f && playermove.canInput);
+
+        if (GameManager.Instance != null && keyinfo != null)
+        {
+            keyinfo.isBed = canInteract;
+        }
+        else if(Chapter2Manager.Instance != null && keyinfo_ch2 != null)
+        {
+            keyinfo_ch2.isBed = canInteract;
+        }
+
         if (xdiff < 0.5f)
         {
             if (Input.GetKeyDown(KeyCode.S))
